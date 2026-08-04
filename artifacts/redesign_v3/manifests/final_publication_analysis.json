@@ -1,0 +1,18 @@
+{
+  "status": "VALIDATED",
+  "tasks": [
+    "focused_seed42_error_analysis",
+    "seed42_reliability_diagrams",
+    "mcc_ece_exploratory",
+    "jsd_performance_descriptive"
+  ],
+  "error_rows": 75,
+  "reliability_rows": 15,
+  "mcc_ece_rows": 10,
+  "jsd_rows": 3,
+  "limitations": [
+    "Reliability diagrams use stored seed-42 predictions",
+    "MCC-ECE scatter uses ten matched split/model aggregate points",
+    "JSD-performance table has two comparable development domains and is descriptive only"
+  ]
+}

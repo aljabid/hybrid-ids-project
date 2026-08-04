@@ -1,0 +1,10 @@
+{
+  "model": "redesigned_meta_hybrid",
+  "measurement_rows": 100000,
+  "inference_seconds_100k": 2.9753783170017414,
+  "inference_us_per_flow": 29.753783170017414,
+  "process_peak_rss_mb": 611.234375,
+  "model_bytes": 27037334,
+  "probability_checksum": 8892.405571470355,
+  "measurement_scope": "isolated process; 100,000 real CICIDS2017 group-test flows"
+}

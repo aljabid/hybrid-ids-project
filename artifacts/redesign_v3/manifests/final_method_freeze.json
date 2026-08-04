@@ -1,0 +1,37 @@
+{
+  "status": "FINAL_METHOD_FROZEN_BEFORE_CONFIRMATION_DOWNLOAD",
+  "training_domains": [
+    "CICIDS2017",
+    "CSE-CIC-IDS2018 diagnostic",
+    "CIC-UNSW-NB15 diagnostic"
+  ],
+  "training_sampling": "per-domain, per-binary-class cap of 50,000",
+  "features": "68-feature semantic CICFlowMeter schema v3",
+  "preprocessing": "winsorized log14 RobustScaler learned on pooled training only",
+  "branches": [
+    "tuned Decision Tree",
+    "tuned XGBoost"
+  ],
+  "decision_tree_rule": "two-component Gaussian mixture in logit score space",
+  "xgboost_rule": "median + 6 * IQR of unlabeled target scores",
+  "output_rule": "predict only when branch decisions agree; otherwise abstain",
+  "development_mean_coverage": 0.8652160691889388,
+  "development_worst_domain_mean_mcc": -0.08819102855646085,
+  "development_worst_domain_mean_fpr": 0.053438266777428,
+  "confirmation_dataset": "CIC-ToN-IoT",
+  "confirmation_source": "https://staff.itee.uq.edu.au/marius/NIDS_datasets/ (official UQ ML-Based NIDS repository)",
+  "confirmation_downloaded": false,
+  "confirmation_labels_used_for_revision": false,
+  "seeds": [
+    7,
+    19,
+    31,
+    42,
+    53,
+    67,
+    79,
+    97,
+    109,
+    127
+  ]
+}

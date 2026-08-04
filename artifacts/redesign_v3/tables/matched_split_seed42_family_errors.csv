@@ -1,0 +1,76 @@
+split_strategy,model,family_id,family,support,false_positive,false_negative,true_positive,true_negative
+group_aware,decision_tree,0,BENIGN,260423,1641,0,0,258782
+group_aware,decision_tree,9,Infiltration,35,0,34,1,0
+group_aware,decision_tree,10,PortScan,1813,0,1511,302,0
+group_aware,random_forest,0,BENIGN,260423,1272,0,0,259151
+group_aware,random_forest,9,Infiltration,35,0,34,1,0
+group_aware,random_forest,10,PortScan,1813,0,960,853,0
+group_aware,xgboost,0,BENIGN,260423,1303,0,0,259120
+group_aware,xgboost,9,Infiltration,35,0,34,1,0
+group_aware,xgboost,10,PortScan,1813,0,843,970,0
+group_aware,lightgbm,0,BENIGN,260423,1903,0,0,258520
+group_aware,lightgbm,9,Infiltration,35,0,32,3,0
+group_aware,lightgbm,10,PortScan,1813,0,986,827,0
+group_aware,catboost,0,BENIGN,260423,2547,0,0,257876
+group_aware,catboost,9,Infiltration,35,0,34,1,0
+group_aware,catboost,10,PortScan,1813,0,374,1439,0
+random_row,decision_tree,0,BENIGN,260423,645,0,0,259778
+random_row,decision_tree,1,Bot,7,0,1,6,0
+random_row,decision_tree,2,DDoS,749,0,0,749,0
+random_row,decision_tree,3,DoS GoldenEye,61,0,0,61,0
+random_row,decision_tree,4,DoS Hulk,923,0,3,920,0
+random_row,decision_tree,5,DoS Slowhttptest,27,0,0,27,0
+random_row,decision_tree,6,DoS slowloris,16,0,0,16,0
+random_row,decision_tree,7,FTP-Patator,25,0,0,25,0
+random_row,decision_tree,10,PortScan,15,0,0,15,0
+random_row,decision_tree,11,SSH-Patator,14,0,0,14,0
+random_row,decision_tree,12,Web Attack Brute Force,9,0,0,9,0
+random_row,decision_tree,14,Web Attack XSS,2,0,0,2,0
+random_row,random_forest,0,BENIGN,260423,493,0,0,259930
+random_row,random_forest,1,Bot,7,0,0,7,0
+random_row,random_forest,2,DDoS,749,0,0,749,0
+random_row,random_forest,3,DoS GoldenEye,61,0,0,61,0
+random_row,random_forest,4,DoS Hulk,923,0,1,922,0
+random_row,random_forest,5,DoS Slowhttptest,27,0,0,27,0
+random_row,random_forest,6,DoS slowloris,16,0,0,16,0
+random_row,random_forest,7,FTP-Patator,25,0,0,25,0
+random_row,random_forest,10,PortScan,15,0,0,15,0
+random_row,random_forest,11,SSH-Patator,14,0,0,14,0
+random_row,random_forest,12,Web Attack Brute Force,9,0,0,9,0
+random_row,random_forest,14,Web Attack XSS,2,0,0,2,0
+random_row,xgboost,0,BENIGN,260423,502,0,0,259921
+random_row,xgboost,1,Bot,7,0,0,7,0
+random_row,xgboost,2,DDoS,749,0,0,749,0
+random_row,xgboost,3,DoS GoldenEye,61,0,0,61,0
+random_row,xgboost,4,DoS Hulk,923,0,2,921,0
+random_row,xgboost,5,DoS Slowhttptest,27,0,0,27,0
+random_row,xgboost,6,DoS slowloris,16,0,0,16,0
+random_row,xgboost,7,FTP-Patator,25,0,0,25,0
+random_row,xgboost,10,PortScan,15,0,0,15,0
+random_row,xgboost,11,SSH-Patator,14,0,0,14,0
+random_row,xgboost,12,Web Attack Brute Force,9,0,0,9,0
+random_row,xgboost,14,Web Attack XSS,2,0,1,1,0
+random_row,lightgbm,0,BENIGN,260423,1169,0,0,259254
+random_row,lightgbm,1,Bot,7,0,0,7,0
+random_row,lightgbm,2,DDoS,749,0,1,748,0
+random_row,lightgbm,3,DoS GoldenEye,61,0,0,61,0
+random_row,lightgbm,4,DoS Hulk,923,0,1,922,0
+random_row,lightgbm,5,DoS Slowhttptest,27,0,0,27,0
+random_row,lightgbm,6,DoS slowloris,16,0,0,16,0
+random_row,lightgbm,7,FTP-Patator,25,0,0,25,0
+random_row,lightgbm,10,PortScan,15,0,0,15,0
+random_row,lightgbm,11,SSH-Patator,14,0,0,14,0
+random_row,lightgbm,12,Web Attack Brute Force,9,0,0,9,0
+random_row,lightgbm,14,Web Attack XSS,2,0,1,1,0
+random_row,catboost,0,BENIGN,260423,1744,0,0,258679
+random_row,catboost,1,Bot,7,0,0,7,0
+random_row,catboost,2,DDoS,749,0,0,749,0
+random_row,catboost,3,DoS GoldenEye,61,0,0,61,0
+random_row,catboost,4,DoS Hulk,923,0,2,921,0
+random_row,catboost,5,DoS Slowhttptest,27,0,0,27,0
+random_row,catboost,6,DoS slowloris,16,0,0,16,0
+random_row,catboost,7,FTP-Patator,25,0,0,25,0
+random_row,catboost,10,PortScan,15,0,1,14,0
+random_row,catboost,11,SSH-Patator,14,0,0,14,0
+random_row,catboost,12,Web Attack Brute Force,9,0,0,9,0
+random_row,catboost,14,Web Attack XSS,2,0,0,2,0

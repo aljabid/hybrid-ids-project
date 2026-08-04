@@ -1,0 +1,9 @@
+Routing behavior analysis reveals how prediction confidence changes across datasets.
+
+Local maintains relatively stable classifier confidence (50% classifier vs 50% autoencoder).
+
+CICIDS2017 maintains relatively stable classifier confidence (55% classifier vs 45% autoencoder).
+
+CIC-IDS2018 demonstrates strong uncertainty-aware routing (80% autoencoder vs 20% classifier), suggesting increased distributional complexity.
+
+Notably, CIC-IDS2018 exhibits substantially higher autoencoder routing, indicating that the hybrid system adapts under domain shift by delegating uncertain samples for reconstruction-based analysis.

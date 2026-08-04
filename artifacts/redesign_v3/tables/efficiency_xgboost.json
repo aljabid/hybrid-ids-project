@@ -1,0 +1,10 @@
+{
+  "model": "xgboost",
+  "measurement_rows": 100000,
+  "inference_seconds_100k": 0.4615711160004139,
+  "inference_us_per_flow": 4.615711160004139,
+  "process_peak_rss_mb": 583.44921875,
+  "model_bytes": 263759,
+  "probability_checksum": 1029.2805769923189,
+  "measurement_scope": "isolated process; 100,000 real CICIDS2017 group-test flows"
+}

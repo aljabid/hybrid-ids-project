@@ -1,0 +1,19 @@
+{
+  "model": "random_forest",
+  "best_group_cv_mcc": 0.022196851201479822,
+  "group_cv_std": 0.042186743842369576,
+  "best_parameters": {
+    "model__n_estimators": 80,
+    "model__min_samples_leaf": 5,
+    "model__max_features": 0.5,
+    "model__max_depth": 18
+  },
+  "search_seconds": 486.3908765570013,
+  "rows": 100000,
+  "groups": [
+    "Friday-WorkingHours-Morning.pcap_ISCX.csv",
+    "Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv",
+    "Tuesday-WorkingHours.pcap_ISCX.csv",
+    "Wednesday-workingHours.pcap_ISCX.csv"
+  ]
+}

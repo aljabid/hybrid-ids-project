@@ -1,0 +1,28 @@
+{
+  "selection_domain": "CICIDS2017 held-out validation collection groups only",
+  "external_labels_used": false,
+  "winner": {
+    "candidate": "winsor_robust_log",
+    "method": "robust",
+    "log_features": 14,
+    "training_seconds": 20.61656212500384,
+    "n_samples": 150000,
+    "accuracy": 0.8164933333333333,
+    "balanced_accuracy": 0.8164933333333333,
+    "precision": 0.9965691812058073,
+    "recall": 0.6351733333333334,
+    "f1": 0.7758505561798668,
+    "roc_auc": 0.968924974488889,
+    "pr_auc": 0.9631653685323085,
+    "mcc": 0.6792217638709964,
+    "tpr": 0.6351733333333334,
+    "fpr": 0.0021866666666666666,
+    "ece": 0.26019677548584763,
+    "brier": 0.19266461940320215,
+    "negative_log_likelihood": 0.7509504329031597,
+    "tn": 74836,
+    "fp": 164,
+    "fn": 27362,
+    "tp": 47638
+  }
+}

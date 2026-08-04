@@ -1,0 +1,16 @@
+family,family_id,rows
+BENIGN,0,1625085
+Bot,1,1229
+DDoS,2,127996
+DoS GoldenEye,3,10273
+DoS Hulk,4,171250
+DoS Slowhttptest,5,5225
+DoS slowloris,6,5368
+FTP-Patator,7,5916
+Heartbleed,8,11
+Infiltration,9,35
+PortScan,10,1813
+SSH-Patator,11,3020
+Web Attack ï¿½ Brute Force,12,1365
+Web Attack ï¿½ Sql Injection,13,13
+Web Attack ï¿½ XSS,14,629

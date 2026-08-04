@@ -1,0 +1,17 @@
+{
+  "models": [
+    "decision_tree",
+    "random_forest",
+    "xgboost",
+    "lightgbm",
+    "catboost",
+    "family_aware_rf",
+    "redesigned_meta_hybrid",
+    "tabular_resnet"
+  ],
+  "domains": 4,
+  "tree_rows_per_domain": 200,
+  "deep_rows_per_domain": 80,
+  "real_rows_only": true,
+  "hybrid_flow_feature_explanation": "TreeSHAP of the hybrid supervised classifier backbone; the anomaly and meta-gate operate on derived scores and are not misrepresented as direct flow-feature SHAP values."
+}

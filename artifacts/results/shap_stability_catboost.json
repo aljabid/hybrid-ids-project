@@ -1,0 +1,4 @@
+{
+  "model": "catboost",
+  "spearman_rank_correlation": 0.9757575757575757
+}

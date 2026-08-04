@@ -1,0 +1,11 @@
+canonical_feature,CICIDS2017,CSE_CIC_IDS2018,CIC_UNSW_NB15,unit,directionality,alignment_status
+byte_count,Total Length of Fwd Packets,TotLen Fwd Pkts,Total Length of Fwd Packet,bytes,forward,exact
+bytes_per_packet,derived,derived,derived,bytes/packet,forward,exact formula
+log_byte_count,log1p derived,log1p derived,log1p derived,log(bytes),forward,exact formula
+ack_flag_count,ACK Flag Count,ACK Flag Cnt,ACK Flag Count,count,bidirectional flow,exact name/semantics
+flag_sum,derived,derived,derived,count,bidirectional flow,exact formula
+ack_ratio,derived,derived,derived,ratio,ACK flow count / forward packets,derived; directional caveat
+fin_ratio,derived,derived,derived,ratio,FIN flow count / forward packets,derived; directional caveat
+syn_ratio,derived,derived,derived,ratio,SYN flow count / forward packets,derived; directional caveat
+packet_rate,Flow Packets/s,Flow Pkts/s,Flow Packets/s,packets/second,bidirectional flow,exact
+log_packet_rate,log1p derived,log1p derived,log1p derived,log(packets/second),bidirectional flow,exact formula

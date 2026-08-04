@@ -1,0 +1,5 @@
+strategy,aurc,risk_at_engineering_coverage,coverage,mcc
+dt_softmax_response,0.42225434801568085,0.5158572554498613,,
+xgb_softmax_response,0.5470079873025943,0.5464306533296162,,
+disagreement_graded,0.5460214617431968,0.5233634156175613,,
+engineering_agreement_rejector,,0.5522281753049139,0.7996748426353466,0.0

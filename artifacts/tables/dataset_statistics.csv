@@ -1,0 +1,5 @@
+dataset,partition,rows,normal,attack
+CICIDS2017,train,54201,53254,947
+CICIDS2017,validation,18067,17752,315
+CICIDS2017,test,18068,17752,316
+cic_ids2018,external_test,515213,424386,90827

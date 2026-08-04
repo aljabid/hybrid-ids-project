@@ -1,0 +1,54 @@
+study:
+  version: domain_robust_redesign_v3
+  seeds: [7, 19, 31, 42, 53, 67, 79, 97, 109, 127]
+  primary_metric: robust_mcc
+  untouched_confirmation_status: LOCKED_UNTIL_METHOD_FREEZE
+  success_gates:
+    heldout_group_mcc_min: 0.20
+    heldout_family_mcc_improvement_min: 0.02
+    heldout_family_tpr_improvement_min: 0.05
+    fpr_increase_max: 0.02
+    confirmation_mcc_improvement_min: 0.02
+    holm_p_max: 0.05
+data:
+  train_groups:
+    - Tuesday-WorkingHours.pcap_ISCX.csv
+    - Wednesday-workingHours.pcap_ISCX.csv
+    - Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv
+    - Friday-WorkingHours-Morning.pcap_ISCX.csv
+  validation_groups:
+    - Monday-WorkingHours.pcap_ISCX.csv
+    - Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv
+  internal_test_groups:
+    - Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv
+    - Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv
+  log1p_features:
+    - flow_duration
+    - total_fwd_packets
+    - total_bwd_packets
+    - total_fwd_bytes
+    - total_bwd_bytes
+    - flow_bytes_per_s
+    - flow_packets_per_s
+    - flow_iat_mean
+    - flow_iat_std
+    - flow_iat_max
+    - fwd_iat_total
+    - bwd_iat_total
+    - active_mean
+    - idle_mean
+selection:
+  tuning_rows: 100000
+  validation_rows: 150000
+  anomaly_normal_rows: 50000
+  deep_training_rows: 500000
+  deep_patience: 8
+  deep_epochs: 100
+paths:
+  root: artifacts/redesign_v3
+  data: artifacts/redesign_v3/data
+  models: artifacts/redesign_v3/models
+  results: artifacts/redesign_v3/results
+  tables: artifacts/redesign_v3/tables
+  figures: artifacts/redesign_v3/figures
+  manifests: artifacts/redesign_v3/manifests

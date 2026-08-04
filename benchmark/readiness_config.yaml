@@ -1,0 +1,49 @@
+study:
+  version: manuscript_readiness_v2
+  research_question: >-
+    Does a calibrated, validation-selected hybrid of a Random Forest and a
+    normal-only anomaly detector improve unseen-family and cross-domain MCC and
+    PR-AUC without an unacceptable false-positive or computational cost increase?
+  primary_metric: mcc
+  secondary_metrics: [pr_auc, tpr, fpr, ece, brier]
+  primary_baseline: random_forest
+  selection_domain: cicids2017_validation
+  test_domains:
+    - cicids2017_internal
+    - cic_ids2018_external
+    - cic_unsw_nb15_external
+  seeds: [7, 19, 31, 42, 53, 67, 79, 97, 109, 127]
+  success_gates:
+    external_mcc_improvement_min: 0.02
+    heldout_families_improved_fraction_min: 0.60
+    external_tpr_improvement_min: 0.05
+    fpr_absolute_increase_max: 0.02
+    adjusted_p_max: 0.05
+
+selection:
+  validation_selection_cap: 100000
+  final_mlp_max_iter: 20
+  final_mlp_batch_size: 2048
+  anomaly_training_normal_cap: 30000
+  kernel_training_normal_cap: 3000
+  validation_threshold_quantiles:
+    [0.50, 0.60, 0.70, 0.80, 0.85, 0.90, 0.925, 0.95, 0.975, 0.99, 0.995]
+  fusion_weights: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+  scaler_candidates: [minmax, clipped_minmax, standard, robust, quantile]
+
+anomaly_models:
+  - isolation_forest
+  - one_class_svm
+  - local_outlier_factor
+  - autoencoder
+  - variational_autoencoder
+  - deep_svdd
+
+paths:
+  root: artifacts/readiness_v2
+  data: artifacts/readiness_v2/data
+  models: artifacts/readiness_v2/models
+  results: artifacts/readiness_v2/results
+  tables: artifacts/readiness_v2/tables
+  figures: artifacts/readiness_v2/figures
+  manifests: artifacts/readiness_v2/manifests

@@ -1,0 +1,10 @@
+{
+  "model": "decision_tree",
+  "measurement_rows": 100000,
+  "inference_seconds_100k": 0.20759862300474197,
+  "inference_us_per_flow": 2.0759862300474197,
+  "process_peak_rss_mb": 564.140625,
+  "model_bytes": 40858,
+  "probability_checksum": 850.2852130325815,
+  "measurement_scope": "isolated process; 100,000 real CICIDS2017 group-test flows"
+}

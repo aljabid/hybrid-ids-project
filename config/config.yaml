@@ -1,0 +1,60 @@
+paths:
+  local_raw:          data/raw/local/
+  cicids_raw:         data/raw/cicids2017/
+  cic2018_raw:        data/raw/cic_ids2018/
+  splits_local:       data/splits/local/
+  splits_cicids:      data/splits/cicids2017/
+  splits_cic2018:     data/splits/cic_ids2018/
+  results_figures:    results/figures/
+  results_metrics:    results/metrics/
+  logs:               logs/
+
+classifier:
+  criterion:          gini
+  max_depth:          10
+  min_samples_split:  5
+  test_size:          0.30
+  random_state:       42
+
+autoencoder:
+  input_dim:          3
+  hidden_dims:        [64, 32, 16]
+  epochs:             50
+  batch_size:         32
+  learning_rate:      0.001
+  random_state:       42
+
+
+hybrid:
+  confidence_threshold: 0.85
+
+adaptive_threshold:
+  window_size: 50
+  min_threshold: 0.70
+  max_threshold: 0.95
+  update_rate: 0.1
+
+
+
+temporal_aggregator:
+  window_size:        10
+  alert_multiplier:   1.5
+
+feature_selection:
+  method:             mutual_information
+  n_features:         10
+
+cic_ids2018:
+  benign_to_attack_ratio: 2     # ratio of benign to attack samples
+  n_attack_samples:       5000  # how many FTP/SSH rows to sample
+  random_seed:            42
+
+
+calibration:
+  n_bins:                 10
+  ece_warning_level:      0.10
+  ece_critical_level:     0.15
+
+explainability:
+  background_samples:     100
+  max_display:            10

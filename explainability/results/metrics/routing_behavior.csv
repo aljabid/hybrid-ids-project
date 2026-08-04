@@ -1,0 +1,4 @@
+Dataset,Classifier_Routing,Autoencoder_Routing,Dominant_Component
+Local,50,50,Autoencoder
+CICIDS2017,55,45,Classifier
+CIC-IDS2018,20,80,Autoencoder

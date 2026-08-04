@@ -1,0 +1,21 @@
+{
+  "dataset": "cic_unsw_nb15",
+  "source": "/home/jabid/Ps/1. a git/12 hybrid_ids_project/hybrid_ids_project/data/raw/cic_unsw_nb15/Data.csv",
+  "rows": 281428,
+  "benign": 200258,
+  "attack": 81170,
+  "family_map": {
+    "Analysis": 0,
+    "BENIGN": 1,
+    "Backdoor": 2,
+    "DoS": 3,
+    "Exploits": 4,
+    "Fuzzers": 5,
+    "Generic": 6,
+    "Reconnaissance": 7,
+    "Shellcode": 8,
+    "Worms": 9
+  },
+  "feature_count": 68,
+  "role": "previously observed development diagnostic; not final confirmation"
+}

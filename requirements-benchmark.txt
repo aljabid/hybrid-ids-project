@@ -1,0 +1,31 @@
+# Exact versions verified against the environment that produced every
+# number in artifacts/redesign_v3/ and the robustness/ablation/second-
+# confirmation addendum (captured via `pip freeze` on 2026-08-04 and
+# cross-checked package-by-package; see PRE_SUBMISSION_AUDIT.md and
+# QA_REPORT.md for the verification record).
+#
+# Install inside an isolated environment:
+#   python -m venv .venv
+#   .venv/Scripts/pip install -r requirements-benchmark.txt      # Windows
+#   .venv/bin/pip install -r requirements-benchmark.txt          # Linux/macOS
+#
+# These are exact pins, not compatible ranges: this file's purpose is
+# reproducing the reported results, not general forward compatibility.
+# If you need a looser range for a different purpose, relax the pins
+# deliberately rather than editing this file in place.
+numpy==2.4.4
+pandas==3.0.2
+scikit-learn==1.8.0
+scipy==1.17.1
+matplotlib==3.10.9
+seaborn==0.13.2
+PyYAML==6.0.3
+psutil==7.2.2
+xgboost==3.3.0
+lightgbm==4.7.0
+catboost==1.2.10
+torch==2.11.0
+shap==0.52.0
+openpyxl==3.1.5
+pyarrow==25.0.0
+pytest==9.1.1

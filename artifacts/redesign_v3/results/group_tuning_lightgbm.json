@@ -1,0 +1,19 @@
+{
+  "model": "lightgbm",
+  "best_group_cv_mcc": 0.1336974485577195,
+  "group_cv_std": 0.13314585278028243,
+  "best_parameters": {
+    "model__num_leaves": 63,
+    "model__n_estimators": 75,
+    "model__max_depth": 14,
+    "model__learning_rate": 0.03
+  },
+  "search_seconds": 49.89600121900003,
+  "rows": 100000,
+  "groups": [
+    "Friday-WorkingHours-Morning.pcap_ISCX.csv",
+    "Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv",
+    "Tuesday-WorkingHours.pcap_ISCX.csv",
+    "Wednesday-workingHours.pcap_ISCX.csv"
+  ]
+}

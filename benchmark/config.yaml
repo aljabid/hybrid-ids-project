@@ -1,0 +1,51 @@
+project:
+  name: hybrid_ids_benchmark
+  schema_version: 1
+
+data:
+  train_domain: data/processed/cicids2017/cicids_aligned_features.csv
+  external_domains:
+    cic_ids2018: data/processed/cic_ids2018/cic2018_aligned_features.csv
+  output_dir: artifacts/data
+  label_column: label
+  test_size: 0.20
+  validation_size: 0.20
+  random_seed: 42
+  remove_duplicates: true
+  # Null means use every available row. Tuning scripts may independently
+  # subsample the training partition while preserving class proportions.
+  max_rows_per_class: null
+
+features:
+  candidates:
+    - byte_count
+    - bytes_per_packet
+    - log_byte_count
+    - ack_flag_count
+    - flag_sum
+    - ack_ratio
+    - fin_ratio
+    - syn_ratio
+    - packet_rate
+    - log_packet_rate
+  select_k: 10
+  scaler: minmax
+
+experiments:
+  seeds: [7, 19, 31, 42, 53, 67, 79, 97, 109, 127]
+  cv_folds: 5
+  search_iterations: 5
+  search_scoring: matthews_corrcoef
+  # Stratified tuning subset; every minority-class training row is retained.
+  tuning_max_rows: 20000
+  # Single-process CV is used for portability in restricted environments;
+  # individual native learners are also pinned to one thread for fair timing.
+  n_jobs: 1
+
+outputs:
+  root: artifacts
+  models: artifacts/models
+  results: artifacts/results
+  figures: artifacts/figures
+  tables: artifacts/tables
+  manifests: artifacts/manifests

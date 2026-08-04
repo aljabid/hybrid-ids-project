@@ -1,0 +1,15 @@
+{
+  "selection_data": "CICIDS2017 validation groups; reference/selection halves",
+  "external_labels_used": false,
+  "fpr_cap": 0.02,
+  "winner": {
+    "seed": 42,
+    "scaler": "robust",
+    "anomaly_model": "isolation_forest",
+    "selection_threshold": 0.9813670886075949,
+    "selection_pr_auc": 0.8172590719218252,
+    "selection_mcc": 0.17910786040736545,
+    "selection_tpr": 0.10365333333333333,
+    "selection_fpr": 0.018026666666666667
+  }
+}

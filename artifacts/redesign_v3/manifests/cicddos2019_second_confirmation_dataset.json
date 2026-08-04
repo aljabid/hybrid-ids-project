@@ -1,0 +1,13 @@
+{
+  "dataset": "CIC-DDoS2019",
+  "official_page": "https://www.unb.ca/cic/datasets/ddos-2019.html",
+  "download_mirror": "https://www.kaggle.com/datasets/dhoogla/cicddos2019",
+  "mirror_curator": "dhoogla -- the same curator whose mirror is already used for the frozen CIC-ToN-IoT confirmation dataset",
+  "archive_note": "17 per-attack-type train/test parquet files, concatenated into one evaluation set; the original train/test split in the filenames is not used as a split here -- the whole dataset is one evaluation domain, mirroring how CIC-ToN-IoT was treated",
+  "valid_aligned_rows": 431371,
+  "dropped_rows_non_finite": 0,
+  "features_aligned": 68,
+  "column_mapping_source": "benchmark.redesign_confirmation.column_mapping (imported, not duplicated or modified)",
+  "labels_used_for_training_or_thresholds": false,
+  "role": "SECOND, independent external evaluation domain -- additive evidence only. Does NOT replace, modify, or touch the frozen CIC-ToN-IoT confirmation or its stored results."
+}

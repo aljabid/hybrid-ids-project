@@ -1,0 +1,20 @@
+{
+  "model": "xgboost",
+  "best_group_cv_mcc": 0.013365713165586747,
+  "group_cv_std": 0.024185999959564105,
+  "best_parameters": {
+    "model__subsample": 1.0,
+    "model__n_estimators": 100,
+    "model__max_depth": 6,
+    "model__learning_rate": 0.15,
+    "model__colsample_bytree": 0.9
+  },
+  "search_seconds": 50.31508510200365,
+  "rows": 100000,
+  "groups": [
+    "Friday-WorkingHours-Morning.pcap_ISCX.csv",
+    "Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv",
+    "Tuesday-WorkingHours.pcap_ISCX.csv",
+    "Wednesday-workingHours.pcap_ISCX.csv"
+  ]
+}

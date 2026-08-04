@@ -1,0 +1,7 @@
+dataset,partition,rows,benign,attack,attack_families,collection_groups,features
+CICIDS2017,train,1109433,905134,204299,11,4.0,68
+CICIDS2017,validation,587524,459528,127996,1,2.0,68
+CICIDS2017,internal_test,262271,260423,1848,2,2.0,68
+CSE-CIC-IDS2018 development diagnostic,whole-domain diagnostic,593395,499297,94098,2,,68
+CIC-UNSW-NB15 development diagnostic,whole-domain diagnostic,281428,200258,81170,9,,68
+CIC-ToN-IoT V2 untouched confirmation,one-shot confirmation,4847499,2123867,2723632,9,,68

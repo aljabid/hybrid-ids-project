@@ -1,0 +1,35 @@
+{
+  "spearman_r": 0.8424,
+  "spearman_p": 0.00222,
+  "stability_verdict": "stable",
+  "most_stable_features": [
+    "ack_flag_count",
+    "fin_ratio",
+    "syn_ratio",
+    "log_byte_count",
+    "packet_rate",
+    "flag_sum",
+    "ack_ratio",
+    "bytes_per_packet"
+  ],
+  "most_shifted_features": [
+    {
+      "feature": "byte_count",
+      "cicids_importance": 0.0699,
+      "ids2018_importance": 0.139,
+      "delta": 0.0692
+    },
+    {
+      "feature": "log_packet_rate",
+      "cicids_importance": 0.0978,
+      "ids2018_importance": 0.0676,
+      "delta": -0.0302
+    },
+    {
+      "feature": "log_byte_count",
+      "cicids_importance": 0.0825,
+      "ids2018_importance": 0.0627,
+      "delta": -0.0198
+    }
+  ]
+}

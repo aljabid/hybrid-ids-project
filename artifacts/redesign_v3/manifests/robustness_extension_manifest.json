@@ -1,0 +1,33 @@
+{
+  "description": "Post-manuscript robustness addendum: seed-level bootstrap CIs extended to Table II/IV/VI, plus calibration-temperature and adaptation-fold sensitivity sweeps. No model retrained; no frozen confirmation procedure modified; all inputs are the already-committed seed-level CSVs and seed-42 .npz prediction archives under artifacts/redesign_v3/results/.",
+  "outputs": {
+    "robustness_bootstrap_extended.csv": {
+      "rows": 152,
+      "method": "seed-level bootstrap, rng=default_rng(42), 20000 repetitions per group"
+    },
+    "temperature_sensitivity_seed42.csv": {
+      "rows": 80,
+      "multipliers": [
+        0.5,
+        0.75,
+        0.9,
+        1.0,
+        1.1,
+        1.25,
+        1.5,
+        2.0
+      ]
+    },
+    "adaptation_fold_sensitivity_seed42.csv": {
+      "rows": 40,
+      "fold_sizes": [
+        500,
+        1000,
+        2000,
+        4000
+      ],
+      "repeats_per_size": 5,
+      "note": "includes n_nonconvergent count per group -- some small-fold draws produce non-convergent temperature fits, reported honestly rather than excluded silently"
+    }
+  }
+}

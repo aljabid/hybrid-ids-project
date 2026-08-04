@@ -1,0 +1,18 @@
+{
+  "method_frozen_before_access": true,
+  "labels_used_for_revision": false,
+  "seeds_completed": [
+    7,
+    19,
+    31,
+    42,
+    53,
+    67,
+    79,
+    97,
+    109,
+    127
+  ],
+  "rows": 4847499,
+  "status": "ONE_SHOT_CONFIRMATION_COMPLETE"
+}

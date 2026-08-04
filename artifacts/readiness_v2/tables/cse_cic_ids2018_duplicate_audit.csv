@@ -1,0 +1,4 @@
+label,family,rows_before,rows_after,duplicates_removed,duplicate_fraction
+0,Benign,663808,424386,239422,0.3606795940994987
+1,FTP-BruteForce,193354,53,193301,0.9997258913702328
+2,SSH-Bruteforce,187589,90774,96815,0.5161016903976245

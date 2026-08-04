@@ -1,0 +1,197 @@
+dataset,model,family_id,family,n,false_positives,false_negatives,family_tpr
+cic_ids2018_external,catboost,0,Benign,424386,32753,0,
+cic_ids2018_external,catboost,1,FTP-BruteForce,53,0,0,1.0
+cic_ids2018_external,catboost,2,SSH-Bruteforce,90774,0,90774,0.0
+cic_unsw_nb15_external,catboost,0,Benign,152420,2633,0,
+cic_unsw_nb15_external,catboost,1,Analysis,384,0,384,0.0
+cic_unsw_nb15_external,catboost,2,Backdoor,444,0,437,0.015765765765765764
+cic_unsw_nb15_external,catboost,3,DoS,4266,0,4246,0.0046882325363338025
+cic_unsw_nb15_external,catboost,4,Exploits,30309,0,30283,0.0008578310072915636
+cic_unsw_nb15_external,catboost,5,Fuzzers,25363,0,25175,0.007412372353428222
+cic_unsw_nb15_external,catboost,6,Generic,4383,0,4372,0.0025096965548710927
+cic_unsw_nb15_external,catboost,7,Reconnaissance,11529,0,11526,0.00026021337496747333
+cic_unsw_nb15_external,catboost,8,Shellcode,1723,0,1663,0.034822983168891465
+cic_unsw_nb15_external,catboost,9,Worms,227,0,227,0.0
+cicids2017_internal,catboost,BENIGN,Benign,244090,3047,0,
+cicids2017_internal,catboost,Bot,Bot,237,0,237,0.0
+cicids2017_internal,catboost,DDoS,DDoS,25328,0,34,0.9986576121288693
+cicids2017_internal,catboost,DoS GoldenEye,DoS GoldenEye,2042,0,632,0.6904995102840352
+cicids2017_internal,catboost,DoS Hulk,DoS Hulk,32988,0,409,0.987601552079544
+cicids2017_internal,catboost,DoS Slowhttptest,DoS Slowhttptest,978,0,118,0.8793456032719836
+cicids2017_internal,catboost,DoS slowloris,DoS slowloris,856,0,120,0.8598130841121495
+cicids2017_internal,catboost,FTP-Patator,FTP-Patator,847,0,7,0.9917355371900827
+cicids2017_internal,catboost,Heartbleed,Heartbleed,2,0,2,0.0
+cicids2017_internal,catboost,Infiltration,Infiltration,7,0,7,0.0
+cicids2017_internal,catboost,PortScan,PortScan,284,0,41,0.8556338028169014
+cicids2017_internal,catboost,SSH-Patator,SSH-Patator,600,0,33,0.945
+cicids2017_internal,catboost,Web Attack � Brute Force,Web Attack � Brute Force,269,0,264,0.01858736059479554
+cicids2017_internal,catboost,Web Attack � Sql Injection,Web Attack � Sql Injection,2,0,2,0.0
+cicids2017_internal,catboost,Web Attack � XSS,Web Attack � XSS,124,0,124,0.0
+cic_ids2018_external,decision_tree,0,Benign,424386,26598,0,
+cic_ids2018_external,decision_tree,1,FTP-BruteForce,53,0,2,0.9622641509433962
+cic_ids2018_external,decision_tree,2,SSH-Bruteforce,90774,0,90773,1.1016370326304889e-05
+cic_unsw_nb15_external,decision_tree,0,Benign,152420,7612,0,
+cic_unsw_nb15_external,decision_tree,1,Analysis,384,0,383,0.0026041666666666665
+cic_unsw_nb15_external,decision_tree,2,Backdoor,444,0,421,0.0518018018018018
+cic_unsw_nb15_external,decision_tree,3,DoS,4266,0,3986,0.06563525550867323
+cic_unsw_nb15_external,decision_tree,4,Exploits,30309,0,28969,0.04421129037579597
+cic_unsw_nb15_external,decision_tree,5,Fuzzers,25363,0,24049,0.05180775144896108
+cic_unsw_nb15_external,decision_tree,6,Generic,4383,0,4277,0.024184348619666896
+cic_unsw_nb15_external,decision_tree,7,Reconnaissance,11529,0,11265,0.022898776997137653
+cic_unsw_nb15_external,decision_tree,8,Shellcode,1723,0,1675,0.027858386535113175
+cic_unsw_nb15_external,decision_tree,9,Worms,227,0,227,0.0
+cicids2017_internal,decision_tree,BENIGN,Benign,244090,2229,0,
+cicids2017_internal,decision_tree,Bot,Bot,237,0,15,0.9367088607594937
+cicids2017_internal,decision_tree,DDoS,DDoS,25328,0,39,0.9984602021478206
+cicids2017_internal,decision_tree,DoS GoldenEye,DoS GoldenEye,2042,0,336,0.8354554358472086
+cicids2017_internal,decision_tree,DoS Hulk,DoS Hulk,32988,0,122,0.9963016854613799
+cicids2017_internal,decision_tree,DoS Slowhttptest,DoS Slowhttptest,978,0,72,0.9263803680981595
+cicids2017_internal,decision_tree,DoS slowloris,DoS slowloris,856,0,51,0.9404205607476636
+cicids2017_internal,decision_tree,FTP-Patator,FTP-Patator,847,0,8,0.9905548996458088
+cicids2017_internal,decision_tree,Heartbleed,Heartbleed,2,0,0,1.0
+cicids2017_internal,decision_tree,Infiltration,Infiltration,7,0,5,0.2857142857142857
+cicids2017_internal,decision_tree,PortScan,PortScan,284,0,10,0.9647887323943662
+cicids2017_internal,decision_tree,SSH-Patator,SSH-Patator,600,0,10,0.9833333333333333
+cicids2017_internal,decision_tree,Web Attack � Brute Force,Web Attack � Brute Force,269,0,239,0.11152416356877323
+cicids2017_internal,decision_tree,Web Attack � Sql Injection,Web Attack � Sql Injection,2,0,1,0.5
+cicids2017_internal,decision_tree,Web Attack � XSS,Web Attack � XSS,124,0,118,0.04838709677419355
+cic_ids2018_external,frozen_hybrid,0,Benign,424386,16332,0,
+cic_ids2018_external,frozen_hybrid,1,FTP-BruteForce,53,0,2,0.9622641509433962
+cic_ids2018_external,frozen_hybrid,2,SSH-Bruteforce,90774,0,90774,0.0
+cic_unsw_nb15_external,frozen_hybrid,0,Benign,152420,8,0,
+cic_unsw_nb15_external,frozen_hybrid,1,Analysis,384,0,384,0.0
+cic_unsw_nb15_external,frozen_hybrid,2,Backdoor,444,0,443,0.0022522522522522522
+cic_unsw_nb15_external,frozen_hybrid,3,DoS,4266,0,4266,0.0
+cic_unsw_nb15_external,frozen_hybrid,4,Exploits,30309,0,30303,0.00019796100168266851
+cic_unsw_nb15_external,frozen_hybrid,5,Fuzzers,25363,0,25363,0.0
+cic_unsw_nb15_external,frozen_hybrid,6,Generic,4383,0,4378,0.0011407711613050423
+cic_unsw_nb15_external,frozen_hybrid,7,Reconnaissance,11529,0,11529,0.0
+cic_unsw_nb15_external,frozen_hybrid,8,Shellcode,1723,0,1723,0.0
+cic_unsw_nb15_external,frozen_hybrid,9,Worms,227,0,227,0.0
+cicids2017_internal,frozen_hybrid,BENIGN,Benign,244090,691,0,
+cicids2017_internal,frozen_hybrid,Bot,Bot,237,0,98,0.5864978902953587
+cicids2017_internal,frozen_hybrid,DDoS,DDoS,25328,0,45,0.9982233101705622
+cicids2017_internal,frozen_hybrid,DoS GoldenEye,DoS GoldenEye,2042,0,517,0.7468168462291871
+cicids2017_internal,frozen_hybrid,DoS Hulk,DoS Hulk,32988,0,202,0.9938765611737601
+cicids2017_internal,frozen_hybrid,DoS Slowhttptest,DoS Slowhttptest,978,0,72,0.9263803680981595
+cicids2017_internal,frozen_hybrid,DoS slowloris,DoS slowloris,856,0,44,0.9485981308411215
+cicids2017_internal,frozen_hybrid,FTP-Patator,FTP-Patator,847,0,8,0.9905548996458088
+cicids2017_internal,frozen_hybrid,Heartbleed,Heartbleed,2,0,0,1.0
+cicids2017_internal,frozen_hybrid,Infiltration,Infiltration,7,0,7,0.0
+cicids2017_internal,frozen_hybrid,PortScan,PortScan,284,0,17,0.9401408450704225
+cicids2017_internal,frozen_hybrid,SSH-Patator,SSH-Patator,600,0,17,0.9716666666666667
+cicids2017_internal,frozen_hybrid,Web Attack � Brute Force,Web Attack � Brute Force,269,0,240,0.10780669144981413
+cicids2017_internal,frozen_hybrid,Web Attack � Sql Injection,Web Attack � Sql Injection,2,0,2,0.0
+cicids2017_internal,frozen_hybrid,Web Attack � XSS,Web Attack � XSS,124,0,120,0.03225806451612903
+cic_ids2018_external,lightgbm,0,Benign,424386,32615,0,
+cic_ids2018_external,lightgbm,1,FTP-BruteForce,53,0,0,1.0
+cic_ids2018_external,lightgbm,2,SSH-Bruteforce,90774,0,90774,0.0
+cic_unsw_nb15_external,lightgbm,0,Benign,152420,2567,0,
+cic_unsw_nb15_external,lightgbm,1,Analysis,384,0,383,0.0026041666666666665
+cic_unsw_nb15_external,lightgbm,2,Backdoor,444,0,437,0.015765765765765764
+cic_unsw_nb15_external,lightgbm,3,DoS,4266,0,4254,0.0028129395218002813
+cic_unsw_nb15_external,lightgbm,4,Exploits,30309,0,30270,0.0012867465109373452
+cic_unsw_nb15_external,lightgbm,5,Fuzzers,25363,0,25241,0.004810156527224697
+cic_unsw_nb15_external,lightgbm,6,Generic,4383,0,4371,0.0027378507871321013
+cic_unsw_nb15_external,lightgbm,7,Reconnaissance,11529,0,11528,8.673779165582444e-05
+cic_unsw_nb15_external,lightgbm,8,Shellcode,1723,0,1721,0.0011607661056297156
+cic_unsw_nb15_external,lightgbm,9,Worms,227,0,227,0.0
+cicids2017_internal,lightgbm,BENIGN,Benign,244090,2405,0,
+cicids2017_internal,lightgbm,Bot,Bot,237,0,10,0.9578059071729957
+cicids2017_internal,lightgbm,DDoS,DDoS,25328,0,36,0.9985786481364498
+cicids2017_internal,lightgbm,DoS GoldenEye,DoS GoldenEye,2042,0,400,0.8041136141038198
+cicids2017_internal,lightgbm,DoS Hulk,DoS Hulk,32988,0,136,0.9958772887110464
+cicids2017_internal,lightgbm,DoS Slowhttptest,DoS Slowhttptest,978,0,86,0.9120654396728016
+cicids2017_internal,lightgbm,DoS slowloris,DoS slowloris,856,0,70,0.9182242990654206
+cicids2017_internal,lightgbm,FTP-Patator,FTP-Patator,847,0,6,0.9929161747343566
+cicids2017_internal,lightgbm,Heartbleed,Heartbleed,2,0,1,0.5
+cicids2017_internal,lightgbm,Infiltration,Infiltration,7,0,7,0.0
+cicids2017_internal,lightgbm,PortScan,PortScan,284,0,14,0.9507042253521126
+cicids2017_internal,lightgbm,SSH-Patator,SSH-Patator,600,0,17,0.9716666666666667
+cicids2017_internal,lightgbm,Web Attack � Brute Force,Web Attack � Brute Force,269,0,243,0.09665427509293681
+cicids2017_internal,lightgbm,Web Attack � Sql Injection,Web Attack � Sql Injection,2,0,2,0.0
+cicids2017_internal,lightgbm,Web Attack � XSS,Web Attack � XSS,124,0,124,0.0
+cic_ids2018_external,mlp,0,Benign,424386,33395,0,
+cic_ids2018_external,mlp,1,FTP-BruteForce,53,0,53,0.0
+cic_ids2018_external,mlp,2,SSH-Bruteforce,90774,0,90774,0.0
+cic_unsw_nb15_external,mlp,0,Benign,152420,0,0,
+cic_unsw_nb15_external,mlp,1,Analysis,384,0,384,0.0
+cic_unsw_nb15_external,mlp,2,Backdoor,444,0,430,0.03153153153153153
+cic_unsw_nb15_external,mlp,3,DoS,4266,0,4266,0.0
+cic_unsw_nb15_external,mlp,4,Exploits,30309,0,30296,0.0004289155036457818
+cic_unsw_nb15_external,mlp,5,Fuzzers,25363,0,25363,0.0
+cic_unsw_nb15_external,mlp,6,Generic,4383,0,4383,0.0
+cic_unsw_nb15_external,mlp,7,Reconnaissance,11529,0,11529,0.0
+cic_unsw_nb15_external,mlp,8,Shellcode,1723,0,1723,0.0
+cic_unsw_nb15_external,mlp,9,Worms,227,0,227,0.0
+cicids2017_internal,mlp,BENIGN,Benign,244090,2058,0,
+cicids2017_internal,mlp,Bot,Bot,237,0,237,0.0
+cicids2017_internal,mlp,DDoS,DDoS,25328,0,211,0.9916692987997473
+cicids2017_internal,mlp,DoS GoldenEye,DoS GoldenEye,2042,0,1587,0.222820763956905
+cicids2017_internal,mlp,DoS Hulk,DoS Hulk,32988,0,3130,0.9051170122468777
+cicids2017_internal,mlp,DoS Slowhttptest,DoS Slowhttptest,978,0,426,0.5644171779141104
+cicids2017_internal,mlp,DoS slowloris,DoS slowloris,856,0,733,0.14369158878504673
+cicids2017_internal,mlp,FTP-Patator,FTP-Patator,847,0,845,0.0023612750885478157
+cicids2017_internal,mlp,Heartbleed,Heartbleed,2,0,2,0.0
+cicids2017_internal,mlp,Infiltration,Infiltration,7,0,7,0.0
+cicids2017_internal,mlp,PortScan,PortScan,284,0,55,0.8063380281690141
+cicids2017_internal,mlp,SSH-Patator,SSH-Patator,600,0,598,0.0033333333333333335
+cicids2017_internal,mlp,Web Attack � Brute Force,Web Attack � Brute Force,269,0,269,0.0
+cicids2017_internal,mlp,Web Attack � Sql Injection,Web Attack � Sql Injection,2,0,2,0.0
+cicids2017_internal,mlp,Web Attack � XSS,Web Attack � XSS,124,0,124,0.0
+cic_ids2018_external,random_forest,0,Benign,424386,29165,0,
+cic_ids2018_external,random_forest,1,FTP-BruteForce,53,0,0,1.0
+cic_ids2018_external,random_forest,2,SSH-Bruteforce,90774,0,90773,1.1016370326304889e-05
+cic_unsw_nb15_external,random_forest,0,Benign,152420,38,0,
+cic_unsw_nb15_external,random_forest,1,Analysis,384,0,384,0.0
+cic_unsw_nb15_external,random_forest,2,Backdoor,444,0,443,0.0022522522522522522
+cic_unsw_nb15_external,random_forest,3,DoS,4266,0,4260,0.0014064697609001407
+cic_unsw_nb15_external,random_forest,4,Exploits,30309,0,30290,0.0006268765053284503
+cic_unsw_nb15_external,random_forest,5,Fuzzers,25363,0,25339,0.0009462603004376453
+cic_unsw_nb15_external,random_forest,6,Generic,4383,0,4376,0.0015970796258270592
+cic_unsw_nb15_external,random_forest,7,Reconnaissance,11529,0,11485,0.0038164628328562753
+cic_unsw_nb15_external,random_forest,8,Shellcode,1723,0,1719,0.0023215322112594312
+cic_unsw_nb15_external,random_forest,9,Worms,227,0,227,0.0
+cicids2017_internal,random_forest,BENIGN,Benign,244090,1142,0,
+cicids2017_internal,random_forest,Bot,Bot,237,0,25,0.8945147679324894
+cicids2017_internal,random_forest,DDoS,DDoS,25328,0,36,0.9985786481364498
+cicids2017_internal,random_forest,DoS GoldenEye,DoS GoldenEye,2042,0,372,0.8178256611165524
+cicids2017_internal,random_forest,DoS Hulk,DoS Hulk,32988,0,123,0.9962713714077847
+cicids2017_internal,random_forest,DoS Slowhttptest,DoS Slowhttptest,978,0,65,0.9335378323108384
+cicids2017_internal,random_forest,DoS slowloris,DoS slowloris,856,0,35,0.9591121495327103
+cicids2017_internal,random_forest,FTP-Patator,FTP-Patator,847,0,8,0.9905548996458088
+cicids2017_internal,random_forest,Heartbleed,Heartbleed,2,0,0,1.0
+cicids2017_internal,random_forest,Infiltration,Infiltration,7,0,7,0.0
+cicids2017_internal,random_forest,PortScan,PortScan,284,0,10,0.9647887323943662
+cicids2017_internal,random_forest,SSH-Patator,SSH-Patator,600,0,9,0.985
+cicids2017_internal,random_forest,Web Attack � Brute Force,Web Attack � Brute Force,269,0,239,0.11152416356877323
+cicids2017_internal,random_forest,Web Attack � Sql Injection,Web Attack � Sql Injection,2,0,2,0.0
+cicids2017_internal,random_forest,Web Attack � XSS,Web Attack � XSS,124,0,120,0.03225806451612903
+cic_ids2018_external,xgboost,0,Benign,424386,30499,0,
+cic_ids2018_external,xgboost,1,FTP-BruteForce,53,0,0,1.0
+cic_ids2018_external,xgboost,2,SSH-Bruteforce,90774,0,90774,0.0
+cic_unsw_nb15_external,xgboost,0,Benign,152420,2515,0,
+cic_unsw_nb15_external,xgboost,1,Analysis,384,0,383,0.0026041666666666665
+cic_unsw_nb15_external,xgboost,2,Backdoor,444,0,441,0.006756756756756757
+cic_unsw_nb15_external,xgboost,3,DoS,4266,0,4250,0.003750586029067042
+cic_unsw_nb15_external,xgboost,4,Exploits,30309,0,30294,0.0004949025042066713
+cic_unsw_nb15_external,xgboost,5,Fuzzers,25363,0,25327,0.001419390450656468
+cic_unsw_nb15_external,xgboost,6,Generic,4383,0,4374,0.002053388090349076
+cic_unsw_nb15_external,xgboost,7,Reconnaissance,11529,0,11526,0.00026021337496747333
+cic_unsw_nb15_external,xgboost,8,Shellcode,1723,0,1718,0.002901915264074289
+cic_unsw_nb15_external,xgboost,9,Worms,227,0,227,0.0
+cicids2017_internal,xgboost,BENIGN,Benign,244090,2161,0,
+cicids2017_internal,xgboost,Bot,Bot,237,0,11,0.9535864978902954
+cicids2017_internal,xgboost,DDoS,DDoS,25328,0,30,0.9988155401137081
+cicids2017_internal,xgboost,DoS GoldenEye,DoS GoldenEye,2042,0,333,0.83692458374143
+cicids2017_internal,xgboost,DoS Hulk,DoS Hulk,32988,0,101,0.99693828058688
+cicids2017_internal,xgboost,DoS Slowhttptest,DoS Slowhttptest,978,0,65,0.9335378323108384
+cicids2017_internal,xgboost,DoS slowloris,DoS slowloris,856,0,49,0.9427570093457944
+cicids2017_internal,xgboost,FTP-Patator,FTP-Patator,847,0,5,0.9940968122786304
+cicids2017_internal,xgboost,Heartbleed,Heartbleed,2,0,0,1.0
+cicids2017_internal,xgboost,Infiltration,Infiltration,7,0,7,0.0
+cicids2017_internal,xgboost,PortScan,PortScan,284,0,5,0.9823943661971831
+cicids2017_internal,xgboost,SSH-Patator,SSH-Patator,600,0,10,0.9833333333333333
+cicids2017_internal,xgboost,Web Attack � Brute Force,Web Attack � Brute Force,269,0,243,0.09665427509293681
+cicids2017_internal,xgboost,Web Attack � Sql Injection,Web Attack � Sql Injection,2,0,2,0.0
+cicids2017_internal,xgboost,Web Attack � XSS,Web Attack � XSS,124,0,121,0.024193548387096774

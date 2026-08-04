@@ -1,0 +1,26 @@
+{
+  "model": "xgboost",
+  "best_cv_mcc": 0.9807202175973426,
+  "cv_std_at_best": 0.008479630381664209,
+  "search_seconds": 2.6718947820008907,
+  "n_candidates": 5,
+  "best_parameters": {
+    "model__subsample": 1.0,
+    "model__n_estimators": 100,
+    "model__max_depth": 9,
+    "model__learning_rate": 0.1,
+    "model__colsample_bytree": 1.0
+  },
+  "selected_features": [
+    "byte_count",
+    "bytes_per_packet",
+    "log_byte_count",
+    "ack_flag_count",
+    "flag_sum",
+    "ack_ratio",
+    "fin_ratio",
+    "syn_ratio",
+    "packet_rate",
+    "log_packet_rate"
+  ]
+}

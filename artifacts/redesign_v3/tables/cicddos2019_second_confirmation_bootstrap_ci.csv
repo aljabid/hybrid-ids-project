@@ -1,0 +1,13 @@
+experiment,variant,metric,mean,ci95_low,ci95_high,n_seeds,bootstrap_repetitions
+cicddos2019_second_confirmation,adaptive_decision_tree,mcc,0.21411719766249596,0.14193098252765593,0.2613232734096642,10,20000
+cicddos2019_second_confirmation,adaptive_decision_tree,roc_auc,0.6195940635939734,0.5838230791509135,0.6443734253907071,10,20000
+cicddos2019_second_confirmation,adaptive_decision_tree,tpr,0.3048689812316364,0.2367194339509504,0.3513284763446663,10,20000
+cicddos2019_second_confirmation,adaptive_decision_tree,fpr,0.0722920137788635,0.059026254459220454,0.08658809579785544,10,20000
+cicddos2019_second_confirmation,adaptive_decision_tree,ece,0.5533424584503039,0.5169688967333638,0.6049404988656962,10,20000
+cicddos2019_second_confirmation,adaptive_decision_tree,brier,0.5531818689322803,0.5169989373991831,0.6062973292661507,10,20000
+cicddos2019_second_confirmation,selective_agreement_hybrid,mcc,0.0,0.0,0.0,10,20000
+cicddos2019_second_confirmation,selective_agreement_hybrid,roc_auc,0.8547985901949126,0.8307233732635823,0.879004160859254,10,20000
+cicddos2019_second_confirmation,selective_agreement_hybrid,tpr,0.0,0.0,0.0,10,20000
+cicddos2019_second_confirmation,selective_agreement_hybrid,fpr,0.0,0.0,0.0,10,20000
+cicddos2019_second_confirmation,selective_agreement_hybrid,ece,0.6361601547256809,0.6258875871190547,0.6466502108676095,10,20000
+cicddos2019_second_confirmation,selective_agreement_hybrid,brier,0.5906152963808629,0.5783446084454694,0.6030385531031528,10,20000

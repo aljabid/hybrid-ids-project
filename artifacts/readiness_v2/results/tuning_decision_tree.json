@@ -1,0 +1,14 @@
+{
+  "model": "decision_tree",
+  "best_cv_mcc": 0.9686252890553921,
+  "cv_std_at_best": 0.002207670624659912,
+  "best_parameters": {
+    "model__min_samples_split": 2,
+    "model__min_samples_leaf": 1,
+    "model__max_depth": 15,
+    "model__criterion": "log_loss"
+  },
+  "search_seconds": 7.003450524000073,
+  "tuning_rows": 100000,
+  "training_domain": "CICIDS2017 all available attack families"
+}

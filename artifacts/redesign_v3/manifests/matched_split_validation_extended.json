@@ -1,0 +1,22 @@
+{
+  "status": "VALIDATED",
+  "research_question_role": "Matched random-row versus group-aware comparison, extended to all eight benchmarked configurations",
+  "models": [
+    "decision_tree",
+    "random_forest",
+    "xgboost",
+    "lightgbm",
+    "catboost",
+    "family_aware_rf",
+    "redesigned_meta_hybrid",
+    "tabular_resnet"
+  ],
+  "extended_models": [
+    "family_aware_rf",
+    "redesigned_meta_hybrid",
+    "tabular_resnet"
+  ],
+  "extension_note": "family_aware_rf, redesigned_meta_hybrid, and tabular_resnet were added after the initial five-mandatory-model control. Frozen architecture choices, random-forest hyperparameters, anomaly scaler/model, meta-gate C, and decision thresholds are reused unmodified from architecture_freeze.json / group_tuning_random_forest.json; only the split strategy varies, matching the original control's contract.",
+  "random_rows": 80,
+  "group_rows": 80
+}

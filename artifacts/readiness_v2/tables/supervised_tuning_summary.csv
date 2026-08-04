@@ -1,0 +1,7 @@
+model,best_cv_mcc,cv_std_at_best,best_parameters,search_seconds,tuning_rows,training_domain
+decision_tree,0.9686252890553921,0.002207670624659912,"{'model__min_samples_split': 2, 'model__min_samples_leaf': 1, 'model__max_depth': 15, 'model__criterion': 'log_loss'}",7.003450524000073,100000,CICIDS2017 all available attack families
+random_forest,0.9732589113086982,0.0023380167686583926,"{'model__n_estimators': 150, 'model__min_samples_leaf': 2, 'model__max_features': 0.7, 'model__max_depth': 20}",305.0401438760018,100000,CICIDS2017 all available attack families
+xgboost,0.9716389649652812,0.0031174932352697263,"{'model__subsample': 0.85, 'model__n_estimators': 50, 'model__max_depth': 9, 'model__learning_rate': 0.2, 'model__colsample_bytree': 1.0}",19.25325214699842,100000,CICIDS2017 all available attack families
+lightgbm,0.9705794074748699,0.002282376083653465,"{'model__subsample': 0.7, 'model__num_leaves': 63, 'model__n_estimators': 150, 'model__max_depth': -1, 'model__learning_rate': 0.05}",21.645139326999924,100000,CICIDS2017 all available attack families
+catboost,0.9542224388475162,0.0015174562237895383,"{'model__learning_rate': 0.05, 'model__l2_leaf_reg': 1, 'model__iterations': 150, 'model__depth': 8}",42.389940929999284,100000,CICIDS2017 all available attack families
+mlp,0.8831313451594053,0.010067290600118928,"{'model__learning_rate_init': 0.0005, 'model__hidden_layer_sizes': (64, 32), 'model__alpha': 0.001, 'model__activation': 'relu'}",814.7701545300006,100000,CICIDS2017 all available attack families

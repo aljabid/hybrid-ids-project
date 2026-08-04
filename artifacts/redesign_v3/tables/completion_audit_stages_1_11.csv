@@ -1,0 +1,12 @@
+stage,requirement,status
+1,stage_1_feature_expansion,complete
+2,stage_2_group_split_and_overlap_audit,complete
+3,stage_3_preprocessing_benchmark,complete
+4,stage_4_mandatory_supervised_models,complete
+5,stage_5_family_aware_and_deep_models,complete
+6,stage_6_anomaly_and_fusion,complete
+7,stage_7_ten_seed_grouped_validation,complete
+8,stage_8_unknown_family_validation,complete
+9,stage_9_leave_domain_and_freeze,complete
+10,stage_10_untouched_confirmation,complete
+11,stage_11_final_artifacts,complete

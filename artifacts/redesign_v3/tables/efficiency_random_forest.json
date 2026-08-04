@@ -1,0 +1,10 @@
+{
+  "model": "random_forest",
+  "measurement_rows": 100000,
+  "inference_seconds_100k": 0.6883492669876432,
+  "inference_us_per_flow": 6.883492669876432,
+  "process_peak_rss_mb": 567.62109375,
+  "model_bytes": 2667804,
+  "probability_checksum": 1180.5760068515547,
+  "measurement_scope": "isolated process; 100,000 real CICIDS2017 group-test flows"
+}

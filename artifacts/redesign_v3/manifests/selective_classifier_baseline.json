@@ -1,0 +1,18 @@
+{
+  "status": "VALIDATED",
+  "domain": "cic_ton_iot_confirmation",
+  "seed": 42,
+  "engineering_coverage": 0.7996748426353466,
+  "engineering_risk": 0.5522281753049139,
+  "engineering_mcc": 0.0,
+  "strategies": [
+    "dt_softmax_response",
+    "xgb_softmax_response",
+    "disagreement_graded"
+  ],
+  "limitations": [
+    "Seed 42 only; the engineering rejector's own ten-seed variability (coverage 0.6937 +/- 0.0772) is not re-derived here.",
+    "Softmax-response confidence is a standard but not necessarily optimal selective-classification rule; it establishes a reference frontier, not a claim that this is the best possible selective classifier.",
+    "The base classifiers (DT, XGB probability branches) are unchanged from the frozen confirmation configuration; only the accept/reject rule varies."
+  ]
+}

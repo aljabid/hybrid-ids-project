@@ -1,0 +1,4 @@
+partition,rows,benign,attack,families,groups
+train,1109433,905134,204299,11,Tuesday-WorkingHours.pcap_ISCX.csv|Wednesday-workingHours.pcap_ISCX.csv|Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv|Friday-WorkingHours-Morning.pcap_ISCX.csv
+validation,587524,459528,127996,1,Monday-WorkingHours.pcap_ISCX.csv|Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv
+internal_test,262271,260423,1848,2,Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv|Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv

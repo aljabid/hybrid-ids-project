@@ -1,0 +1,26 @@
+{
+  "model": "lightgbm",
+  "best_cv_mcc": 0.9868154066709206,
+  "cv_std_at_best": 0.005216719873851374,
+  "search_seconds": 3.1904579750007542,
+  "n_candidates": 5,
+  "best_parameters": {
+    "model__subsample": 0.7,
+    "model__num_leaves": 63,
+    "model__n_estimators": 150,
+    "model__max_depth": -1,
+    "model__learning_rate": 0.05
+  },
+  "selected_features": [
+    "byte_count",
+    "bytes_per_packet",
+    "log_byte_count",
+    "ack_flag_count",
+    "flag_sum",
+    "ack_ratio",
+    "fin_ratio",
+    "syn_ratio",
+    "packet_rate",
+    "log_packet_rate"
+  ]
+}

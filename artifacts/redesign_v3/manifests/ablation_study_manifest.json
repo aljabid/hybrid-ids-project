@@ -1,0 +1,30 @@
+{
+  "description": "Controlled single-variable ablation study, axes 1-4. Each axis changes exactly one protocol component; all other components (data, hyperparameters, seeds, models) are held identical. Axis 5 (semantic alignment) is intentionally not executed -- see module docstring in benchmark/ablation_study.py for why.",
+  "axes": {
+    "1_split_strategy": {
+      "rows": 8,
+      "source": "matched split control, 8 models x 10 seeds x 2 splits",
+      "new_computation": false
+    },
+    "2_family_exclusion": {
+      "rows": 2,
+      "source": "grouped_ten_seed_runs.csv vs unknown_family_ten_seed_runs.csv",
+      "new_computation": false
+    },
+    "3_calibration": {
+      "rows": 10,
+      "source": "recalibration_seed42.csv",
+      "new_computation": false
+    },
+    "4_frozen_confirmation": {
+      "rows": 1,
+      "source": "confirmation_seed42.npz oracle-threshold diagnostic (new)",
+      "new_computation": true,
+      "caveat": "oracle side uses target labels; non-deployable upper bound only"
+    },
+    "5_semantic_alignment": {
+      "executed": false,
+      "reason": "no well-defined single-variable change; would require training a new model on a different feature space"
+    }
+  }
+}

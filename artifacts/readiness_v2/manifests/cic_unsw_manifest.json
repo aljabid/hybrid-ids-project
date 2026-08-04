@@ -1,0 +1,21 @@
+{
+  "official_provenance": "https://www.unb.ca/cic/datasets/cic-unsw-nb15.html",
+  "mirror": "https://huggingface.co/datasets/bencorn/CIC-UNSW-NB15",
+  "data_sha256": "60d55f4f8f1e72bdfa2e0c1c74c03ac301bd880af321fdad1ba453950a7aa16a",
+  "label_sha256": "5b2fcf31dc2d03ac6a07f8791858e55d86306f05442c3a4528bcc67301956a56",
+  "rows_before_dedup": 447915,
+  "rows_after_dedup": 231048,
+  "features": [
+    "byte_count",
+    "bytes_per_packet",
+    "log_byte_count",
+    "ack_flag_count",
+    "flag_sum",
+    "ack_ratio",
+    "fin_ratio",
+    "syn_ratio",
+    "packet_rate",
+    "log_packet_rate"
+  ],
+  "binary_mapping": "0=Benign; 1-9=Attack"
+}

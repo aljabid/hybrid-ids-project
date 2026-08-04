@@ -1,0 +1,14 @@
+{
+  "real_data_only": true,
+  "mock_or_synthetic_rows": 0,
+  "group_aware_partitioning": true,
+  "temporal_claim_removed": true,
+  "confirmation_frozen_before_access": true,
+  "confirmation_labels_used_for_revision": false,
+  "ten_seed_development_rows": 240,
+  "unknown_families_tested": 5,
+  "unknown_family_mcc_improvement_fraction": 0.2,
+  "consistent_superiority_claim_allowed": false,
+  "selective_method_limitations_must_be_reported": true,
+  "significance_rows": 126
+}

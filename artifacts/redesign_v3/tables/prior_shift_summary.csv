@@ -1,0 +1,5 @@
+domain,attack_prior,prior_odds_ratio_vs_train,rows
+cicids2017_train,0.18492,1.0,100000
+cse_cic_ids2018,0.15673,0.8192224314419573,100000
+cic_unsw_nb15,0.28967,1.7974619858359848,100000
+cic_ton_iot_confirmation,0.56375,5.695967031666137,100000

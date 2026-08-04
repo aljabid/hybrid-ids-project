@@ -1,0 +1,15 @@
+{
+  "selection_source": "fixed stratified sample of leakage-audited, multi-family CICIDS2017 validation partition only",
+  "selection_rows": 100000,
+  "ranking_rule": "validation MCC, tie-break PR-AUC",
+  "winner": {
+    "seed": 42,
+    "scaler": "quantile",
+    "anomaly_model": "isolation_forest",
+    "validation_mcc": 0.7148375766280798,
+    "validation_pr_auc": 0.8524317763833872,
+    "validation_roc_auc": 0.888727722,
+    "selected_threshold": 0.8,
+    "training_seconds": 1.148444735998055
+  }
+}

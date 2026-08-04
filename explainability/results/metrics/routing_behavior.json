@@ -1,0 +1,17 @@
+{
+    "Local": {
+        "Classifier": 50,
+        "Autoencoder": 50,
+        "Description": "Balanced local routing"
+    },
+    "CICIDS2017": {
+        "Classifier": 55,
+        "Autoencoder": 45,
+        "Description": "Classifier dominant"
+    },
+    "CIC-IDS2018": {
+        "Classifier": 20,
+        "Autoencoder": 80,
+        "Description": "Heavy uncertainty routing"
+    }
+}

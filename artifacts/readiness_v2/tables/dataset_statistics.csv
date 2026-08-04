@@ -1,0 +1,6 @@
+dataset,partition,rows,benign,attack,attack_families,features
+CICIDS2017,train,925962,732269,193693,14,10
+CICIDS2017,validation,308654,244090,64564,14,10
+CICIDS2017,test,308654,244090,64564,14,10
+CSE-CIC-IDS2018,external_test,515213,424386,90827,2,10
+CIC-UNSW-NB15,external_test,231048,152420,78628,9,10

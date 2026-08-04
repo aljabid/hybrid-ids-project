@@ -1,0 +1,70 @@
+{
+  "created_utc": "2026-07-26T23:48:39.925797+00:00",
+  "protocol": "CICIDS2017 train/validation/internal-test; external test only",
+  "source": "data/processed/cicids2017/cicids_aligned_features.csv",
+  "source_sha256": "c9d93431b46c55001ed7f3aff1496a1f5113243900216f717183ad88358d6acd",
+  "features": [
+    "byte_count",
+    "bytes_per_packet",
+    "log_byte_count",
+    "ack_flag_count",
+    "flag_sum",
+    "ack_ratio",
+    "fin_ratio",
+    "syn_ratio",
+    "packet_rate",
+    "log_packet_rate"
+  ],
+  "label_mapping": {
+    "normal": 0,
+    "any_attack": 1
+  },
+  "random_seed": 42,
+  "rows_before_deduplication": 286096,
+  "rows_after_cleaning": 90336,
+  "contradictory_duplicate_feature_vectors_removed": 8,
+  "partitions": {
+    "train": {
+      "rows": 54201,
+      "class_counts": {
+        "0": 53254,
+        "1": 947
+      },
+      "artifact": "artifacts/data/cicids2017_train.npz"
+    },
+    "validation": {
+      "rows": 18067,
+      "class_counts": {
+        "0": 17752,
+        "1": 315
+      },
+      "artifact": "artifacts/data/cicids2017_validation.npz"
+    },
+    "test": {
+      "rows": 18068,
+      "class_counts": {
+        "0": 17752,
+        "1": 316
+      },
+      "artifact": "artifacts/data/cicids2017_test.npz"
+    }
+  },
+  "partition_feature_overlap": {
+    "train_validation": 0,
+    "train_test": 0,
+    "validation_test": 0
+  },
+  "external_domains": {
+    "cic_ids2018": {
+      "source": "data/processed/cic_ids2018/cic2018_aligned_features.csv",
+      "source_sha256": "939240d36b02bf3c119f6eeb0f3f0ae5dff69240ee8761518c1fe4d8a75965e3",
+      "rows_before_deduplication": 1044751,
+      "rows_after_deduplication": 515213,
+      "class_counts": {
+        "0": 424386,
+        "1": 90827
+      },
+      "feature_overlap_with_training_domain": 108
+    }
+  }
+}

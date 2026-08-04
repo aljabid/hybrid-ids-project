@@ -1,0 +1,28 @@
+{
+  "status": "FROZEN_BEFORE_INTERNAL_TEST_AND_NEW_CONFIRMATION",
+  "feature_schema": "68 mapped CICFlowMeter features",
+  "preprocessing": "winsor_0.1_99.9_log14_robust_5_95",
+  "classifier": "family-balanced multiclass Random Forest",
+  "classifier_hyperparameters": {
+    "model__n_estimators": 80,
+    "model__min_samples_leaf": 5,
+    "model__max_features": 0.5,
+    "model__max_depth": 18
+  },
+  "calibration": "isotonic on validation calibration quarter",
+  "anomaly_scaler": "robust",
+  "anomaly_model": "isolation_forest",
+  "meta_gate": "logistic regression",
+  "meta_C": 1.0,
+  "meta_threshold": 0.8499999999999999,
+  "meta_features": [
+    "classifier_probability",
+    "anomaly_probability",
+    "classifier_entropy",
+    "absolute_disagreement",
+    "probability_product"
+  ],
+  "selection_sources": "CICIDS2017 train and validation groups only",
+  "external_labels_used": false,
+  "confirmation_dataset_accessed": false
+}

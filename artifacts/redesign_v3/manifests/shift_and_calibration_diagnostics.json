@@ -1,0 +1,20 @@
+{
+  "status": "VALIDATED",
+  "tasks": [
+    "class_prior_shift",
+    "label_conditional_feature_drift",
+    "roc_auc_vs_pr_auc_threshold_sensitivity_oracle_upper_bound",
+    "temperature_and_platt_recalibration_seed42"
+  ],
+  "prior_rows": 4,
+  "drift_rows": 408,
+  "sensitivity_rows": 10,
+  "recalibration_rows": 10,
+  "adaptation_budget_rows": 2000,
+  "limitations": [
+    "Label-conditional JSD and prior-shift use CICIDS2017 training vs each development/confirmation domain; it separates covariate-given-label shift from prior shift but cannot further separate concept shift from extractor shift.",
+    "Oracle-threshold MCC uses each domain's own labels to select the threshold and is a diagnostic upper bound on what rethresholding alone could achieve, not an unbiased or deployable estimate.",
+    "Recalibration is evaluated at seed 42 only, using stored raw predictions; the adaptation fold (2,000 flows) is a hypothetical small labeled budget, not validated across the ten-seed protocol.",
+    "Temperature scaling is monotonic and therefore leaves 0.5-threshold MCC/TPR/FPR unchanged by construction; only ECE/Brier/NLL can improve. Platt scaling can additionally shift the decision boundary and is reported for comparison."
+  ]
+}

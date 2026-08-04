@@ -1,0 +1,20 @@
+{
+  "python": "3.13.12 (main, Feb  4 2026, 15:06:39) [GCC 15.2.0]",
+  "platform": "Linux-6.19.14+kali-amd64-x86_64-with-glibc2.42",
+  "processor": "",
+  "cpu_count": 8,
+  "packages": {
+    "numpy": "2.4.6",
+    "pandas": "3.0.5",
+    "sklearn": "1.9.0",
+    "scipy": "1.18.0",
+    "xgboost": "3.3.0",
+    "lightgbm": "4.7.0",
+    "catboost": "1.2.10",
+    "torch": "2.13.0+cpu",
+    "shap": "0.52.0",
+    "matplotlib": "3.11.1",
+    "seaborn": "0.13.2",
+    "psutil": "7.2.2"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "status": "FROZEN_BEFORE_EXTERNAL_EVALUATION",
+  "selection_data": "fixed stratified sample of leakage-audited, multi-family CICIDS2017 validation partition only",
+  "selection_rows": 100000,
+  "seed": 42,
+  "calibration_method": "isotonic",
+  "anomaly_scaler": "quantile",
+  "anomaly_model": "isolation_forest",
+  "fusion": {
+    "family": "logistic_stacking",
+    "parameters": {
+      "coefficients": [
+        10.489532980066828,
+        1.4491393002436348,
+        0.9122110038856643
+      ],
+      "intercept": -6.11532804071551,
+      "threshold": 0.7999999999999999
+    },
+    "selection_mcc": 0.9798874402430522,
+    "selection_pr_auc": 0.9985415986304818,
+    "selection_fpr": 0.00516
+  },
+  "external_labels_used_for_selection": false
+}

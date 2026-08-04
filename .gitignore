@@ -1,0 +1,62 @@
+# === Virtual environments ===
+.venv/
+.benchmark-venv/
+venv/
+env/
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# === Jupyter ===
+.ipynb_checkpoints/
+
+# === IDE / editor ===
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# === OS ===
+.DS_Store
+Thumbs.db
+.tmux/
+
+# === Logs ===
+*.log
+logs/
+
+# === Raw and processed datasets (large, third-party licensed; see data/raw/*/README.md) ===
+data/raw/
+data/splits/
+data/processed/
+
+# === Legacy pipeline outputs (regenerable via `python main.py`) ===
+/results/
+
+# === Heavy experiment artifacts: processed arrays, trained model binaries, raw prediction archives ===
+# Kept: tables/, figures/, manifests/ under each artifacts/<generation>/ (small, are the actual evidence)
+artifacts/**/data/
+artifacts/**/models/
+artifacts/**/predictions/
+
+# === Legacy top-level model weights (small individually, but binary and regenerable via training scripts) ===
+models/**/saved/
+models/**/logs/
+
+# === Build artifacts (regenerate from source folders rather than tracking the zip itself) ===
+*.zip
+
+# === Environment / secrets (defensive; none currently present) ===
+.env
+.env.*
+*.pem
+**/credentials.json

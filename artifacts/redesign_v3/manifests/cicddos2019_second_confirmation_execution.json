@@ -1,0 +1,31 @@
+{
+  "method_frozen": true,
+  "labels_used_for_revision": false,
+  "seeds_completed": [
+    7,
+    19,
+    31,
+    42,
+    53,
+    67,
+    79,
+    97,
+    109,
+    127
+  ],
+  "seeds_expected": [
+    7,
+    19,
+    31,
+    42,
+    53,
+    67,
+    79,
+    97,
+    109,
+    127
+  ],
+  "complete": true,
+  "rows_evaluated": 431371,
+  "status": "SECOND_CONFIRMATION_COMPLETE"
+}

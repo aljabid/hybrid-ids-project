@@ -1,0 +1,14 @@
+{
+  "dataset": "cse_cic_ids2018",
+  "source": "/home/jabid/Ps/1. a git/12 hybrid_ids_project/hybrid_ids_project/data/raw/cic_ids2018/raw_subset_portscan.csv",
+  "rows": 593395,
+  "benign": 499297,
+  "attack": 94098,
+  "family_map": {
+    "Benign": 0,
+    "FTP-BruteForce": 1,
+    "SSH-Bruteforce": 2
+  },
+  "feature_count": 68,
+  "role": "previously observed development diagnostic; not final confirmation"
+}

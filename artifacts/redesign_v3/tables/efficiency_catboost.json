@@ -1,0 +1,10 @@
+{
+  "model": "catboost",
+  "measurement_rows": 100000,
+  "inference_seconds_100k": 0.6358504969975911,
+  "inference_us_per_flow": 6.358504969975911,
+  "process_peak_rss_mb": 606.640625,
+  "model_bytes": 72929,
+  "probability_checksum": 2480.3731496769446,
+  "measurement_scope": "isolated process; 100,000 real CICIDS2017 group-test flows"
+}

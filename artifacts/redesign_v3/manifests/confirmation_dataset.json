@@ -1,0 +1,12 @@
+{
+  "dataset": "CIC-ToN-IoT V2",
+  "official_doi": "10.48610/f6884ce",
+  "official_page": "https://staff.itee.uq.edu.au/marius/NIDS_datasets/",
+  "download_mirror": "https://www.kaggle.com/datasets/dhoogla/cictoniot",
+  "archive_sha256": "c434fca8f461073ebfcf127df5889211ee1b29fba9bf72444091bf0707b4ec2c",
+  "raw_parquet_rows": 4847499,
+  "valid_aligned_rows": 4847499,
+  "features_aligned": 68,
+  "labels_used_for_training_or_thresholds": false,
+  "note": "The mirror's cleaned V2 has a different row count from the earlier official-page release description; no rows were selected by label."
+}

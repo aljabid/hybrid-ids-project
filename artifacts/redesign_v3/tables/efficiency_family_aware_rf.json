@@ -1,0 +1,10 @@
+{
+  "model": "family_aware_rf",
+  "measurement_rows": 100000,
+  "inference_seconds_100k": 1.1569117680046475,
+  "inference_us_per_flow": 11.569117680046475,
+  "process_peak_rss_mb": 584.73828125,
+  "model_bytes": 12055147,
+  "probability_checksum": 1439.3218341433421,
+  "measurement_scope": "isolated process; 100,000 real CICIDS2017 group-test flows"
+}

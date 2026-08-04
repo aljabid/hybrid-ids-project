@@ -1,0 +1,321 @@
+model,explanation_role,dataset,feature,mean_abs_shap,rank
+decision_tree,model,cicids2017_group_test,total_bwd_packets,0.0279698823416075,5
+decision_tree,model,cicids2017_group_test,fwd_packet_length_max,0.0200516200560271,8
+decision_tree,model,cicids2017_group_test,fwd_packet_length_std,0.113886930660029,2
+decision_tree,model,cicids2017_group_test,bwd_packet_length_min,0.0298175386602181,4
+decision_tree,model,cicids2017_group_test,bwd_packet_length_mean,0.0801653230511207,3
+decision_tree,model,cicids2017_group_test,bwd_packet_length_std,0.1782056977849904,1
+decision_tree,model,cicids2017_group_test,fwd_header_length,0.0203662659348846,7
+decision_tree,model,cicids2017_group_test,packet_length_mean,0.0264628779166407,6
+decision_tree,model,cicids2017_group_test,packet_length_std,0.0199336863598155,9
+decision_tree,model,cicids2017_group_test,fwd_segment_size_min,0.0195453569769193,10
+decision_tree,model,cse_cic_ids2018,total_bwd_packets,0.0320528599551857,5
+decision_tree,model,cse_cic_ids2018,fwd_packet_length_std,0.0897301754270307,2
+decision_tree,model,cse_cic_ids2018,bwd_packet_length_min,0.0335511295797759,4
+decision_tree,model,cse_cic_ids2018,bwd_packet_length_mean,0.0857908771607334,3
+decision_tree,model,cse_cic_ids2018,bwd_packet_length_std,0.1865860775701216,1
+decision_tree,model,cse_cic_ids2018,fwd_header_length,0.0275589260353733,8
+decision_tree,model,cse_cic_ids2018,fwd_packets_per_s,0.0252196096432275,10
+decision_tree,model,cse_cic_ids2018,packet_length_mean,0.0313487735951364,6
+decision_tree,model,cse_cic_ids2018,packet_length_std,0.0281265025294398,7
+decision_tree,model,cse_cic_ids2018,fwd_segment_size_min,0.0275120353424964,9
+decision_tree,model,cic_unsw_nb15,total_bwd_packets,0.0450006113477342,5
+decision_tree,model,cic_unsw_nb15,fwd_packet_length_std,0.0956467510609102,3
+decision_tree,model,cic_unsw_nb15,bwd_packet_length_min,0.0442364007243429,6
+decision_tree,model,cic_unsw_nb15,bwd_packet_length_mean,0.1260833499895936,2
+decision_tree,model,cic_unsw_nb15,bwd_packet_length_std,0.1647948473698083,1
+decision_tree,model,cic_unsw_nb15,flow_bytes_per_s,0.0321244981206649,8
+decision_tree,model,cic_unsw_nb15,bwd_header_length,0.0362406792792539,7
+decision_tree,model,cic_unsw_nb15,packet_length_mean,0.031726677553313,10
+decision_tree,model,cic_unsw_nb15,packet_length_std,0.051259042323307,4
+decision_tree,model,cic_unsw_nb15,fin_flag_count,0.0317426824714299,9
+decision_tree,model,cic_ton_iot_confirmation,total_fwd_packets,0.0331453005540935,10
+decision_tree,model,cic_ton_iot_confirmation,fwd_packet_length_std,0.083221219294288,3
+decision_tree,model,cic_ton_iot_confirmation,bwd_packet_length_min,0.0454479035815848,6
+decision_tree,model,cic_ton_iot_confirmation,bwd_packet_length_mean,0.119211596133199,2
+decision_tree,model,cic_ton_iot_confirmation,bwd_packet_length_std,0.1910390349283263,1
+decision_tree,model,cic_ton_iot_confirmation,fwd_header_length,0.0397653335613138,7
+decision_tree,model,cic_ton_iot_confirmation,packet_length_mean,0.0391467285690489,8
+decision_tree,model,cic_ton_iot_confirmation,packet_length_variance,0.0659527318662616,4
+decision_tree,model,cic_ton_iot_confirmation,fin_flag_count,0.0579404103940347,5
+decision_tree,model,cic_ton_iot_confirmation,fwd_segment_size_min,0.0356753345041084,9
+random_forest,model,cicids2017_group_test,total_bwd_bytes,0.0130333479475452,9
+random_forest,model,cicids2017_group_test,fwd_packet_length_max,0.0266893414289147,7
+random_forest,model,cicids2017_group_test,fwd_packet_length_std,0.030716287420833,6
+random_forest,model,cicids2017_group_test,bwd_packet_length_mean,0.0360669132915007,5
+random_forest,model,cicids2017_group_test,bwd_packet_length_std,0.1115532940345561,1
+random_forest,model,cicids2017_group_test,bwd_header_length,0.0124868772508768,10
+random_forest,model,cicids2017_group_test,packet_length_std,0.0544497779577318,2
+random_forest,model,cicids2017_group_test,packet_length_variance,0.0445060746195027,4
+random_forest,model,cicids2017_group_test,avg_bwd_segment_size,0.0451442823501921,3
+random_forest,model,cicids2017_group_test,subflow_bwd_bytes,0.016506635441861,8
+random_forest,model,cse_cic_ids2018,fwd_packet_length_max,0.0219159343659843,7
+random_forest,model,cse_cic_ids2018,fwd_packet_length_std,0.0243748948833666,6
+random_forest,model,cse_cic_ids2018,bwd_packet_length_mean,0.0327867875241242,5
+random_forest,model,cse_cic_ids2018,bwd_packet_length_std,0.1110694805387614,1
+random_forest,model,cse_cic_ids2018,fwd_header_length,0.0167563942768843,9
+random_forest,model,cse_cic_ids2018,packet_length_std,0.0549578832528776,2
+random_forest,model,cse_cic_ids2018,packet_length_variance,0.0458197131625153,3
+random_forest,model,cse_cic_ids2018,avg_bwd_segment_size,0.0443857879851035,4
+random_forest,model,cse_cic_ids2018,subflow_bwd_bytes,0.0141189026984403,10
+random_forest,model,cse_cic_ids2018,fwd_segment_size_min,0.0188531746220494,8
+random_forest,model,cic_unsw_nb15,fwd_packet_length_std,0.0267650599915917,10
+random_forest,model,cic_unsw_nb15,bwd_packet_length_mean,0.0280022258312522,8
+random_forest,model,cic_unsw_nb15,bwd_packet_length_std,0.0930777077715626,1
+random_forest,model,cic_unsw_nb15,bwd_header_length,0.041073553141819,5
+random_forest,model,cic_unsw_nb15,bwd_packets_per_s,0.0347019461613491,6
+random_forest,model,cic_unsw_nb15,packet_length_std,0.0509686174354558,2
+random_forest,model,cic_unsw_nb15,packet_length_variance,0.0416326247745218,4
+random_forest,model,cic_unsw_nb15,fin_flag_count,0.042825968123646,3
+random_forest,model,cic_unsw_nb15,avg_bwd_segment_size,0.0329643417730208,7
+random_forest,model,cic_unsw_nb15,subflow_bwd_bytes,0.0278009326502861,9
+random_forest,model,cic_ton_iot_confirmation,fwd_packet_length_std,0.0234218257452325,8
+random_forest,model,cic_ton_iot_confirmation,bwd_packet_length_mean,0.0372984627469562,5
+random_forest,model,cic_ton_iot_confirmation,bwd_packet_length_std,0.1076615276632512,1
+random_forest,model,cic_ton_iot_confirmation,fwd_header_length,0.0268269313175491,7
+random_forest,model,cic_ton_iot_confirmation,bwd_packets_per_s,0.0186490610497317,9
+random_forest,model,cic_ton_iot_confirmation,packet_length_std,0.05537639401886,2
+random_forest,model,cic_ton_iot_confirmation,packet_length_variance,0.0450461388509042,4
+random_forest,model,cic_ton_iot_confirmation,fin_flag_count,0.0347383197803647,6
+random_forest,model,cic_ton_iot_confirmation,avg_bwd_segment_size,0.052347468897415,3
+random_forest,model,cic_ton_iot_confirmation,fwd_segment_size_min,0.0174747950066642,10
+xgboost,model,cicids2017_group_test,total_bwd_bytes,0.4305002093315124,7
+xgboost,model,cicids2017_group_test,fwd_packet_length_max,0.8391513228416443,4
+xgboost,model,cicids2017_group_test,fwd_packet_length_min,0.4504544734954834,6
+xgboost,model,cicids2017_group_test,fwd_packet_length_std,0.3405651450157165,10
+xgboost,model,cicids2017_group_test,bwd_packet_length_min,1.4700531959533691,1
+xgboost,model,cicids2017_group_test,bwd_packet_length_mean,1.0932945013046265,3
+xgboost,model,cicids2017_group_test,bwd_packet_length_std,1.3775246143341064,2
+xgboost,model,cicids2017_group_test,fwd_header_length,0.3651468753814697,9
+xgboost,model,cicids2017_group_test,fwd_segment_size_min,0.4303249716758728,8
+xgboost,model,cicids2017_group_test,active_min,0.4786032736301422,5
+xgboost,model,cse_cic_ids2018,fwd_packet_length_max,0.7494383454322815,5
+xgboost,model,cse_cic_ids2018,fwd_packet_length_std,0.3197546303272247,8
+xgboost,model,cse_cic_ids2018,bwd_packet_length_min,0.7888919711112976,4
+xgboost,model,cse_cic_ids2018,bwd_packet_length_mean,1.1118987798690796,2
+xgboost,model,cse_cic_ids2018,bwd_packet_length_std,1.3304249048233032,1
+xgboost,model,cse_cic_ids2018,flow_bytes_per_s,0.4033322036266327,7
+xgboost,model,cse_cic_ids2018,fwd_iat_min,0.3123477101325989,9
+xgboost,model,cse_cic_ids2018,fwd_header_length,0.4691828787326813,6
+xgboost,model,cse_cic_ids2018,bwd_header_length,0.3120830059051513,10
+xgboost,model,cse_cic_ids2018,fwd_segment_size_min,0.8010790348052979,3
+xgboost,model,cic_unsw_nb15,total_bwd_bytes,0.8148458003997803,4
+xgboost,model,cic_unsw_nb15,fwd_packet_length_max,0.8495383262634277,3
+xgboost,model,cic_unsw_nb15,fwd_packet_length_std,0.4176178872585296,9
+xgboost,model,cic_unsw_nb15,bwd_packet_length_min,0.4654731452465057,7
+xgboost,model,cic_unsw_nb15,bwd_packet_length_mean,1.063665509223938,1
+xgboost,model,cic_unsw_nb15,bwd_packet_length_std,0.9385716915130616,2
+xgboost,model,cic_unsw_nb15,flow_bytes_per_s,0.3816269338130951,10
+xgboost,model,cic_unsw_nb15,fwd_header_length,0.452489823102951,8
+xgboost,model,cic_unsw_nb15,bwd_header_length,0.4909293055534363,5
+xgboost,model,cic_unsw_nb15,fin_flag_count,0.4788437783718109,6
+xgboost,model,cic_ton_iot_confirmation,fwd_packet_length_max,0.7965209484100342,4
+xgboost,model,cic_ton_iot_confirmation,fwd_packet_length_std,0.4666887521743774,8
+xgboost,model,cic_ton_iot_confirmation,bwd_packet_length_min,0.5074355602264404,7
+xgboost,model,cic_ton_iot_confirmation,bwd_packet_length_mean,1.350697636604309,1
+xgboost,model,cic_ton_iot_confirmation,bwd_packet_length_std,1.128013014793396,2
+xgboost,model,cic_ton_iot_confirmation,fwd_iat_min,0.4607685804367065,9
+xgboost,model,cic_ton_iot_confirmation,fwd_header_length,0.6925848126411438,5
+xgboost,model,cic_ton_iot_confirmation,fin_flag_count,0.391352891921997,10
+xgboost,model,cic_ton_iot_confirmation,idle_max,0.8842832446098328,3
+xgboost,model,cic_ton_iot_confirmation,idle_min,0.5400404930114746,6
+lightgbm,model,cicids2017_group_test,total_bwd_packets,0.1003336780826927,9
+lightgbm,model,cicids2017_group_test,total_bwd_bytes,0.0885376204624001,10
+lightgbm,model,cicids2017_group_test,fwd_packet_length_max,0.2121194026847622,4
+lightgbm,model,cicids2017_group_test,fwd_packet_length_std,0.1117418736287366,6
+lightgbm,model,cicids2017_group_test,bwd_packet_length_mean,0.5857798409742895,2
+lightgbm,model,cicids2017_group_test,bwd_packet_length_std,1.1348579799185006,1
+lightgbm,model,cicids2017_group_test,fwd_header_length,0.1073761029392291,8
+lightgbm,model,cicids2017_group_test,bwd_header_length,0.1782243927442263,5
+lightgbm,model,cicids2017_group_test,packet_length_std,0.2614695298427996,3
+lightgbm,model,cicids2017_group_test,fwd_segment_size_min,0.1102966804472947,7
+lightgbm,model,cse_cic_ids2018,total_bwd_packets,0.1188687399347355,8
+lightgbm,model,cse_cic_ids2018,fwd_packet_length_max,0.1744671988096997,5
+lightgbm,model,cse_cic_ids2018,bwd_packet_length_mean,0.5628424595078445,2
+lightgbm,model,cse_cic_ids2018,bwd_packet_length_std,1.1572575407817636,1
+lightgbm,model,cse_cic_ids2018,fwd_header_length,0.1450947601964956,6
+lightgbm,model,cse_cic_ids2018,bwd_header_length,0.1448836449607583,7
+lightgbm,model,cse_cic_ids2018,packet_length_std,0.2981422707074838,3
+lightgbm,model,cse_cic_ids2018,fin_flag_count,0.0834229961816791,9
+lightgbm,model,cse_cic_ids2018,average_packet_size,0.0821533795534023,10
+lightgbm,model,cse_cic_ids2018,fwd_segment_size_min,0.1872895701541539,4
+lightgbm,model,cic_unsw_nb15,total_bwd_packets,0.2128631428836761,8
+lightgbm,model,cic_unsw_nb15,total_bwd_bytes,0.308480232574485,5
+lightgbm,model,cic_unsw_nb15,fwd_packet_length_max,0.203090713677671,9
+lightgbm,model,cic_unsw_nb15,bwd_packet_length_mean,0.573976890987495,2
+lightgbm,model,cic_unsw_nb15,bwd_packet_length_std,0.7845176049763096,1
+lightgbm,model,cic_unsw_nb15,flow_bytes_per_s,0.1345841241253381,10
+lightgbm,model,cic_unsw_nb15,bwd_header_length,0.2672167134566062,6
+lightgbm,model,cic_unsw_nb15,bwd_packets_per_s,0.2582015741951383,7
+lightgbm,model,cic_unsw_nb15,packet_length_std,0.4477683089723724,4
+lightgbm,model,cic_unsw_nb15,fin_flag_count,0.4610494334950855,3
+lightgbm,model,cic_ton_iot_confirmation,fwd_packet_length_max,0.195169823365552,5
+lightgbm,model,cic_ton_iot_confirmation,bwd_packet_length_mean,0.6806582653578691,3
+lightgbm,model,cic_ton_iot_confirmation,bwd_packet_length_std,1.0039116313863503,1
+lightgbm,model,cic_ton_iot_confirmation,fwd_iat_min,0.0941214434415513,10
+lightgbm,model,cic_ton_iot_confirmation,fwd_header_length,0.1481320999412683,7
+lightgbm,model,cic_ton_iot_confirmation,bwd_header_length,0.1304472327929099,8
+lightgbm,model,cic_ton_iot_confirmation,bwd_packets_per_s,0.1253499002567812,9
+lightgbm,model,cic_ton_iot_confirmation,packet_length_std,0.731719173216007,2
+lightgbm,model,cic_ton_iot_confirmation,fin_flag_count,0.4001017316277851,4
+lightgbm,model,cic_ton_iot_confirmation,fwd_segment_size_min,0.1697059459111745,6
+catboost,model,cicids2017_group_test,fwd_packet_length_max,0.3072314069158969,8
+catboost,model,cicids2017_group_test,bwd_packet_length_min,0.4288884694293929,4
+catboost,model,cicids2017_group_test,bwd_packet_length_std,1.3658208860402226,1
+catboost,model,cicids2017_group_test,flow_iat_mean,0.389496540083502,6
+catboost,model,cicids2017_group_test,fwd_iat_mean,0.4841935210046275,2
+catboost,model,cicids2017_group_test,fwd_header_length,0.4781562474389507,3
+catboost,model,cicids2017_group_test,packet_length_min,0.2947175992167866,9
+catboost,model,cicids2017_group_test,packet_length_std,0.3907417740128167,5
+catboost,model,cicids2017_group_test,fin_flag_count,0.2910662062648736,10
+catboost,model,cicids2017_group_test,fwd_segment_size_min,0.3822848793198801,7
+catboost,model,cse_cic_ids2018,fwd_packet_length_max,0.5277328421508344,2
+catboost,model,cse_cic_ids2018,bwd_packet_length_min,0.3306842547365713,8
+catboost,model,cse_cic_ids2018,bwd_packet_length_std,1.4028296838046843,1
+catboost,model,cse_cic_ids2018,flow_iat_mean,0.3918212195704165,5
+catboost,model,cse_cic_ids2018,fwd_iat_mean,0.3653589009263441,6
+catboost,model,cse_cic_ids2018,fwd_iat_min,0.3066406852829426,10
+catboost,model,cse_cic_ids2018,fwd_header_length,0.4926457063462786,4
+catboost,model,cse_cic_ids2018,packet_length_std,0.3514990818977469,7
+catboost,model,cse_cic_ids2018,fin_flag_count,0.3236861090933561,9
+catboost,model,cse_cic_ids2018,fwd_segment_size_min,0.5003922638177104,3
+catboost,model,cic_unsw_nb15,fwd_packet_length_max,0.6006210319016236,3
+catboost,model,cic_unsw_nb15,bwd_packet_length_min,0.3198167043510891,7
+catboost,model,cic_unsw_nb15,bwd_packet_length_std,1.3510820754738069,1
+catboost,model,cic_unsw_nb15,flow_iat_mean,0.4436942579180924,4
+catboost,model,cic_unsw_nb15,fwd_iat_mean,0.3286678820454012,6
+catboost,model,cic_unsw_nb15,fwd_header_length,0.3363998197443977,5
+catboost,model,cic_unsw_nb15,packet_length_min,0.2685725940377476,9
+catboost,model,cic_unsw_nb15,packet_length_std,0.3173509809562836,8
+catboost,model,cic_unsw_nb15,fin_flag_count,0.8844378486640592,2
+catboost,model,cic_unsw_nb15,fwd_segment_size_min,0.2472897704998121,10
+catboost,model,cic_ton_iot_confirmation,fwd_packet_length_max,0.7927025855987118,3
+catboost,model,cic_ton_iot_confirmation,bwd_packet_length_min,0.3381315360140671,7
+catboost,model,cic_ton_iot_confirmation,bwd_packet_length_std,1.3370012344442157,1
+catboost,model,cic_ton_iot_confirmation,flow_iat_mean,0.4154442324476156,6
+catboost,model,cic_ton_iot_confirmation,fwd_iat_mean,0.4766634904680109,5
+catboost,model,cic_ton_iot_confirmation,fwd_header_length,0.5233808147622286,4
+catboost,model,cic_ton_iot_confirmation,packet_length_std,0.3045085634970013,10
+catboost,model,cic_ton_iot_confirmation,fin_flag_count,0.8329402287993559,2
+catboost,model,cic_ton_iot_confirmation,average_packet_size,0.3215165985864657,9
+catboost,model,cic_ton_iot_confirmation,fwd_segment_size_min,0.325440132827128,8
+family_aware_rf,model,cicids2017_group_test,bwd_packet_length_mean,0.0072407897685446,8
+family_aware_rf,model,cicids2017_group_test,bwd_packet_length_std,0.009480676741845,6
+family_aware_rf,model,cicids2017_group_test,flow_packets_per_s,0.0112866080803544,3
+family_aware_rf,model,cicids2017_group_test,flow_iat_mean,0.0106254084036238,4
+family_aware_rf,model,cicids2017_group_test,bwd_header_length,0.0101805874755207,5
+family_aware_rf,model,cicids2017_group_test,bwd_packets_per_s,0.0153280914023363,1
+family_aware_rf,model,cicids2017_group_test,packet_length_mean,0.0065280419968851,10
+family_aware_rf,model,cicids2017_group_test,average_packet_size,0.0076700280498863,7
+family_aware_rf,model,cicids2017_group_test,avg_bwd_segment_size,0.0066421612428929,9
+family_aware_rf,model,cicids2017_group_test,fwd_segment_size_min,0.0124730582256251,2
+family_aware_rf,model,cse_cic_ids2018,fwd_packet_length_max,0.009313895012771,5
+family_aware_rf,model,cse_cic_ids2018,fwd_packet_length_std,0.0065753291037336,10
+family_aware_rf,model,cse_cic_ids2018,bwd_packet_length_mean,0.0069043038985947,9
+family_aware_rf,model,cse_cic_ids2018,bwd_packet_length_std,0.0090987970587902,7
+family_aware_rf,model,cse_cic_ids2018,flow_packets_per_s,0.0110335336963766,3
+family_aware_rf,model,cse_cic_ids2018,flow_iat_mean,0.0103072813912053,4
+family_aware_rf,model,cse_cic_ids2018,bwd_iat_min,0.0079354371699927,8
+family_aware_rf,model,cse_cic_ids2018,bwd_header_length,0.0092088468891602,6
+family_aware_rf,model,cse_cic_ids2018,bwd_packets_per_s,0.0152651787672703,2
+family_aware_rf,model,cse_cic_ids2018,fwd_segment_size_min,0.0169149230905567,1
+family_aware_rf,model,cic_unsw_nb15,fwd_packet_length_max,0.007965692985442,9
+family_aware_rf,model,cic_unsw_nb15,fwd_packet_length_std,0.0084552386260636,7
+family_aware_rf,model,cic_unsw_nb15,bwd_packet_length_std,0.0087397864197205,6
+family_aware_rf,model,cic_unsw_nb15,flow_packets_per_s,0.009673143330109,5
+family_aware_rf,model,cic_unsw_nb15,flow_iat_mean,0.0099983382574253,4
+family_aware_rf,model,cic_unsw_nb15,bwd_header_length,0.0170197930128766,1
+family_aware_rf,model,cic_unsw_nb15,bwd_packets_per_s,0.0167503254263028,2
+family_aware_rf,model,cic_unsw_nb15,packet_length_std,0.0073074247167846,10
+family_aware_rf,model,cic_unsw_nb15,average_packet_size,0.0082915257300763,8
+family_aware_rf,model,cic_unsw_nb15,fwd_segment_size_min,0.0121912197810526,3
+family_aware_rf,model,cic_ton_iot_confirmation,fwd_packet_length_max,0.0102752895833043,5
+family_aware_rf,model,cic_ton_iot_confirmation,fwd_packet_length_std,0.0091434152502247,7
+family_aware_rf,model,cic_ton_iot_confirmation,bwd_packet_length_std,0.0101120698136393,6
+family_aware_rf,model,cic_ton_iot_confirmation,flow_packets_per_s,0.011912312028914,4
+family_aware_rf,model,cic_ton_iot_confirmation,flow_iat_mean,0.0119548346628727,3
+family_aware_rf,model,cic_ton_iot_confirmation,bwd_iat_min,0.0075482662829582,10
+family_aware_rf,model,cic_ton_iot_confirmation,fwd_header_length,0.0076232867216608,9
+family_aware_rf,model,cic_ton_iot_confirmation,bwd_header_length,0.0091341549599485,8
+family_aware_rf,model,cic_ton_iot_confirmation,bwd_packets_per_s,0.0174914027874021,1
+family_aware_rf,model,cic_ton_iot_confirmation,fwd_segment_size_min,0.012942486242578,2
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cicids2017_group_test,bwd_packet_length_mean,0.0083439460961188,7
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cicids2017_group_test,bwd_packet_length_std,0.0097957227818924,5
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cicids2017_group_test,flow_packets_per_s,0.0113648174115298,2
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cicids2017_group_test,flow_iat_mean,0.010521797974702,4
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cicids2017_group_test,bwd_iat_min,0.0068672476108236,10
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cicids2017_group_test,bwd_header_length,0.0091482575795595,6
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cicids2017_group_test,bwd_packets_per_s,0.0159580273230234,1
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cicids2017_group_test,average_packet_size,0.0080804122680342,8
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cicids2017_group_test,avg_bwd_segment_size,0.0073377343997702,9
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cicids2017_group_test,fwd_segment_size_min,0.0108645250342742,3
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cse_cic_ids2018,fwd_packet_length_max,0.0089022809245571,6
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cse_cic_ids2018,bwd_packet_length_max,0.0067861085605451,10
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cse_cic_ids2018,bwd_packet_length_mean,0.0077716651775357,8
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cse_cic_ids2018,bwd_packet_length_std,0.009240667101496,5
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cse_cic_ids2018,flow_packets_per_s,0.0104740239028134,3
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cse_cic_ids2018,flow_iat_mean,0.009837201914274,4
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cse_cic_ids2018,bwd_iat_min,0.0077618799112053,9
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cse_cic_ids2018,bwd_header_length,0.0082692343229312,7
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cse_cic_ids2018,bwd_packets_per_s,0.0157513651099764,2
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cse_cic_ids2018,fwd_segment_size_min,0.0161097530165171,1
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_unsw_nb15,fwd_packet_length_max,0.0072591442512744,10
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_unsw_nb15,fwd_packet_length_std,0.0096094729731961,6
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_unsw_nb15,bwd_packet_length_std,0.0087063752226264,7
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_unsw_nb15,flow_packets_per_s,0.0099611787798986,5
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_unsw_nb15,flow_iat_mean,0.0100533598768107,4
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_unsw_nb15,bwd_header_length,0.0161000115462639,2
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_unsw_nb15,bwd_packets_per_s,0.016933154546874,1
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_unsw_nb15,packet_length_std,0.0074190909367223,9
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_unsw_nb15,average_packet_size,0.0080017560405118,8
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_unsw_nb15,fwd_segment_size_min,0.0125521162924692,3
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_ton_iot_confirmation,fwd_packet_length_max,0.0099613976551393,6
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_ton_iot_confirmation,fwd_packet_length_std,0.0092241255176489,8
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_ton_iot_confirmation,bwd_packet_length_std,0.0100813884606457,5
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_ton_iot_confirmation,flow_packets_per_s,0.0113925393305768,4
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_ton_iot_confirmation,flow_iat_mean,0.0115788788892991,3
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_ton_iot_confirmation,flow_iat_std,0.0071136168742476,10
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_ton_iot_confirmation,bwd_iat_min,0.0078653275063751,9
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_ton_iot_confirmation,bwd_header_length,0.0096637103142146,7
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_ton_iot_confirmation,bwd_packets_per_s,0.0186783569303619,1
+redesigned_meta_hybrid,hybrid supervised flow-feature backbone,cic_ton_iot_confirmation,fwd_segment_size_min,0.0120568424083419,2
+tabular_resnet,model,cicids2017_group_test,total_fwd_bytes,0.0016863880455275,8
+tabular_resnet,model,cicids2017_group_test,total_bwd_bytes,0.0020281610944948,5
+tabular_resnet,model,cicids2017_group_test,fwd_packet_length_max,0.002105414701964,4
+tabular_resnet,model,cicids2017_group_test,fwd_packet_length_std,0.0024750516053245,2
+tabular_resnet,model,cicids2017_group_test,flow_bytes_per_s,0.0017615864667845,7
+tabular_resnet,model,cicids2017_group_test,fwd_packets_per_s,0.0120822086078987,1
+tabular_resnet,model,cicids2017_group_test,bwd_packets_per_s,0.0016348030637345,9
+tabular_resnet,model,cicids2017_group_test,down_up_ratio,0.0015110342679122,10
+tabular_resnet,model,cicids2017_group_test,fwd_segment_size_min,0.0021114125899657,3
+tabular_resnet,model,cicids2017_group_test,active_mean,0.0018667507951249,6
+tabular_resnet,model,cse_cic_ids2018,total_fwd_bytes,0.0024899334392102,3
+tabular_resnet,model,cse_cic_ids2018,total_bwd_bytes,0.002354441661032,4
+tabular_resnet,model,cse_cic_ids2018,fwd_packet_length_max,0.0018565884365216,6
+tabular_resnet,model,cse_cic_ids2018,fwd_packet_length_std,0.0028306987092946,2
+tabular_resnet,model,cse_cic_ids2018,flow_bytes_per_s,0.0017013373999361,8
+tabular_resnet,model,cse_cic_ids2018,fwd_iat_min,0.0020494157339896,5
+tabular_resnet,model,cse_cic_ids2018,fwd_packets_per_s,0.0112220670242095,1
+tabular_resnet,model,cse_cic_ids2018,bwd_packets_per_s,0.0015524033688052,9
+tabular_resnet,model,cse_cic_ids2018,down_up_ratio,0.0017634327035921,7
+tabular_resnet,model,cse_cic_ids2018,fwd_segment_size_min,0.0014406141925974,10
+tabular_resnet,model,cic_unsw_nb15,total_fwd_bytes,0.0043323620404407,2
+tabular_resnet,model,cic_unsw_nb15,total_bwd_bytes,0.0034904543699667,4
+tabular_resnet,model,cic_unsw_nb15,fwd_packet_length_max,0.002555679566376,7
+tabular_resnet,model,cic_unsw_nb15,fwd_packet_length_std,0.0023599631044817,9
+tabular_resnet,model,cic_unsw_nb15,fwd_header_length,0.0024307694878189,8
+tabular_resnet,model,cic_unsw_nb15,fwd_packets_per_s,0.0098124638636363,1
+tabular_resnet,model,cic_unsw_nb15,bwd_packets_per_s,0.0022362832994986,10
+tabular_resnet,model,cic_unsw_nb15,fin_flag_count,0.0039774379183654,3
+tabular_resnet,model,cic_unsw_nb15,ack_flag_count,0.002583582895113,6
+tabular_resnet,model,cic_unsw_nb15,down_up_ratio,0.0026173960570304,5
+tabular_resnet,model,cic_ton_iot_confirmation,total_fwd_bytes,0.0049893386243638,2
+tabular_resnet,model,cic_ton_iot_confirmation,fwd_packet_length_max,0.0019531585344327,9
+tabular_resnet,model,cic_ton_iot_confirmation,fwd_packet_length_mean,0.0020346382452203,8
+tabular_resnet,model,cic_ton_iot_confirmation,fwd_packet_length_std,0.0030406179756027,5
+tabular_resnet,model,cic_ton_iot_confirmation,fwd_packets_per_s,0.0061678176734858,1
+tabular_resnet,model,cic_ton_iot_confirmation,fin_flag_count,0.0035936041211243,4
+tabular_resnet,model,cic_ton_iot_confirmation,ack_flag_count,0.0018085675719248,10
+tabular_resnet,model,cic_ton_iot_confirmation,down_up_ratio,0.0022664524168249,7
+tabular_resnet,model,cic_ton_iot_confirmation,idle_mean,0.0037505738146137,3
+tabular_resnet,model,cic_ton_iot_confirmation,idle_max,0.0030159339816236,6

@@ -1,0 +1,29 @@
+{
+  "all_required_checks_pass": true,
+  "checks": {
+    "stage_1_feature_expansion": true,
+    "stage_2_group_split_and_overlap_audit": true,
+    "stage_3_preprocessing_benchmark": true,
+    "stage_4_mandatory_supervised_models": true,
+    "stage_5_family_aware_and_deep_models": true,
+    "stage_6_anomaly_and_fusion": true,
+    "stage_7_ten_seed_grouped_validation": true,
+    "stage_8_unknown_family_validation": true,
+    "stage_9_leave_domain_and_freeze": true,
+    "stage_10_untouched_confirmation": true,
+    "stage_11_final_artifacts": true,
+    "real_data_only": true,
+    "all_model_shap": true,
+    "all_tests_passed": true
+  },
+  "codebase_ready": true,
+  "experiment_package_ready_for_manuscript_use": true,
+  "manuscript_written_or_modified": false,
+  "scientific_outcome": "Frozen selective hybrid failed untouched cross-domain confirmation",
+  "confirmation_selective_mcc_mean": -0.00019886567259582,
+  "confirmation_selective_tpr_mean": 0.00027296847820488,
+  "confirmation_selective_coverage_mean": 0.6937130466659198,
+  "consistent_superiority_claim_allowed": false,
+  "required_interpretation": "Report negative confirmation, abstention coverage, and domain limitations; do not claim consistent superiority.",
+  "automated_tests": "55 passed (final post-build test run)"
+}

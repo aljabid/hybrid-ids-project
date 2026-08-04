@@ -1,0 +1,15 @@
+{
+  "model": "xgboost",
+  "best_cv_mcc": 0.9716389649652812,
+  "cv_std_at_best": 0.0031174932352697263,
+  "best_parameters": {
+    "model__subsample": 0.85,
+    "model__n_estimators": 50,
+    "model__max_depth": 9,
+    "model__learning_rate": 0.2,
+    "model__colsample_bytree": 1.0
+  },
+  "search_seconds": 19.25325214699842,
+  "tuning_rows": 100000,
+  "training_domain": "CICIDS2017 all available attack families"
+}

@@ -1,0 +1,19 @@
+{
+  "decision_tree": {
+    "roc_auc": 0.655589072901775,
+    "frozen_threshold": 0.809195591594333,
+    "fixed_frozen_mcc": 0.28268247737222535,
+    "oracle_threshold": 0.99,
+    "oracle_mcc": 0.2881921628962998,
+    "mcc_recoverable_by_oracle_rethresholding": 0.005509685524074437
+  },
+  "xgboost": {
+    "roc_auc": 0.918243213606783,
+    "frozen_threshold": 4.042076110839844,
+    "fixed_frozen_mcc": 0.0,
+    "oracle_threshold": 0.01,
+    "oracle_mcc": 0.660410682696084,
+    "mcc_recoverable_by_oracle_rethresholding": 0.660410682696084
+  },
+  "note": "Oracle values use CIC-DDoS2019 labels to pick the threshold and are a non-deployable diagnostic upper bound, not a proposed procedure. Seed 42 only, same scope as the equivalent CIC-ToN-IoT diagnostic."
+}

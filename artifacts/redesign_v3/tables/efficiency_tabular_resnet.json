@@ -1,0 +1,10 @@
+{
+  "model": "tabular_resnet",
+  "measurement_rows": 100000,
+  "inference_seconds_100k": 0.768928703997517,
+  "inference_us_per_flow": 7.68928703997517,
+  "process_peak_rss_mb": 594.70703125,
+  "model_bytes": 467259,
+  "probability_checksum": 1758.2103296912517,
+  "measurement_scope": "isolated process; 100,000 real CICIDS2017 group-test flows"
+}

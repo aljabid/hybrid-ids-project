@@ -1,0 +1,18 @@
+{
+  "positive_superiority_manuscript_ready": false,
+  "reason": "Frozen hybrid fails the predeclared external MCC/TPR improvement gates and cross-domain attack recall is operationally unacceptable.",
+  "external_gates": {
+    "cic_ids2018_external": {
+      "mcc_improvement": 0.016590455765485387,
+      "tpr_improvement": -0.0026082552544948504,
+      "fpr_increase": -0.021524037079451247
+    },
+    "cic_unsw_nb15_external": {
+      "mcc_improvement": -0.01360603037572706,
+      "tpr_improvement": -0.0014167980871953997,
+      "fpr_increase": -0.0002998294187114124
+    }
+  },
+  "external_labels_used_for_retuning": false,
+  "appropriate_claim": "Negative robustness study: strong in-domain scores do not transfer under severe semantic/covariate shift."
+}

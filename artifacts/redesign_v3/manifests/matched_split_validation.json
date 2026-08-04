@@ -1,0 +1,46 @@
+{
+  "status": "VALIDATED",
+  "research_question_role": "Matched random-row versus group-aware comparison",
+  "population": "Same de-duplicated CICIDS2017 1,959,228-flow pool",
+  "partition_matching": "Exact group-aware row and binary-class counts for train, validation, and test",
+  "only_intended_difference": "Row assignment strategy",
+  "preprocessing": "Identical RobustFlowTransformer specification; fit on each training split only",
+  "feature_schema": "Identical 68-feature semantic schema",
+  "hyperparameters": "Identical frozen group-tuned parameters for each model",
+  "models": [
+    "decision_tree",
+    "random_forest",
+    "xgboost",
+    "lightgbm",
+    "catboost"
+  ],
+  "seeds": [
+    7,
+    19,
+    31,
+    42,
+    53,
+    67,
+    79,
+    97,
+    109,
+    127
+  ],
+  "metrics": [
+    "mcc",
+    "tpr",
+    "fpr",
+    "pr_auc",
+    "ece"
+  ],
+  "random_rows": 50,
+  "group_rows": 50,
+  "partition_overlap_max": 0,
+  "family_composition_caveat": "Binary counts and sizes are matched; attack-family composition differs as a consequence of split strategy",
+  "input_sha256": {
+    "train": "8d8a48303aa5dcb43eec14d85950ca498dc952fe400c4443371b68b60e7b6be0",
+    "validation": "5391ecdc5e15ab19973786584d802f0acad9d42aad9b0cc6bf01ee2f0b780750",
+    "internal_test": "d92ff71a89d950170ca56ace2241760c784bf5c86b03ae21842dd3876221df41"
+  },
+  "result_sha256": "2604f42f36a97fb02908ba07ed8a2218514268ccc388b8fa91ab98533ddd27be"
+}

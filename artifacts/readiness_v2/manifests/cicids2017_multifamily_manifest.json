@@ -1,0 +1,33 @@
+{
+  "source": "all eight supplied CICIDS2017 daily CSV files",
+  "real_data_only": true,
+  "rows": 1543270,
+  "partitions": {
+    "train": 925962,
+    "validation": 308654,
+    "test": 308654
+  },
+  "feature_overlap": {
+    "train_validation": 0,
+    "train_test": 0,
+    "validation_test": 0
+  },
+  "families": [
+    "BENIGN",
+    "Bot",
+    "DDoS",
+    "DoS GoldenEye",
+    "DoS Hulk",
+    "DoS Slowhttptest",
+    "DoS slowloris",
+    "FTP-Patator",
+    "Heartbleed",
+    "Infiltration",
+    "PortScan",
+    "SSH-Patator",
+    "Web Attack \ufffd Brute Force",
+    "Web Attack \ufffd Sql Injection",
+    "Web Attack \ufffd XSS"
+  ],
+  "contradictory_or_cross_family_duplicate_rows_removed": 116046
+}

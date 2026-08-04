@@ -1,0 +1,11 @@
+canonical_feature,CICIDS2017,CSE-CIC-IDS2018,alignment,UNSW-NB15_status
+byte_count,Total Length of Fwd Packets,TotLen Fwd Pkts,exact semantic mapping,not acquired
+bytes_per_packet,derived from forward bytes/packets,derived from forward bytes/packets,exact derivation,requires semantic review
+log_byte_count,log1p forward bytes,log1p forward bytes,exact derivation,requires semantic review
+ack_flag_count,ACK Flag Count,ACK Flag Cnt,exact semantic mapping,requires semantic review
+flag_sum,derived TCP flag counts,derived TCP flag counts,exact derivation,requires semantic review
+ack_ratio,ACK count/forward packets,ACK count/forward packets,exact derivation,requires semantic review
+fin_ratio,FIN count/forward packets,FIN count/forward packets,exact derivation,requires semantic review
+syn_ratio,SYN count/forward packets,SYN count/forward packets,exact derivation,requires semantic review
+packet_rate,Flow Packets/s,Flow Pkts/s,exact semantic mapping,requires semantic review
+log_packet_rate,log1p flow packet rate,log1p flow packet rate,exact derivation,requires semantic review

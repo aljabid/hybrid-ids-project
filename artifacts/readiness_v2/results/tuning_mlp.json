@@ -1,0 +1,17 @@
+{
+  "model": "mlp",
+  "best_cv_mcc": 0.8831313451594053,
+  "cv_std_at_best": 0.010067290600118928,
+  "best_parameters": {
+    "model__learning_rate_init": 0.0005,
+    "model__hidden_layer_sizes": [
+      64,
+      32
+    ],
+    "model__alpha": 0.001,
+    "model__activation": "relu"
+  },
+  "search_seconds": 814.7701545300006,
+  "tuning_rows": 100000,
+  "training_domain": "CICIDS2017 all available attack families"
+}
