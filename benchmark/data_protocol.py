@@ -144,9 +144,9 @@ def build(config_path: str | None = None) -> dict:
         "partition_feature_overlap": overlap,
         "external_domains": external_manifest,
     }
-    write_json(resolve("artifacts/manifests/data_manifest.json"), manifest)
+    write_json(resolve("archive/benchmark_v1/manifests/data_manifest.json"), manifest)
     write_json(
-        resolve("artifacts/manifests/environment.json"), environment_manifest()
+        resolve("archive/benchmark_v1/manifests/environment.json"), environment_manifest()
     )
     pd.DataFrame(
         [
@@ -169,7 +169,7 @@ def build(config_path: str | None = None) -> dict:
             }
             for domain, details in external_manifest.items()
         ]
-    ).to_csv(resolve("artifacts/tables/dataset_statistics.csv"), index=False)
+    ).to_csv(resolve("archive/benchmark_v1/tables/dataset_statistics.csv"), index=False)
     return manifest
 def main() -> None:
     parser = argparse.ArgumentParser()

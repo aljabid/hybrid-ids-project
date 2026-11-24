@@ -19,7 +19,7 @@ from benchmark.common import load_config, resolve, set_seed, write_json
 from benchmark.metrics import binary_metrics
 from benchmark.model_registry import MODEL_NAMES, model_and_space
 def load_partition(name: str) -> tuple[np.ndarray, np.ndarray, list[str]]:
-    data = np.load(resolve(f"artifacts/data/{name}.npz"), allow_pickle=False)
+    data = np.load(resolve(f"archive/benchmark_v1/data/{name}.npz"), allow_pickle=False)
     return data["X"], data["y"], data["features"].astype(str).tolist()
 class PeakMemoryMonitor:
     def __init__(self, interval: float = 0.01):
@@ -84,8 +84,8 @@ def tune_models(config_path: str = "benchmark/config.yaml", force: bool = False)
     )
     rows = []
     for name in MODEL_NAMES:
-        model_path = resolve(f"artifacts/models/{name}_tuned.pkl")
-        result_path = resolve(f"artifacts/results/tuning_{name}.json")
+        model_path = resolve(f"archive/benchmark_v1/models/{name}_tuned.pkl")
+        result_path = resolve(f"archive/benchmark_v1/results/tuning_{name}.json")
         if model_path.exists() and result_path.exists() and not force:
             rows.append(json.loads(result_path.read_text()))
             continue
@@ -132,8 +132,8 @@ def tune_models(config_path: str = "benchmark/config.yaml", force: bool = False)
         write_json(result_path, row)
         rows.append(row)
     table = pd.DataFrame(rows)
-    resolve("artifacts/tables").mkdir(parents=True, exist_ok=True)
-    table.to_csv(resolve("artifacts/tables/hyperparameter_summary.csv"), index=False)
+    resolve("archive/benchmark_v1/tables").mkdir(parents=True, exist_ok=True)
+    table.to_csv(resolve("archive/benchmark_v1/tables/hyperparameter_summary.csv"), index=False)
     return table
 def _predict_probability(model, X: np.ndarray) -> np.ndarray:
     if hasattr(model, "predict_proba"):
@@ -150,15 +150,15 @@ def run_benchmark(config_path: str = "benchmark/config.yaml", force: bool = Fals
     }
     positive_weight = float((y_train == 0).sum() / max((y_train == 1).sum(), 1))
     all_rows = []
-    prediction_dir = resolve("artifacts/results/predictions")
+    prediction_dir = resolve("archive/benchmark_v1/results/predictions")
     prediction_dir.mkdir(parents=True, exist_ok=True)
     for name in MODEL_NAMES:
-        tuned_path = resolve(f"artifacts/results/tuning_{name}.json")
+        tuned_path = resolve(f"archive/benchmark_v1/results/tuning_{name}.json")
         if not tuned_path.exists():
             raise FileNotFoundError(f"Run tuning first: {tuned_path}")
         tuned = json.loads(tuned_path.read_text())
         for seed in seeds:
-            output_model = resolve(f"artifacts/models/{name}_seed_{seed}.pkl")
+            output_model = resolve(f"archive/benchmark_v1/models/{name}_seed_{seed}.pkl")
             set_seed(seed)
             pipe, _ = _pipeline(
                 name,
@@ -202,7 +202,7 @@ def run_benchmark(config_path: str = "benchmark/config.yaml", force: bool = Fals
                     probability=probability.astype(np.float32),
                 )
     results = pd.DataFrame(all_rows)
-    results.to_csv(resolve("artifacts/results/supervised_seed_results.csv"), index=False)
+    results.to_csv(resolve("archive/benchmark_v1/results/supervised_seed_results.csv"), index=False)
     metric_columns = [
         "accuracy", "balanced_accuracy", "precision", "recall", "f1",
         "roc_auc", "pr_auc", "mcc", "tpr", "fpr", "ece", "brier",
@@ -218,7 +218,7 @@ def run_benchmark(config_path: str = "benchmark/config.yaml", force: bool = Fals
         "_".join(part for part in column if part) if isinstance(column, tuple) else column
         for column in summary.columns
     ]
-    summary.to_csv(resolve("artifacts/tables/supervised_benchmark_summary.csv"), index=False)
+    summary.to_csv(resolve("archive/benchmark_v1/tables/supervised_benchmark_summary.csv"), index=False)
     return results
 def main() -> None:
     parser = argparse.ArgumentParser()

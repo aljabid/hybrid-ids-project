@@ -40,10 +40,10 @@ anomaly_models:
   - deep_svdd
 
 paths:
-  root: artifacts/readiness_v2
-  data: artifacts/readiness_v2/data
-  models: artifacts/readiness_v2/models
-  results: artifacts/readiness_v2/results
-  tables: artifacts/readiness_v2/tables
-  figures: artifacts/readiness_v2/figures
-  manifests: artifacts/readiness_v2/manifests
+  root: archive/readiness_v2
+  data: archive/readiness_v2/data
+  models: archive/readiness_v2/models
+  results: archive/readiness_v2/results
+  tables: archive/readiness_v2/tables
+  figures: archive/readiness_v2/figures
+  manifests: archive/readiness_v2/manifests

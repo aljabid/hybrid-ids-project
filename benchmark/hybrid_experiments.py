@@ -128,7 +128,7 @@ def adaptive_router(
             )
     return final, score, classifier_route, thresholds
 def _select_backbone() -> str:
-    paths = list(resolve("artifacts/results").glob("tuning_*.json"))
+    paths = list(resolve("archive/benchmark_v1/results").glob("tuning_*.json"))
     if not paths:
         raise FileNotFoundError("No tuning results. Run supervised tuning first.")
     candidates = [json.loads(path.read_text()) for path in paths]
@@ -144,10 +144,10 @@ def run(config_path: str = "benchmark/config.yaml") -> pd.DataFrame:
         "cic_ids2018_external": load_partition("cic_ids2018_external")[:2],
     }
     rows = []
-    prediction_dir = resolve("artifacts/results/hybrid_predictions")
+    prediction_dir = resolve("archive/benchmark_v1/results/hybrid_predictions")
     prediction_dir.mkdir(parents=True, exist_ok=True)
     for seed in seeds:
-        classifier_path = resolve(f"artifacts/models/{backbone}_seed_{seed}.pkl")
+        classifier_path = resolve(f"archive/benchmark_v1/models/{backbone}_seed_{seed}.pkl")
         if not classifier_path.exists():
             raise FileNotFoundError(
                 f"Backbone seed model missing: {classifier_path}. Run supervised benchmark."
@@ -182,10 +182,10 @@ def run(config_path: str = "benchmark/config.yaml") -> pd.DataFrame:
                 "normal_reference": normal_reference,
                 "anomaly_threshold": anomaly_threshold,
             },
-            resolve(f"artifacts/models/autoencoder_seed_{seed}.pt"),
+            resolve(f"archive/benchmark_v1/models/autoencoder_seed_{seed}.pt"),
         )
         write_json(
-            resolve(f"artifacts/results/autoencoder_seed_{seed}.json"),
+            resolve(f"archive/benchmark_v1/results/autoencoder_seed_{seed}.json"),
             {
                 "seed": seed,
                 "backbone": backbone,
@@ -255,7 +255,7 @@ def run(config_path: str = "benchmark/config.yaml") -> pd.DataFrame:
                     ),
                 )
     results = pd.DataFrame(rows)
-    results.to_csv(resolve("artifacts/results/hybrid_seed_results.csv"), index=False)
+    results.to_csv(resolve("archive/benchmark_v1/results/hybrid_seed_results.csv"), index=False)
     metrics = [
         "accuracy", "balanced_accuracy", "precision", "recall", "f1",
         "roc_auc", "pr_auc", "mcc", "tpr", "fpr", "ece", "brier",
@@ -267,7 +267,7 @@ def run(config_path: str = "benchmark/config.yaml") -> pd.DataFrame:
         "_".join(part for part in column if part) if isinstance(column, tuple) else column
         for column in summary.columns
     ]
-    summary.to_csv(resolve("artifacts/tables/hybrid_ablation_summary.csv"), index=False)
+    summary.to_csv(resolve("archive/benchmark_v1/tables/hybrid_ablation_summary.csv"), index=False)
     return results
 def main() -> None:
     parser = argparse.ArgumentParser()

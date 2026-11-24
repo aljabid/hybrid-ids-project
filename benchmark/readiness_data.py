@@ -193,12 +193,12 @@ def score_diagnostics() -> pd.DataFrame:
     for dataset in ("cicids2017_internal", "cic_ids2018_external"):
         supervised = np.load(
             resolve(
-                f"artifacts/results/predictions/random_forest_{dataset}_seed_42.npz"
+                f"archive/benchmark_v1/results/predictions/random_forest_{dataset}_seed_42.npz"
             )
         )
         hybrid = np.load(
             resolve(
-                f"artifacts/results/hybrid_predictions/adaptive_hybrid_{dataset}_seed_42.npz"
+                f"archive/benchmark_v1/results/hybrid_predictions/adaptive_hybrid_{dataset}_seed_42.npz"
             )
         )
         for label in (0, 1):
@@ -267,7 +267,7 @@ def build_full_cicids2017_protocol() -> dict:
         max_normal=None,
         max_per_attack=None,
         seed=42,
-        output_path="artifacts/readiness_v2/data/cicids2017_all_families_full.npz",
+        output_path="archive/readiness_v2/data/cicids2017_all_families_full.npz",
     )
     data = np.load(family_path, allow_pickle=False)
     X = data["X"]

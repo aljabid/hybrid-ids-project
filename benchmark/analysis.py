@@ -49,14 +49,14 @@ def _style() -> None:
         }
     )
 def _save(fig: plt.Figure, name: str) -> None:
-    out = resolve(f"artifacts/figures/{name}")
+    out = resolve(f"archive/benchmark_v1/figures/{name}")
     out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out.with_suffix(".pdf"), bbox_inches="tight")
     fig.savefig(out.with_suffix(".png"), bbox_inches="tight", dpi=600)
     plt.close(fig)
 def statistical_tests() -> pd.DataFrame:
-    supervised = pd.read_csv(resolve("artifacts/results/supervised_seed_results.csv"))
-    hybrid_path = resolve("artifacts/results/hybrid_seed_results.csv")
+    supervised = pd.read_csv(resolve("archive/benchmark_v1/results/supervised_seed_results.csv"))
+    hybrid_path = resolve("archive/benchmark_v1/results/hybrid_seed_results.csv")
     rows = []
     comparisons = []
     if hybrid_path.exists():
@@ -90,7 +90,7 @@ def statistical_tests() -> pd.DataFrame:
                 comparisons.append(
                     (dataset, metric, best, challenger, reference, compared)
                 )
-    unknown_path = resolve("artifacts/results/unknown_attack_seed_results.csv")
+    unknown_path = resolve("archive/benchmark_v1/results/unknown_attack_seed_results.csv")
     if unknown_path.exists():
         unknown = pd.read_csv(unknown_path)
         for family in unknown.held_out_attack_family.unique():
@@ -157,7 +157,7 @@ def statistical_tests() -> pd.DataFrame:
             adjusted[index] = running
         table["holm_adjusted_p"] = adjusted
         table["significant_0_05"] = table.holm_adjusted_p < 0.05
-    table.to_csv(resolve("artifacts/tables/statistical_tests.csv"), index=False)
+    table.to_csv(resolve("archive/benchmark_v1/tables/statistical_tests.csv"), index=False)
     return table
 def calibration_figures() -> pd.DataFrame:
     rows = []
@@ -165,7 +165,7 @@ def calibration_figures() -> pd.DataFrame:
         fig, axes = plt.subplots(2, 3, figsize=(7.16, 4.5), sharex=True, sharey=True)
         for axis, model in zip(axes.ravel(), MODEL_NAMES):
             path = resolve(
-                f"artifacts/results/predictions/{model}_{dataset}_seed_42.npz"
+                f"archive/benchmark_v1/results/predictions/{model}_{dataset}_seed_42.npz"
             )
             if not path.exists():
                 axis.set_visible(False)
@@ -189,10 +189,10 @@ def calibration_figures() -> pd.DataFrame:
         fig.tight_layout()
         _save(fig, f"calibration_{dataset}")
     table = pd.DataFrame(rows)
-    table.to_csv(resolve("artifacts/results/calibration_bins.csv"), index=False)
+    table.to_csv(resolve("archive/benchmark_v1/results/calibration_bins.csv"), index=False)
     return table
 def performance_figure() -> None:
-    results = pd.read_csv(resolve("artifacts/results/supervised_seed_results.csv"))
+    results = pd.read_csv(resolve("archive/benchmark_v1/results/supervised_seed_results.csv"))
     plot = (
         results.groupby(["model", "dataset"])[["mcc", "f1", "pr_auc"]]
         .agg(["mean", "std"])
@@ -221,7 +221,7 @@ def performance_figure() -> None:
     fig.tight_layout(rect=(0, 0, 1, 0.90))
     _save(fig, "supervised_performance_comparison")
 def summary_tables() -> None:
-    results = pd.read_csv(resolve("artifacts/results/supervised_seed_results.csv"))
+    results = pd.read_csv(resolve("archive/benchmark_v1/results/supervised_seed_results.csv"))
     calibration = (
         results.groupby(["model", "dataset"])[
             ["ece", "brier", "negative_log_likelihood"]
@@ -233,7 +233,7 @@ def summary_tables() -> None:
         "_".join(part for part in column if part) if isinstance(column, tuple) else column
         for column in calibration.columns
     ]
-    calibration.to_csv(resolve("artifacts/tables/calibration_summary.csv"), index=False)
+    calibration.to_csv(resolve("archive/benchmark_v1/tables/calibration_summary.csv"), index=False)
     efficiency = (
         results.groupby(["model", "dataset"])[
             [
@@ -248,9 +248,9 @@ def summary_tables() -> None:
         "_".join(part for part in column if part) if isinstance(column, tuple) else column
         for column in efficiency.columns
     ]
-    efficiency.to_csv(resolve("artifacts/tables/efficiency_summary.csv"), index=False)
+    efficiency.to_csv(resolve("archive/benchmark_v1/tables/efficiency_summary.csv"), index=False)
 def hybrid_ablation_figure() -> None:
-    path = resolve("artifacts/results/hybrid_seed_results.csv")
+    path = resolve("archive/benchmark_v1/results/hybrid_seed_results.csv")
     if not path.exists():
         return
     results = pd.read_csv(path)
@@ -287,7 +287,7 @@ def routing_sensitivity() -> pd.DataFrame:
     rows = []
     for dataset in ("cicids2017_internal", "cic_ids2018_external"):
         path = resolve(
-            f"artifacts/results/hybrid_predictions/adaptive_hybrid_{dataset}_seed_42.npz"
+            f"archive/benchmark_v1/results/hybrid_predictions/adaptive_hybrid_{dataset}_seed_42.npz"
         )
         if not path.exists():
             continue
@@ -313,7 +313,7 @@ def routing_sensitivity() -> pd.DataFrame:
                 }
             )
     table = pd.DataFrame(rows)
-    table.to_csv(resolve("artifacts/tables/routing_threshold_sensitivity.csv"), index=False)
+    table.to_csv(resolve("archive/benchmark_v1/tables/routing_threshold_sensitivity.csv"), index=False)
     if not table.empty:
         fig, axes = plt.subplots(1, 2, figsize=(7.16, 2.5))
         for dataset, subset in table.groupby("dataset"):
@@ -365,7 +365,7 @@ def drift_analysis() -> pd.DataFrame:
             }
         )
     table = pd.DataFrame(rows).sort_values("jensen_shannon_divergence", ascending=False)
-    table.to_csv(resolve("artifacts/tables/feature_drift.csv"), index=False)
+    table.to_csv(resolve("archive/benchmark_v1/tables/feature_drift.csv"), index=False)
     heatmap_data = table.set_index("feature")[
         ["jensen_shannon_divergence", "population_stability_index", "external_outside_training_range"]
     ]
@@ -386,7 +386,7 @@ def shap_analysis(sample_size: int = 2000) -> pd.DataFrame:
     rng = np.random.default_rng(42)
     frames = []
     for model_name in MODEL_NAMES:
-        path = resolve(f"artifacts/models/{model_name}_seed_42.pkl")
+        path = resolve(f"archive/benchmark_v1/models/{model_name}_seed_42.pkl")
         if not path.exists():
             continue
         with path.open("rb") as handle:
@@ -458,22 +458,22 @@ def shap_analysis(sample_size: int = 2000) -> pd.DataFrame:
                 domain_importance["cic_ids2018_external"],
             ).statistic
             write_json(
-                resolve(f"artifacts/results/shap_stability_{model_name}.json"),
+                resolve(f"archive/benchmark_v1/results/shap_stability_{model_name}.json"),
                 {"model": model_name, "spearman_rank_correlation": float(correlation)},
             )
     table = pd.DataFrame(frames)
     table["rank"] = table.groupby(["model", "dataset"]).mean_abs_shap.rank(
         ascending=False, method="min"
     )
-    table.to_csv(resolve("artifacts/tables/shap_feature_importance.csv"), index=False)
+    table.to_csv(resolve("archive/benchmark_v1/tables/shap_feature_importance.csv"), index=False)
     return table
 def error_analysis() -> pd.DataFrame:
     rows = []
-    matrix_dir = resolve("artifacts/figures/confusion_matrices")
+    matrix_dir = resolve("archive/benchmark_v1/figures/confusion_matrices")
     matrix_dir.mkdir(parents=True, exist_ok=True)
     for model in MODEL_NAMES:
         for dataset in ("cicids2017_internal", "cic_ids2018_external"):
-            path = resolve(f"artifacts/results/predictions/{model}_{dataset}_seed_42.npz")
+            path = resolve(f"archive/benchmark_v1/results/predictions/{model}_{dataset}_seed_42.npz")
             if not path.exists():
                 continue
             data = np.load(path)
@@ -510,7 +510,7 @@ def error_analysis() -> pd.DataFrame:
                     }
                 )
     table = pd.DataFrame(rows)
-    table.to_csv(resolve("artifacts/tables/error_analysis_summary.csv"), index=False)
+    table.to_csv(resolve("archive/benchmark_v1/tables/error_analysis_summary.csv"), index=False)
     features = load_partition("cic_ids2018_external")[2]
     raw = pd.read_csv(
         resolve("data/processed/cic_ids2018/cic2018_aligned_features.csv"),
@@ -526,7 +526,7 @@ def error_analysis() -> pd.DataFrame:
     family_rows = []
     for model in MODEL_NAMES:
         path = resolve(
-            f"artifacts/results/predictions/{model}_cic_ids2018_external_seed_42.npz"
+            f"archive/benchmark_v1/results/predictions/{model}_cic_ids2018_external_seed_42.npz"
         )
         if not path.exists():
             continue
@@ -553,7 +553,7 @@ def error_analysis() -> pd.DataFrame:
                 }
             )
     pd.DataFrame(family_rows).to_csv(
-        resolve("artifacts/tables/error_analysis_by_traffic_family.csv"), index=False
+        resolve("archive/benchmark_v1/tables/error_analysis_by_traffic_family.csv"), index=False
     )
     return table
 def workflow_figure() -> None:
@@ -587,9 +587,9 @@ def workflow_figure() -> None:
     axis.set_title("Leakage-Safe Hybrid IDS Benchmark Workflow", fontweight="bold")
     _save(fig, "overall_benchmark_workflow")
 def excel_workbook() -> None:
-    output = resolve("artifacts/tables/benchmark_tables.xlsx")
+    output = resolve("archive/benchmark_v1/tables/benchmark_tables.xlsx")
     with pd.ExcelWriter(output, engine="openpyxl") as writer:
-        for path in sorted(resolve("artifacts/tables").glob("*.csv")):
+        for path in sorted(resolve("archive/benchmark_v1/tables").glob("*.csv")):
             sheet = path.stem[:31]
             pd.read_csv(path).to_excel(writer, sheet_name=sheet, index=False)
 def run_all(include_shap: bool = True) -> None:

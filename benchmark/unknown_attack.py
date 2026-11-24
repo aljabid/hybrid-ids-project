@@ -33,7 +33,7 @@ def build_family_dataset(
     max_normal: int | None = 60000,
     max_per_attack: int | None = 20000,
     seed: int = 42,
-    output_path: str = "artifacts/data/cicids2017_attack_families.npz",
+    output_path: str = "archive/benchmark_v1/data/cicids2017_attack_families.npz",
 ) -> Path:
     output = resolve(output_path)
     if output.exists():
@@ -102,7 +102,7 @@ def build_family_dataset(
     )
     pd.DataFrame(
         {"attack_family": data["Label"].value_counts().index, "rows": data["Label"].value_counts().values}
-    ).to_csv(resolve("artifacts/tables/attack_family_statistics.csv"), index=False)
+    ).to_csv(resolve("archive/benchmark_v1/tables/attack_family_statistics.csv"), index=False)
     return output
 def run(config_path: str = "benchmark/config.yaml") -> pd.DataFrame:
     config = load_config(resolve(config_path))
@@ -113,13 +113,13 @@ def run(config_path: str = "benchmark/config.yaml") -> pd.DataFrame:
     suitable = counts[counts >= 500].head(5).index.tolist()
     tuning = [
         json.loads(path.read_text())
-        for path in resolve("artifacts/results").glob("tuning_*.json")
+        for path in resolve("archive/benchmark_v1/results").glob("tuning_*.json")
     ]
     if not tuning:
         raise FileNotFoundError("Tuning results are required.")
     best = max(tuning, key=lambda row: row["best_cv_mcc"])
     model_name = best["model"]
-    checkpoint = resolve("artifacts/results/unknown_attack_seed_results.csv")
+    checkpoint = resolve("archive/benchmark_v1/results/unknown_attack_seed_results.csv")
     rows = []
     completed_seeds: set[int] = set()
     if checkpoint.exists():
@@ -219,7 +219,7 @@ def run(config_path: str = "benchmark/config.yaml") -> pd.DataFrame:
         "_".join(part for part in column if part) if isinstance(column, tuple) else column
         for column in summary.columns
     ]
-    summary.to_csv(resolve("artifacts/tables/unknown_attack_summary.csv"), index=False)
+    summary.to_csv(resolve("archive/benchmark_v1/tables/unknown_attack_summary.csv"), index=False)
     return results
 def main() -> None:
     parser = argparse.ArgumentParser()

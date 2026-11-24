@@ -22,7 +22,7 @@ def paths() -> dict:
 def load_data(partition: str):
     data = np.load(
         resolve(
-            f"artifacts/readiness_v2/data/cicids2017_multifamily_{partition}.npz"
+            f"archive/readiness_v2/data/cicids2017_multifamily_{partition}.npz"
         ),
         allow_pickle=False,
     )

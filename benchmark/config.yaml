@@ -6,7 +6,7 @@ data:
   train_domain: data/processed/cicids2017/cicids_aligned_features.csv
   external_domains:
     cic_ids2018: data/processed/cic_ids2018/cic2018_aligned_features.csv
-  output_dir: artifacts/data
+  output_dir: archive/benchmark_v1/data
   label_column: label
   test_size: 0.20
   validation_size: 0.20
@@ -43,9 +43,9 @@ experiments:
   n_jobs: 1
 
 outputs:
-  root: artifacts
-  models: artifacts/models
-  results: artifacts/results
-  figures: artifacts/figures
-  tables: artifacts/tables
-  manifests: artifacts/manifests
+  root: archive/benchmark_v1
+  models: archive/benchmark_v1/models
+  results: archive/benchmark_v1/results
+  figures: archive/benchmark_v1/figures
+  tables: archive/benchmark_v1/tables
+  manifests: archive/benchmark_v1/manifests

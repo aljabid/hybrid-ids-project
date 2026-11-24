@@ -11,10 +11,10 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 def run() -> None:
     write_json(
-        resolve("artifacts/manifests/environment.json"), environment_manifest()
+        resolve("archive/benchmark_v1/manifests/environment.json"), environment_manifest()
     )
     rows = []
-    for path in sorted(resolve("artifacts").rglob("*")):
+    for path in sorted(resolve("archive/benchmark_v1").rglob("*")):
         if not path.is_file() or path.name == "artifact_inventory.csv":
             continue
         rows.append(
@@ -25,7 +25,7 @@ def run() -> None:
             }
         )
     pd.DataFrame(rows).to_csv(
-        resolve("artifacts/manifests/artifact_inventory.csv"), index=False
+        resolve("archive/benchmark_v1/manifests/artifact_inventory.csv"), index=False
     )
 if __name__ == "__main__":
     run()
