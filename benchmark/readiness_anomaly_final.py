@@ -1,20 +1,13 @@
-                                                                             
-
 from __future__ import annotations
-
 import json
-
 import numpy as np
 import pandas as pd
-
 from benchmark.metrics import binary_metrics
 from benchmark.readiness_anomaly import (
     empirical_probability, make_scaler, select_threshold, train_anomaly,
 )
 from benchmark.readiness_final import config, load_external, paths
 from benchmark.readiness_supervised import load_data
-
-
 def _sample(X, y, seed, cap=50000):
     rng = np.random.default_rng(seed)
     per = cap // 2
@@ -24,8 +17,6 @@ def _sample(X, y, seed, cap=50000):
     ])
     rng.shuffle(index)
     return X[index], y[index]
-
-
 def run() -> pd.DataFrame:
     output = paths()
     checkpoint = output["results"] / "final_anomaly_runs.csv"
@@ -83,7 +74,5 @@ def run() -> pd.DataFrame:
         output["tables"] / "anomaly_baseline_mean_std.csv", index=False
     )
     return result
-
-
 if __name__ == "__main__":
     run()

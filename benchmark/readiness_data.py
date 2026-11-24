@@ -1,11 +1,7 @@
-                                                                     
-
 from __future__ import annotations
-
 import hashlib
 import json
 from pathlib import Path
-
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -14,12 +10,10 @@ import pandas as pd
 import seaborn as sns
 import yaml
 from sklearn.preprocessing import MinMaxScaler
-
 from benchmark.common import resolve, row_hashes, write_json
 from benchmark.supervised import load_partition
 from benchmark.unknown_attack import build_family_dataset
 from sklearn.model_selection import train_test_split
-
 FEATURES = [
     "byte_count", "bytes_per_packet", "log_byte_count", "ack_flag_count",
     "flag_sum", "ack_ratio", "fin_ratio", "syn_ratio", "packet_rate",
@@ -37,28 +31,20 @@ LABELS_UNSW = {
     0: "Benign", 1: "Analysis", 2: "Backdoor", 3: "DoS", 4: "Exploits",
     5: "Fuzzers", 6: "Generic", 7: "Reconnaissance", 8: "Shellcode", 9: "Worms",
 }
-
-
 def _config() -> dict:
     with resolve("benchmark/readiness_config.yaml").open() as handle:
         return yaml.safe_load(handle)
-
-
 def _dirs() -> dict[str, Path]:
     paths = {key: resolve(value) for key, value in _config()["paths"].items()}
     for path in paths.values():
         path.mkdir(parents=True, exist_ok=True)
     return paths
-
-
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
         while chunk := handle.read(1024 * 1024):
             digest.update(chunk)
     return digest.hexdigest()
-
-
 def align_cic_unsw() -> dict:
     paths = _dirs()
     data_path = resolve("data/raw/cic_unsw_nb15/Data.csv")
@@ -133,8 +119,6 @@ def align_cic_unsw() -> dict:
     }
     write_json(paths["manifests"] / "cic_unsw_manifest.json", manifest)
     return manifest
-
-
 def cse_duplicate_audit() -> pd.DataFrame:
     paths = _dirs()
     source = pd.read_csv(
@@ -164,8 +148,6 @@ def cse_duplicate_audit() -> pd.DataFrame:
     )
     table.to_csv(paths["tables"] / "cse_cic_ids2018_duplicate_audit.csv", index=False)
     return table
-
-
 def scaling_audit() -> pd.DataFrame:
     paths = _dirs()
     X_train, _, features = load_partition("cicids2017_train")
@@ -205,8 +187,6 @@ def scaling_audit() -> pd.DataFrame:
     table = pd.DataFrame(rows)
     table.to_csv(paths["tables"] / "feature_scaling_audit.csv", index=False)
     return table
-
-
 def score_diagnostics() -> pd.DataFrame:
     paths = _dirs()
     frames = []
@@ -248,8 +228,6 @@ def score_diagnostics() -> pd.DataFrame:
     table = pd.DataFrame(frames)
     table.to_csv(paths["tables"] / "score_distribution_summary.csv", index=False)
     return table
-
-
 def semantic_alignment_table() -> pd.DataFrame:
     paths = _dirs()
     rows = [
@@ -283,10 +261,7 @@ def semantic_alignment_table() -> pd.DataFrame:
     )
     table.to_csv(paths["tables"] / "semantic_feature_alignment.csv", index=False)
     return table
-
-
 def build_full_cicids2017_protocol() -> dict:
-                                                                                 
     paths = _dirs()
     family_path = build_family_dataset(
         max_normal=None,
@@ -305,8 +280,6 @@ def build_full_cicids2017_protocol() -> dict:
     family = family[~duplicate_mask]
     y = y[~duplicate_mask]
     indices = np.arange(len(y))
-                                                                              
-                                              
     train_val, test = train_test_split(
         indices, test_size=0.20, random_state=42, stratify=family
     )
@@ -363,8 +336,6 @@ def build_full_cicids2017_protocol() -> dict:
     }
     write_json(paths["manifests"] / "cicids2017_multifamily_manifest.json", manifest)
     return manifest
-
-
 def run() -> None:
     align_cic_unsw()
     cse_duplicate_audit()
@@ -372,7 +343,5 @@ def run() -> None:
     score_diagnostics()
     semantic_alignment_table()
     build_full_cicids2017_protocol()
-
-
 if __name__ == "__main__":
     run()
