@@ -1,23 +1,16 @@
-                                                                          
-
 from __future__ import annotations
-
 import hashlib
 import json
 from pathlib import Path
-
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
 import numpy as np
 import pandas as pd
-
 from benchmark.common import resolve, write_json
 from benchmark.readiness_final import paths
 from benchmark.readiness_supervised import load_data
-
-
 def dataset_statistics() -> pd.DataFrame:
     output = paths()
     rows = []
@@ -48,8 +41,6 @@ def dataset_statistics() -> pd.DataFrame:
     table = pd.DataFrame(rows)
     table.to_csv(output["tables"] / "dataset_statistics.csv", index=False)
     return table
-
-
 def ablation() -> pd.DataFrame:
     output = paths()
     supervised = pd.read_csv(output["results"] / "final_supervised_runs.csv")
@@ -78,11 +69,8 @@ def ablation() -> pd.DataFrame:
     table = pd.DataFrame(rows)
     table.to_csv(output["tables"] / "component_ablation.csv", index=False)
     return table
-
-
 def figures() -> None:
     output = paths()
-                                 
     labels = [
         "Real datasets\n+ provenance", "Deduplicate\n+ align features",
         "Train/validation\nselection only", "Freeze calibration,\nanomaly & fusion",
@@ -103,7 +91,6 @@ def figures() -> None:
                           arrowprops={"arrowstyle": "->", "lw": 0.8})
     fig.savefig(output["figures"] / "overall_benchmark_workflow.png", dpi=600)
     plt.close(fig)
-                                                            
     calibration = pd.read_csv(output["tables"] / "calibration_results.csv")
     fig, axes = plt.subplots(1, 3, figsize=(7.16, 2.5), sharey=True)
     for axis, dataset in zip(axes, calibration["dataset"].unique()):
@@ -117,8 +104,6 @@ def figures() -> None:
     axes[-1].legend(frameon=False)
     fig.savefig(output["figures"] / "calibration_comparison.png", dpi=600)
     plt.close(fig)
-
-
 def inventory() -> pd.DataFrame:
     output = paths()
     rows = []
@@ -137,8 +122,6 @@ def inventory() -> pd.DataFrame:
     table = pd.DataFrame(rows)
     table.to_csv(output["root"] / "ARTIFACT_INVENTORY.csv", index=False)
     return table
-
-
 def claims_audit() -> dict:
     output = paths()
     verdict = json.loads((output["manifests"] / "final_readiness_verdict.json").read_text())
@@ -167,8 +150,6 @@ def claims_audit() -> dict:
     }
     write_json(output["manifests"] / "claims_audit.json", audit)
     return audit
-
-
 def update_workbook(dataset_table: pd.DataFrame, ablation_table: pd.DataFrame) -> None:
     output = paths()
     workbook = output["tables"] / "manuscript_results.xlsx"
@@ -184,8 +165,6 @@ def update_workbook(dataset_table: pd.DataFrame, ablation_table: pd.DataFrame) -
     ) as writer:
         for sheet, table in additions.items():
             table.to_excel(writer, sheet_name=sheet[:31], index=False)
-
-
 def main() -> None:
     dataset_table = dataset_statistics()
     ablation_table = ablation()
@@ -193,7 +172,5 @@ def main() -> None:
     claims_audit()
     update_workbook(dataset_table, ablation_table)
     inventory()
-
-
 if __name__ == "__main__":
     main()

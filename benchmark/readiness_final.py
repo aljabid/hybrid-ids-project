@@ -1,21 +1,16 @@
-                                                                                
-
 from __future__ import annotations
-
 import gc
 import json
 import pickle
 import resource
 import time
 from pathlib import Path
-
 import numpy as np
 import pandas as pd
 import yaml
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.frozen import FrozenEstimator
 from sklearn.model_selection import train_test_split
-
 from benchmark.common import resolve, set_seed
 from benchmark.metrics import binary_metrics
 from benchmark.model_registry import MODEL_NAMES, model_and_space
@@ -27,24 +22,17 @@ from benchmark.readiness_anomaly import (
 from benchmark.readiness_supervised import load_data
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler
-
-
 def config() -> dict:
     with resolve("benchmark/readiness_config.yaml").open() as handle:
         return yaml.safe_load(handle)
-
-
 def paths() -> dict[str, Path]:
     output = {key: resolve(value) for key, value in config()["paths"].items()}
     for path in output.values():
         path.mkdir(parents=True, exist_ok=True)
     (output["results"] / "predictions").mkdir(parents=True, exist_ok=True)
     return output
-
-
 def load_external() -> dict[str, tuple[np.ndarray, np.ndarray, np.ndarray]]:
     from benchmark.supervised import load_partition
-
     X_cse, y_cse, _ = load_partition("cic_ids2018_external")
     cse_frame = pd.read_csv(
         resolve("data/processed/cic_ids2018/cic2018_aligned_features.csv"),
@@ -64,7 +52,6 @@ def load_external() -> dict[str, tuple[np.ndarray, np.ndarray, np.ndarray]]:
         ],
         inplace=True,
     )
-                                                                               
     cse_family = cse_frame["label"].to_numpy(dtype=np.int16)
     if len(cse_family) != len(y_cse):
         raise RuntimeError("CSE family alignment differs from deduplicated protocol")
@@ -75,8 +62,6 @@ def load_external() -> dict[str, tuple[np.ndarray, np.ndarray, np.ndarray]]:
             unsw["X"], unsw["y"], unsw["family"].astype(np.int16)
         ),
     }
-
-
 def _tuned_pipeline(name: str, seed: int, y: np.ndarray):
     tuning = json.loads(
         (paths()["results"] / f"tuning_{name}.json").read_text()
@@ -85,28 +70,21 @@ def _tuned_pipeline(name: str, seed: int, y: np.ndarray):
     model, _ = model_and_space(name, seed, weight)
     pipeline = Pipeline([("scaler", MinMaxScaler()), ("model", model)])
     pipeline.set_params(**tuning["best_parameters"])
-                                                                        
     if name == "mlp":
         pipeline.set_params(
             model__max_iter=int(config()["selection"]["final_mlp_max_iter"]),
             model__batch_size=int(config()["selection"]["final_mlp_batch_size"]),
         )
     return pipeline
-
-
 def _probability(model, X: np.ndarray, batch: int = 150000) -> np.ndarray:
     return np.concatenate(
         [np.asarray(model.predict_proba(X[i : i + batch]))[:, 1]
          for i in range(0, len(X), batch)]
     )
-
-
 def _model_bytes(model, target: Path) -> int:
     with target.open("wb") as handle:
         pickle.dump(model, handle, protocol=pickle.HIGHEST_PROTOCOL)
     return target.stat().st_size
-
-
 def _evaluate_row(
     seed: int, model_name: str, dataset: str, y: np.ndarray,
     family: np.ndarray, probability: np.ndarray, threshold: float,
@@ -129,8 +107,6 @@ def _evaluate_row(
             probability=probability.astype(np.float32), family=family,
         )
     return row
-
-
 def run_supervised() -> pd.DataFrame:
     output = paths()
     checkpoint = output["results"] / "final_supervised_runs.csv"
@@ -171,8 +147,6 @@ def run_supervised() -> pd.DataFrame:
             del model
             gc.collect()
     return pd.DataFrame(rows)
-
-
 def run_hybrid() -> pd.DataFrame:
     output = paths()
     checkpoint = output["results"] / "final_hybrid_runs.csv"
@@ -270,8 +244,6 @@ def run_hybrid() -> pd.DataFrame:
         del rf, calibrated, detector, bundle
         gc.collect()
     return pd.DataFrame(rows)
-
-
 if __name__ == "__main__":
     run_supervised()
     run_hybrid()
