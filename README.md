@@ -55,7 +55,8 @@ This is a deliberate negative result. No new model is claimed as an improvement.
 ```bash
 python -m venv .venv
 .venv/Scripts/pip install -r requirements-benchmark.txt   # Linux/macOS: .venv/bin/pip
-.venv/Scripts/python -m pytest -q                         # expect 55 passed
+.venv/Scripts/python -m pytest -q                         # current benchmark: 8 passed
+(cd legacy && ../.venv/Scripts/python -m pytest -q)       # original pipeline: 47 passed
 ```
 
 The datasets are public but are not included in this repository because of their licenses and size. Download them from their original publishers and follow the instructions and manifests under `artifacts/redesign_v3/` to rerun the experiments.
