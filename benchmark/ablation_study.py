@@ -1,42 +1,11 @@
-"""Controlled, single-variable ablation study (post-manuscript addendum).
-
-Five candidate axes were specified: (1) random-row vs. group-aware split,
-(2) without vs. with held-out-family exclusion, (3) without vs. with
-post-hoc calibration, (4) without vs. with the frozen confirmation
-protocol, (5) without vs. with semantic feature-schema alignment.
-
-Axes 1-4 are answered here, each changing exactly one protocol component
-while holding everything else (data, hyperparameters, seeds, models)
-identical, and each reusing already-computed, already-checksummed
-artifacts -- no model is retrained for axes 1-3, and axis 4 adds exactly
-one new, explicitly-labeled, non-deployable diagnostic computed on the
-already-frozen seed-42 confirmation probabilities (no retraining, no
-change to the actual frozen decision rule or its reported numbers).
-
-Axis 5 (semantic alignment) is intentionally NOT executed. Removing
-semantic alignment does not hold "everything else identical": every
-domain's raw export uses a different, non-comparable column set and
-dimensionality, so "without alignment" has no well-defined fixed-length
-input a frozen model could score -- the only way to test it is to train a
-new model on a different, ad hoc feature space, which is a new modeling
-exercise, not a controlled ablation, and risks the exact kind of
-uncontrolled redesign the task instructions rule out. This is recorded
-explicitly rather than silently skipped.
-"""
-
 from __future__ import annotations
-
 import numpy as np
 import pandas as pd
 from sklearn.metrics import matthews_corrcoef, roc_auc_score
-
 from benchmark.common import write_json
 from benchmark.metrics import binary_metrics
 from benchmark.redesign_preprocessing import paths
-
 FAMILY_MODELS = ["family_aware_rf", "redesigned_meta_hybrid"]
-
-
 def _agg(df, metrics, prefix):
     out = {}
     for metric in metrics:
@@ -46,17 +15,13 @@ def _agg(df, metrics, prefix):
         out[f"{prefix}_{metric}_std"] = float(df[metric].std(ddof=1)) if len(df) > 1 else 0.0
     out[f"{prefix}_n"] = int(len(df))
     return out
-
-
 def axis_split_strategy():
-    """Axis 1: random-row vs. group-aware split, all 8 mandatory models."""
     output = paths()
     grouped = pd.read_csv(output["results"] / "grouped_ten_seed_runs.csv")
     group_aware = grouped[grouped["dataset"] == "cicids2017_group_test"]
     random_a = pd.read_csv(output["results"] / "matched_random_row_ten_seed_runs.csv")
     random_b = pd.read_csv(output["results"] / "matched_random_row_extended_ten_seed_runs.csv")
     random_row = pd.concat([random_a, random_b], ignore_index=True)
-
     metrics = ["mcc", "roc_auc", "ece", "brier"]
     rows = []
     for model in sorted(group_aware["model"].unique()):
@@ -75,18 +40,11 @@ def axis_split_strategy():
         row["note"] = "Not applicable: no rejector/coverage in this axis."
         rows.append(row)
     return pd.DataFrame(rows)
-
-
 def axis_family_exclusion():
-    """Axis 2: without vs. with held-out-family exclusion, family_aware_rf
-    and redesigned_meta_hybrid (the two models the held-out-family study
-    was run on).
-    """
     output = paths()
     grouped = pd.read_csv(output["results"] / "grouped_ten_seed_runs.csv")
     without = grouped[grouped["dataset"] == "cicids2017_group_test"]
     with_excl = pd.read_csv(output["results"] / "unknown_family_ten_seed_runs.csv")
-
     metrics = ["mcc", "roc_auc", "ece", "brier", "tpr"]
     rows = []
     for model in FAMILY_MODELS:
@@ -106,10 +64,7 @@ def axis_family_exclusion():
         )
         rows.append(row)
     return pd.DataFrame(rows)
-
-
 def axis_calibration():
-    """Axis 3: without vs. with post-hoc temperature-scaled calibration."""
     output = paths()
     recal = pd.read_csv(output["tables"] / "recalibration_seed42.csv")
     rows = []
@@ -133,8 +88,6 @@ def axis_calibration():
             ),
         })
     return pd.DataFrame(rows)
-
-
 def _oracle_threshold_mcc(y, probability, grid_points=197):
     y = np.asarray(y, dtype=int)
     best_mcc, best_threshold = -1.0, 0.5
@@ -143,26 +96,7 @@ def _oracle_threshold_mcc(y, probability, grid_points=197):
         if mcc > best_mcc:
             best_mcc, best_threshold = mcc, float(threshold)
     return best_mcc, best_threshold
-
-
 def axis_frozen_confirmation(force=False):
-    """Axis 4: with vs. without the frozen (unlabeled, pre-registered)
-    confirmation threshold.
-
-    'With frozen protocol' is the actual, already-reported adaptive
-    decision-tree branch performance at seed 42 (dt_threshold selected
-    without ever looking at confirmation labels).
-
-    'Without frozen protocol' is a diagnostic upper bound only: the best
-    achievable MCC if the decision threshold were instead chosen by
-    sweeping against confirmation's own labels (the same
-    _oracle_threshold_mcc diagnostic already used for the two development
-    domains in threshold_sensitivity_seed42.csv, extended here to the
-    confirmation domain for the first time). This is explicitly NOT a
-    deployable procedure -- it uses target labels to pick the threshold --
-    and does not modify the frozen model, its stored predictions, or the
-    manuscript's reported confirmation numbers in any way.
-    """
     output = paths()
     target = output["tables"] / "confirmation_oracle_threshold_seed42.csv"
     if target.exists() and not force:
@@ -188,13 +122,11 @@ def axis_frozen_confirmation(force=False):
                   f"oracle_mcc={oracle_mcc:.4f} @ t={oracle_threshold:.3f}", flush=True)
         oracle = pd.DataFrame(rows)
         oracle.to_csv(target, index=False)
-
     confirmation = pd.read_csv(output["results"] / "confirmation_ten_seed_runs.csv")
     frozen_seed42 = confirmation[
         (confirmation["seed"] == 42) & (confirmation["variant"] == "adaptive_decision_tree")
     ].iloc[0]
     frozen_all_seeds = confirmation[confirmation["variant"] == "adaptive_decision_tree"]["mcc"]
-
     dt_row = oracle[oracle["branch"] == "decision_tree"].iloc[0]
     row = {
         "axis": "frozen_confirmation",
@@ -219,8 +151,6 @@ def axis_frozen_confirmation(force=False):
         ),
     }
     return pd.DataFrame([row])
-
-
 def run_all():
     output = paths()
     print("=== axis 1: split strategy ===", flush=True)
@@ -231,12 +161,10 @@ def run_all():
     a3 = axis_calibration()
     print("=== axis 4: frozen confirmation ===", flush=True)
     a4 = axis_frozen_confirmation(force=True)
-
     a1.to_csv(output["tables"] / "ablation_axis1_split_strategy.csv", index=False)
     a2.to_csv(output["tables"] / "ablation_axis2_family_exclusion.csv", index=False)
     a3.to_csv(output["tables"] / "ablation_axis3_calibration.csv", index=False)
     a4.to_csv(output["tables"] / "ablation_axis4_frozen_confirmation.csv", index=False)
-
     write_json(output["manifests"] / "ablation_study_manifest.json", {
         "description": (
             "Controlled single-variable ablation study, axes 1-4. Each axis "
@@ -271,7 +199,5 @@ def run_all():
     })
     print("Done. See artifacts/redesign_v3/tables/ablation_axis*.csv "
           "and manifests/ablation_study_manifest.json")
-
-
 if __name__ == "__main__":
     run_all()
