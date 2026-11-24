@@ -1,20 +1,10 @@
-   
-             
-                                                  
-                                                      
-                                          
-   
-
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import seaborn as sns
 from sklearn.metrics import confusion_matrix, roc_curve, auc
 from utils.logger import get_logger
-
 logger = get_logger(__name__)
-
-                                                              
 PALETTE    = ['steelblue', 'darkorange', 'seagreen', 'tomato', 'purple']
 DPI        = 300
 FONT_SIZE  = 11
@@ -26,11 +16,8 @@ plt.rcParams.update({
     'ytick.labelsize':  10,
     'figure.dpi':       DPI,
 })
-
-
 def plot_confusion_matrix(y_true, y_pred, labels, title, output_path):
     cm = confusion_matrix(y_true, y_pred, normalize='true')
-
     plt.figure(figsize=(6, 5))
     sns.heatmap(cm, annot=True, fmt='.2f', cmap='Blues',
                 xticklabels=labels, yticklabels=labels,
@@ -42,8 +29,6 @@ def plot_confusion_matrix(y_true, y_pred, labels, title, output_path):
     plt.savefig(output_path, dpi=DPI, bbox_inches='tight')
     plt.close()
     logger.info(f"Confusion matrix saved → {output_path}")
-
-
 def plot_reconstruction_error(normal_errors, attack_errors,
                                threshold, output_path):
     plt.figure(figsize=(9, 4))
@@ -62,15 +47,7 @@ def plot_reconstruction_error(normal_errors, attack_errors,
     plt.savefig(output_path, dpi=DPI, bbox_inches='tight')
     plt.close()
     logger.info(f"Reconstruction error plot saved → {output_path}")
-
-
 def plot_roc_curves(models_dict, output_path):
-       
-                   
-                                                        
-           
-     
-       
     plt.figure(figsize=(7, 6))
     for i, (name, (fpr, tpr, auc_score)) in enumerate(models_dict.items()):
         plt.plot(fpr, tpr, color=PALETTE[i % len(PALETTE)], linewidth=2,
@@ -85,13 +62,9 @@ def plot_roc_curves(models_dict, output_path):
     plt.savefig(output_path, dpi=DPI, bbox_inches='tight')
     plt.close()
     logger.info(f"ROC curve saved → {output_path}")
-
-
 def plot_confidence_distribution(confidence, correct_mask, threshold,
                                   output_path):
     fig, axes = plt.subplots(1, 2, figsize=(12, 4))
-
-                          
     axes[0].hist(confidence, bins=40, color='steelblue',
                  alpha=0.85, edgecolor='white')
     axes[0].axvline(threshold, color='red', linestyle='--', linewidth=2,
@@ -100,8 +73,6 @@ def plot_confidence_distribution(confidence, correct_mask, threshold,
     axes[0].set_ylabel('Count', fontweight='bold')
     axes[0].set_title('Overall Confidence Distribution', fontweight='bold')
     axes[0].legend()
-
-                          
     axes[1].hist(confidence[correct_mask], bins=40, alpha=0.65,
                  color='steelblue', label='Correct', density=True)
     axes[1].hist(confidence[~correct_mask], bins=40, alpha=0.65,
@@ -111,18 +82,13 @@ def plot_confidence_distribution(confidence, correct_mask, threshold,
     axes[1].set_title('Confidence by Prediction Correctness',
                       fontweight='bold')
     axes[1].legend()
-
     plt.tight_layout()
     plt.savefig(output_path, dpi=DPI, bbox_inches='tight')
     plt.close()
     logger.info(f"Confidence distribution saved → {output_path}")
-
-
 def plot_calibration_curve(fraction_correct, mean_confidence,
                             output_path, n_bins=10):
     fig, axes = plt.subplots(1, 2, figsize=(12, 5))
-
-                         
     axes[0].plot([0, 1], [0, 1], 'k--', alpha=0.5,
                  label='Perfect Calibration')
     axes[0].plot(mean_confidence, fraction_correct,
@@ -138,48 +104,37 @@ def plot_calibration_curve(fraction_correct, mean_confidence,
     axes[0].set_xlim([0, 1])
     axes[0].set_ylim([0, 1])
     axes[0].grid(alpha=0.3)
-
-                          
     axes[1].hist(mean_confidence, bins=n_bins, color='steelblue',
                  alpha=0.85, edgecolor='white')
     axes[1].set_xlabel('Confidence Score', fontweight='bold')
     axes[1].set_ylabel('Count', fontweight='bold')
     axes[1].set_title('Confidence Histogram', fontweight='bold')
-
     plt.tight_layout()
     plt.savefig(output_path, dpi=DPI, bbox_inches='tight')
     plt.close()
     logger.info(f"Calibration curve saved → {output_path}")
-
-
 def plot_mi_feature_ranking(feature_names, mi_scores, output_path):
     sorted_idx = np.argsort(mi_scores)
     sorted_names  = [feature_names[i] for i in sorted_idx]
     sorted_scores = [mi_scores[i] for i in sorted_idx]
-
     plt.figure(figsize=(8, 5))
     bars = plt.barh(sorted_names, sorted_scores,
                     color='steelblue', alpha=0.85, edgecolor='white')
     plt.xlabel('Mutual Information Score', fontweight='bold')
     plt.title('Feature Ranking by Mutual Information', fontweight='bold')
     plt.grid(axis='x', alpha=0.3)
-
     for bar, score in zip(bars, sorted_scores):
         plt.text(bar.get_width() + 0.001, bar.get_y() + bar.get_height()/2,
                  f'{score:.4f}', va='center', fontsize=9)
-
     plt.tight_layout()
     plt.savefig(output_path, dpi=DPI, bbox_inches='tight')
     plt.close()
     logger.info(f"MI feature ranking saved → {output_path}")
-
-
 def plot_generalization_comparison(dataset_labels, results_list,
                                     metrics, output_path):
     n_metrics = len(metrics)
     fig, axes = plt.subplots(1, n_metrics, figsize=(4 * n_metrics, 5))
     colors = PALETTE[:len(dataset_labels)]
-
     for idx, metric in enumerate(metrics):
         values = [r.get(metric, 0) for r in results_list]
         bars = axes[idx].bar(dataset_labels, values,
@@ -189,22 +144,18 @@ def plot_generalization_comparison(dataset_labels, results_list,
         axes[idx].set_ylabel('Score')
         axes[idx].tick_params(axis='x', rotation=15)
         axes[idx].grid(axis='y', alpha=0.3)
-
         for bar, val in zip(bars, values):
             axes[idx].text(
                 bar.get_x() + bar.get_width() / 2,
                 bar.get_height() + 0.01,
                 f'{val:.3f}', ha='center', va='bottom',
                 fontsize=9, fontweight='bold')
-
     plt.suptitle('Generalization Performance Across Datasets',
                  fontsize=13, fontweight='bold', y=1.02)
     plt.tight_layout()
     plt.savefig(output_path, dpi=DPI, bbox_inches='tight')
     plt.close()
     logger.info(f"Generalization comparison saved → {output_path}")
-
-
 def plot_temporal_error_trend(error_series, threshold, alert_idx,
                                output_path, source_ip="192.168.1.x"):
     plt.figure(figsize=(10, 4))
