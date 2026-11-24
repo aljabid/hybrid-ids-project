@@ -1,17 +1,11 @@
-                                                                              
-
 from __future__ import annotations
-
 import hashlib
 import gc
 from pathlib import Path
-
 import numpy as np
 import pandas as pd
 import yaml
-
 from benchmark.common import resolve, row_hashes, write_json
-
 CANONICAL = {
     "Flow Duration": "flow_duration",
     "Total Fwd Packets": "total_fwd_packets",
@@ -82,7 +76,6 @@ CANONICAL = {
     "Idle Max": "idle_max",
     "Idle Min": "idle_min",
 }
-
 ALIASES_2018 = {
     "Tot Fwd Pkts": "Total Fwd Packets", "Tot Bwd Pkts": "Total Backward Packets",
     "TotLen Fwd Pkts": "Total Length of Fwd Packets",
@@ -107,7 +100,6 @@ ALIASES_2018 = {
     "Subflow Bwd Byts": "Subflow Bwd Bytes", "Fwd Act Data Pkts": "act_data_pkt_fwd",
     "Fwd Seg Size Min": "min_seg_size_forward",
 }
-
 ALIASES_UNSW = {
     "Total Fwd Packet": "Total Fwd Packets", "Total Bwd packets": "Total Backward Packets",
     "Total Length of Fwd Packet": "Total Length of Fwd Packets",
@@ -118,20 +110,14 @@ ALIASES_UNSW = {
     "Fwd Segment Size Avg": "Avg Fwd Segment Size", "Bwd Segment Size Avg": "Avg Bwd Segment Size",
     "Fwd Act Data Pkts": "act_data_pkt_fwd", "Fwd Seg Size Min": "min_seg_size_forward",
 }
-
-
 def config():
     with resolve("benchmark/redesign_config.yaml").open() as handle:
         return yaml.safe_load(handle)
-
-
 def dirs():
     result = {key: resolve(value) for key, value in config()["paths"].items()}
     for path in result.values():
         path.mkdir(parents=True, exist_ok=True)
     return result
-
-
 def _clean_chunk(chunk: pd.DataFrame, aliases: dict[str, str]) -> pd.DataFrame:
     chunk.columns = chunk.columns.str.strip()
     chunk.rename(columns=aliases, inplace=True)
@@ -144,8 +130,6 @@ def _clean_chunk(chunk: pd.DataFrame, aliases: dict[str, str]) -> pd.DataFrame:
         values[column] = pd.to_numeric(values[column], errors="coerce")
     values.replace([np.inf, -np.inf], np.nan, inplace=True)
     return values
-
-
 def build_cicids2017(force: bool = False) -> dict:
     output = dirs()
     manifest_path = output["manifests"] / "grouped_data_manifest.json"
@@ -188,7 +172,6 @@ def build_cicids2017(force: bool = False) -> dict:
         X_group = np.concatenate(arrays)
         family_group = np.concatenate(labels)
         hashes = row_hashes(X_group)
-                                                         
         key = pd.DataFrame({"hash": hashes, "family": family_group})
         keep_local = ~key.duplicated(subset=["hash", "family"], keep="first").to_numpy()
         X_group, family_group, hashes = (
@@ -202,8 +185,6 @@ def build_cicids2017(force: bool = False) -> dict:
         gc.collect()
     family_names = sorted(all_families)
     family_map = {name: index for index, name in enumerate(family_names)}
-                                                                           
-                                                                               
     all_hashes = np.concatenate([record[2] for record in group_records])
     unique_hash, hash_counts = np.unique(all_hashes, return_counts=True)
     cross_group_or_conflicting = unique_hash[hash_counts > 1]
@@ -288,8 +269,6 @@ def build_cicids2017(force: bool = False) -> dict:
     }
     write_json(manifest_path, manifest)
     return manifest
-
-
 def _save_external(
     X: np.ndarray, family_text: np.ndarray, dataset: str, source: str
 ) -> dict:
@@ -317,8 +296,6 @@ def _save_external(
     }
     write_json(output["manifests"] / f"{dataset}_diagnostic_manifest.json", manifest)
     return manifest
-
-
 def build_existing_diagnostics(force: bool = False) -> list[dict]:
     output = dirs()
     manifests = []
@@ -377,8 +354,6 @@ def build_existing_diagnostics(force: bool = False) -> list[dict]:
             (output["manifests"] / "cic_unsw_nb15_diagnostic_manifest.json").read_text()
         ))
     return manifests
-
-
 if __name__ == "__main__":
     print(build_cicids2017())
     print(build_existing_diagnostics())
