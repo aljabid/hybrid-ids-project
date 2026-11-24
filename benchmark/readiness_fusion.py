@@ -1,11 +1,7 @@
-                                                                   
-
 from __future__ import annotations
-
 import json
 import math
 import pickle
-
 import numpy as np
 import pandas as pd
 import yaml
@@ -16,35 +12,24 @@ from sklearn.metrics import (
     brier_score_loss, log_loss, matthews_corrcoef, average_precision_score,
 )
 from sklearn.model_selection import train_test_split
-
 from benchmark.common import resolve, write_json
 from benchmark.metrics import binary_metrics
 from benchmark.readiness_anomaly import (
     empirical_probability, make_scaler, train_anomaly,
 )
 from benchmark.readiness_supervised import load_data
-
-
 def _config() -> dict:
     with resolve("benchmark/readiness_config.yaml").open() as handle:
         return yaml.safe_load(handle)
-
-
 def _attack_probability(model, X: np.ndarray) -> np.ndarray:
     return np.asarray(model.predict_proba(X))[:, 1]
-
-
 def _fit_calibrator(model, X: np.ndarray, y: np.ndarray, method: str):
     calibrated = CalibratedClassifierCV(FrozenEstimator(model), method=method)
     calibrated.fit(X, y)
     return calibrated
-
-
 def _entropy(probability: np.ndarray) -> np.ndarray:
     p = np.clip(probability, 1e-7, 1 - 1e-7)
     return -(p * np.log(p) + (1 - p) * np.log(1 - p))
-
-
 def select(seed: int = 42) -> dict:
     config = _config()
     paths = {key: resolve(value) for key, value in config["paths"].items()}
@@ -79,7 +64,6 @@ def select(seed: int = 42) -> dict:
         paths["models"] / f"random_forest_seed_{seed}.pkl"
     ).open("rb") as handle:
         random_forest = pickle.load(handle)
-
     calibrators = {"uncalibrated": random_forest}
     for method in ("sigmoid", "isotonic"):
         calibrators[method] = _fit_calibrator(
@@ -114,7 +98,6 @@ def select(seed: int = 42) -> dict:
     )
     calibration_name = str(calibration_table.iloc[0]["method"])
     calibrated_model = calibrators[calibration_name]
-
     anomaly_selection = json.loads(
         (paths["manifests"] / "anomaly_scaler_selection.json").read_text()
     )["winner"]
@@ -141,10 +124,8 @@ def select(seed: int = 42) -> dict:
     y_select = y_validation[selection_indices]
     classifier_select = classifier_probability[selection_indices]
     anomaly_select = anomaly_probability[selection_indices]
-
     candidates = []
     thresholds = np.linspace(0.05, 0.95, 37)
-                                     
     for threshold in thresholds:
         prediction = classifier_select >= threshold
         candidates.append(
@@ -156,7 +137,6 @@ def select(seed: int = 42) -> dict:
                 "fpr": binary_metrics(y_select, prediction, classifier_select)["fpr"],
             }
         )
-                                 
     for alpha in config["selection"]["fusion_weights"]:
         score = alpha * classifier_select + (1 - alpha) * anomaly_select
         for threshold in thresholds:
@@ -173,7 +153,6 @@ def select(seed: int = 42) -> dict:
                     "fpr": metrics["fpr"],
                 }
             )
-                              
     for classifier_threshold in (0.3, 0.5, 0.7, 0.9):
         for anomaly_threshold in config["selection"]["validation_threshold_quantiles"]:
             prediction = (
@@ -198,8 +177,6 @@ def select(seed: int = 42) -> dict:
                     "fpr": metrics["fpr"],
                 }
             )
-                                                                                 
-                                      
     meta_train = np.column_stack(
         [
             classifier_probability[calibration_indices],
@@ -262,8 +239,6 @@ def select(seed: int = 42) -> dict:
     }
     write_json(paths["manifests"] / "method_freeze.json", freeze)
     return freeze
-
-
 if __name__ == "__main__":
     result = select()
     print(json.dumps(result, indent=2))

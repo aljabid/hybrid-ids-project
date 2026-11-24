@@ -1,11 +1,7 @@
-                                                                            
-
 from __future__ import annotations
-
 import json
 import pickle
 import time
-
 import numpy as np
 import pandas as pd
 import yaml
@@ -13,23 +9,16 @@ from sklearn.metrics import make_scorer, matthews_corrcoef
 from sklearn.model_selection import RandomizedSearchCV, StratifiedKFold
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler
-
 from benchmark.common import resolve, set_seed, write_json
 from benchmark.model_registry import MODEL_NAMES, model_and_space
-
-
 def config() -> dict:
     with resolve("benchmark/readiness_config.yaml").open() as handle:
         return yaml.safe_load(handle)
-
-
 def paths() -> dict:
     result = {key: resolve(value) for key, value in config()["paths"].items()}
     for path in result.values():
         path.mkdir(parents=True, exist_ok=True)
     return result
-
-
 def load_data(partition: str):
     data = np.load(
         resolve(
@@ -38,8 +27,6 @@ def load_data(partition: str):
         allow_pickle=False,
     )
     return data["X"], data["y"], data["family"].astype(str), data["features"].astype(str).tolist()
-
-
 def stratified_tuning_sample(
     X: np.ndarray, y: np.ndarray, max_rows: int, seed: int
 ) -> tuple[np.ndarray, np.ndarray]:
@@ -57,8 +44,6 @@ def stratified_tuning_sample(
     )
     rng.shuffle(selected)
     return X[selected], y[selected]
-
-
 def tune(force: bool = False) -> pd.DataFrame:
     output = paths()
     X, y, _, features = load_data("train")
@@ -108,8 +93,6 @@ def tune(force: bool = False) -> pd.DataFrame:
     table = pd.DataFrame(rows)
     table.to_csv(output["tables"] / "supervised_tuning_summary.csv", index=False)
     return table
-
-
 def fit_random_forest_seed(seed: int = 42, force: bool = False):
     output = paths()
     model_path = output["models"] / f"random_forest_seed_{seed}.pkl"
@@ -128,8 +111,6 @@ def fit_random_forest_seed(seed: int = 42, force: bool = False):
     with model_path.open("wb") as handle:
         pickle.dump(pipeline, handle)
     return pipeline
-
-
 if __name__ == "__main__":
     print(tune().to_string(index=False))
     fit_random_forest_seed(42)
