@@ -1,9 +1,3 @@
-   
-                 
-                                                                         
-                                                                             
-   
-
 FEATURE_NAMES = [
     "flow_duration",
     "packet_count",
@@ -16,10 +10,7 @@ FEATURE_NAMES = [
     "dst_port_diversity",
     "protocol_type"
 ]
-
 NUM_FEATURES = len(FEATURE_NAMES)
-
-                                        
 CLASS_NAMES_LOCAL = ["Normal", "SYN Scan", "TCP Connect", "Xmas Scan"]
 NUM_CLASSES_LOCAL = len(CLASS_NAMES_LOCAL)
 LABEL_MAP_LOCAL = {
@@ -29,11 +20,7 @@ LABEL_MAP_LOCAL = {
     "Xmas Scan":    3
 }
 LABEL_MAP_LOCAL_INV = {v: k for k, v in LABEL_MAP_LOCAL.items()}
-
-                                                              
 CLASS_NAMES_BINARY = ["Normal", "PortScan"]
 LABEL_MAP_BINARY = {"Normal": 0, "PortScan": 1}
 LABEL_MAP_BINARY_INV = {0: "Normal", 1: "PortScan"}
-
-                   
 PROTOCOL_MAP = {"TCP": 0, "UDP": 1, "ICMP": 2}
