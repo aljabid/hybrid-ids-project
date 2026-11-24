@@ -10,7 +10,7 @@ on CIC-DDoS2019 through the identical frozen protocol, bootstrap confidence
 intervals, calibration-sensitivity sweeps, and a four-axis controlled
 ablation study, none of which retrains or modifies the frozen method — is
 documented separately in
-[`ROBUSTNESS_AND_ABLATION_ADDENDUM.md`](docs/addendum/ROBUSTNESS_AND_ABLATION_ADDENDUM.md).
+[`ROBUSTNESS_AND_ABLATION_ADDENDUM.md`](docs/ROBUSTNESS_AND_ABLATION_ADDENDUM.md).
 The second confirmation reproduces the paper's central negative result
 (deployed hybrid MCC = 0.0000 exactly across all 10 seeds on CIC-DDoS2019)
 and reproduces its mechanistic cause (the XGBoost branch's unlabeled
@@ -50,8 +50,7 @@ dependency set installed and is the environment actually used to run every
 script in this package, including the eight-model matched-split extension,
 the shift-mechanism/recalibration/selective-classifier scripts below, and
 the robustness/ablation/second-confirmation addendum. `python -m pytest
-tests/ -q` passes 55/55 under it. As of the QA pass recorded in
-`docs/QA_REPORT.md`, `requirements-benchmark.txt` (repository root) pins exact
+tests/ -q` passes 8/8 under it. `requirements-benchmark.txt` (repository root) pins exact
 versions matched against this `.venv` — that is now the canonical,
 verified reproduction path; `.benchmark-venv` is left below for historical
 reference only and is not guaranteed to resolve on every platform. Use
