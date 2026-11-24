@@ -10,7 +10,7 @@ on CIC-DDoS2019 through the identical frozen protocol, bootstrap confidence
 intervals, calibration-sensitivity sweeps, and a four-axis controlled
 ablation study, none of which retrains or modifies the frozen method — is
 documented separately in
-[`ROBUSTNESS_AND_ABLATION_ADDENDUM.md`](ROBUSTNESS_AND_ABLATION_ADDENDUM.md).
+[`ROBUSTNESS_AND_ABLATION_ADDENDUM.md`](docs/addendum/ROBUSTNESS_AND_ABLATION_ADDENDUM.md).
 The second confirmation reproduces the paper's central negative result
 (deployed hybrid MCC = 0.0000 exactly across all 10 seeds on CIC-DDoS2019)
 and reproduces its mechanistic cause (the XGBoost branch's unlabeled
@@ -51,7 +51,7 @@ script in this package, including the eight-model matched-split extension,
 the shift-mechanism/recalibration/selective-classifier scripts below, and
 the robustness/ablation/second-confirmation addendum. `python -m pytest
 tests/ -q` passes 55/55 under it. As of the QA pass recorded in
-`QA_REPORT.md`, `requirements-benchmark.txt` (repository root) pins exact
+`docs/QA_REPORT.md`, `requirements-benchmark.txt` (repository root) pins exact
 versions matched against this `.venv` — that is now the canonical,
 verified reproduction path; `.benchmark-venv` is left below for historical
 reference only and is not guaranteed to resolve on every platform. Use
@@ -228,7 +228,7 @@ branch's threshold simultaneously collapses to ~0, predicting "attack"
 almost always. Agreement between two branches leaning to opposite extremes
 happens mostly on the rare cases both call "benign." Seed 97, the only seed
 with any covered detections, is also the only seed where the XGBoost
-threshold stayed inside [0,1] (0.967). See `FULL_PROJECT_REPORT.md` §25.4
+threshold stayed inside [0,1] (0.967). See `docs/FULL_PROJECT_REPORT.md` §25.4
 for the full account; this is a post-hoc mechanistic observation from
 already-stored data, not a new experiment.
 
