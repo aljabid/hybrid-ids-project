@@ -1,24 +1,17 @@
-                                                                                 
-
 from __future__ import annotations
-
 import argparse
 import json
 import pickle
 import time
 from pathlib import Path
-
 import numpy as np
 import pandas as pd
 import torch
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
-
 from benchmark.common import load_config, resolve, set_seed, write_json
 from benchmark.metrics import binary_metrics
 from benchmark.supervised import load_partition
-
-
 class FlowAutoencoder(nn.Module):
     def __init__(self, input_dim: int):
         super().__init__()
@@ -36,11 +29,8 @@ class FlowAutoencoder(nn.Module):
             nn.Linear(64, input_dim),
             nn.Sigmoid(),
         )
-
     def forward(self, values):
         return self.network(values)
-
-
 def reconstruction_errors(model: nn.Module, X: np.ndarray, batch_size: int = 4096) -> np.ndarray:
     model.eval()
     output = []
@@ -50,8 +40,6 @@ def reconstruction_errors(model: nn.Module, X: np.ndarray, batch_size: int = 409
             reconstructed = model(batch)
             output.append(torch.mean((batch - reconstructed) ** 2, dim=1).cpu().numpy())
     return np.concatenate(output)
-
-
 def train_autoencoder(
     X_normal: np.ndarray, seed: int, epochs: int = 30, batch_size: int = 256
 ) -> tuple[FlowAutoencoder, list[float], float]:
@@ -77,18 +65,11 @@ def train_autoencoder(
             losses.append(float(loss.detach()))
         history.append(float(np.mean(losses)))
     return model, history, time.perf_counter() - started
-
-
 def _positive_probability(classifier, X: np.ndarray) -> np.ndarray:
     return np.asarray(classifier.predict_proba(X))[:, 1]
-
-
 def anomaly_probability(errors: np.ndarray, normal_reference: np.ndarray) -> np.ndarray:
-                                                                             
     ordered = np.sort(normal_reference)
     return np.searchsorted(ordered, errors, side="right") / len(ordered)
-
-
 def fixed_router(
     attack_probability: np.ndarray,
     anomaly_probability_values: np.ndarray,
@@ -107,8 +88,6 @@ def fixed_router(
         use_classifier, attack_probability, anomaly_probability_values
     )
     return final, combined_score, use_classifier
-
-
 def adaptive_router(
     attack_probability: np.ndarray,
     anomaly_probability_values: np.ndarray,
@@ -148,16 +127,12 @@ def adaptive_router(
                 )
             )
     return final, score, classifier_route, thresholds
-
-
 def _select_backbone() -> str:
     paths = list(resolve("artifacts/results").glob("tuning_*.json"))
     if not paths:
         raise FileNotFoundError("No tuning results. Run supervised tuning first.")
     candidates = [json.loads(path.read_text()) for path in paths]
     return max(candidates, key=lambda row: row["best_cv_mcc"])["model"]
-
-
 def run(config_path: str = "benchmark/config.yaml") -> pd.DataFrame:
     config = load_config(resolve(config_path))
     seeds = [int(value) for value in config["experiments"]["seeds"]]
@@ -294,14 +269,10 @@ def run(config_path: str = "benchmark/config.yaml") -> pd.DataFrame:
     ]
     summary.to_csv(resolve("artifacts/tables/hybrid_ablation_summary.csv"), index=False)
     return results
-
-
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default="benchmark/config.yaml")
     args = parser.parse_args()
     run(args.config)
-
-
 if __name__ == "__main__":
     main()
