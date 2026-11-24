@@ -1,11 +1,7 @@
-                                                                             
-
 from __future__ import annotations
-
 import argparse
 import json
 import pickle
-
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -14,12 +10,9 @@ import pandas as pd
 import shap
 import torch
 from torch import nn
-
 from benchmark.common import write_json
 from benchmark.redesign_preprocessing import load_partition, paths
 from benchmark.redesign_supervised import TabularResNet
-
-
 TREE_MODELS = {
     "decision_tree": "group_tuned_decision_tree.pkl",
     "random_forest": "group_tuned_random_forest.pkl",
@@ -29,8 +22,6 @@ TREE_MODELS = {
     "family_aware_rf": "objective_multiclass_family_balanced.pkl",
 }
 ALL_MODELS = list(TREE_MODELS) + ["redesigned_meta_hybrid", "tabular_resnet"]
-
-
 def domain_sample(domain: str, seed=42, rows=200):
     output = paths()
     rng = np.random.default_rng(seed)
@@ -59,8 +50,6 @@ def domain_sample(domain: str, seed=42, rows=200):
         raise KeyError(domain)
     index = rng.choice(len(X), min(rows, len(X)), replace=False)
     return np.asarray(X[index]), features
-
-
 def feature_importance(values, feature_count):
     if isinstance(values, list):
         values = np.asarray(values)
@@ -72,8 +61,6 @@ def feature_importance(values, feature_count):
     feature_axis = feature_axes[-1] if values.shape[-1] == feature_count else feature_axes[0]
     values = np.moveaxis(values, feature_axis, -1)
     return np.mean(np.abs(values), axis=tuple(range(values.ndim - 1)))
-
-
 def explain_tree(model_name: str):
     output = paths()
     target = output["tables"] / f"shap_{model_name}.csv"
@@ -114,17 +101,12 @@ def explain_tree(model_name: str):
     ).astype(int)
     table.to_csv(target, index=False)
     return table
-
-
 class ProbabilityWrapper(nn.Module):
     def __init__(self, model):
         super().__init__()
         self.model = model
-
     def forward(self, values):
         return torch.sigmoid(self.model(values)).unsqueeze(1)
-
-
 def explain_resnet():
     output = paths()
     target = output["tables"] / "shap_tabular_resnet.csv"
@@ -166,8 +148,6 @@ def explain_resnet():
     ).astype(int)
     table.to_csv(target, index=False)
     return table
-
-
 def finalize():
     output = paths()
     tables = []
@@ -194,7 +174,6 @@ def finalize():
     comparison.to_csv(
         output["tables"] / "cross_dataset_shap_comparison.csv", index=False
     )
-                                                            
     averaged = table.groupby(["model", "feature"], as_index=False)[
         "mean_abs_shap"
     ].mean()
@@ -223,8 +202,6 @@ def finalize():
         ),
     })
     return table
-
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", choices=ALL_MODELS + ["finalize"], required=True)
@@ -235,7 +212,5 @@ def main():
         print(explain_resnet().groupby("dataset").size())
     else:
         print(explain_tree(arguments.model).groupby("dataset").size())
-
-
 if __name__ == "__main__":
     main()

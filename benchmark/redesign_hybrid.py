@@ -1,10 +1,6 @@
-                                                                              
-
 from __future__ import annotations
-
 import json
 import pickle
-
 import numpy as np
 import pandas as pd
 from sklearn.calibration import CalibratedClassifierCV
@@ -12,21 +8,16 @@ from sklearn.frozen import FrozenEstimator
 from sklearn.metrics import matthews_corrcoef
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
-
 from benchmark.common import write_json
 from benchmark.metrics import binary_metrics
 from benchmark.readiness_anomaly import (
     empirical_probability, make_scaler, train_anomaly,
 )
 from benchmark.redesign_preprocessing import config, load_partition, paths, stratified_sample
-
-
 ANOMALY_MODELS = [
     "isolation_forest", "autoencoder", "denoising_autoencoder",
     "robust_autoencoder", "variational_autoencoder", "deep_svdd",
 ]
-
-
 def _threshold_search(y, probability, fpr_cap=0.02):
     best = None
     for threshold in np.linspace(0.80, 0.999, 80):
@@ -36,8 +27,6 @@ def _threshold_search(y, probability, fpr_cap=0.02):
         ):
             best = {"threshold": float(threshold), **metrics}
     return best or {"threshold": 0.999, **binary_metrics(y, probability >= 0.999, probability)}
-
-
 def anomaly_selection(seed=42, force=False):
     output = paths()
     target = output["tables"] / "anomaly_selection.csv"
@@ -89,8 +78,6 @@ def anomaly_selection(seed=42, force=False):
         "winner": table.iloc[0].to_dict(),
     })
     return table
-
-
 def fusion_selection(seed=42, force=False):
     output = paths()
     target = output["tables"] / "conservative_fusion_selection.csv"
@@ -109,8 +96,6 @@ def fusion_selection(seed=42, force=False):
     )
     with (output["models"] / "objective_multiclass_family_balanced.pkl").open("rb") as handle:
         classifier = pickle.load(handle)
-                                                                      
-                                                                        
     raw = classifier.predict_proba(Xval)
     benign_class = int(np.unique(np.load(
         output["data"] / "cicids2017_expanded_train.npz"
@@ -187,7 +172,6 @@ def fusion_selection(seed=42, force=False):
             + np.clip(1 - cp, 1e-7, 1) * np.log(np.clip(1 - cp, 1e-7, 1))
         )
         return np.column_stack([cp, ap, entropy, np.abs(cp - ap), cp * ap])
-
     X_meta, X_select = meta_features(meta_idx), meta_features(selection_idx)
     meta_models = {}
     for regularization in (0.1, 1.0, 10.0):
@@ -218,8 +202,6 @@ def fusion_selection(seed=42, force=False):
                 "meta_intercept": float(meta.intercept_[0]),
                 **metrics,
             })
-                                                                         
-                                                                          
     for lower, upper in ((0.1, 0.9), (0.2, 0.8), (0.3, 0.7), (0.4, 0.6)):
         covered = (c <= lower) | (c >= upper)
         pred = c[covered] >= 0.5
@@ -259,8 +241,6 @@ def fusion_selection(seed=42, force=False):
         "rule": "maximize MCC subject to FPR delta <=0.02 and nonnegative corrections",
     })
     return table
-
-
 if __name__ == "__main__":
     print(anomaly_selection().head(10).to_string(index=False))
     table = fusion_selection()
