@@ -1,26 +1,17 @@
-                                                                                
-
 from __future__ import annotations
-
 import hashlib
 import json
 from pathlib import Path
-
 import pandas as pd
-
 from benchmark.common import write_json
 from benchmark.redesign_analysis import inventory
 from benchmark.redesign_preprocessing import paths
-
-
 def file_sha256(path):
     digest = hashlib.sha256()
     with path.open("rb") as handle:
         for block in iter(lambda: handle.read(8 * 1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
-
-
 def audit():
     output = paths()
     grouped = pd.read_csv(output["results"] / "grouped_ten_seed_runs.csv")
@@ -148,7 +139,5 @@ def audit():
     write_json(output["manifests"] / "final_readiness_verdict.json", verdict)
     inventory()
     return verdict
-
-
 if __name__ == "__main__":
     print(json.dumps(audit(), indent=2))
