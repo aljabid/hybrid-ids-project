@@ -1,54 +1,10 @@
-"""Task 1 (post-manuscript addendum): a second, independent external
-confirmation-style evaluation on CIC-DDoS2019.
-
-This module extends, but never imports-for-modification, the frozen
-CIC-ToN-IoT confirmation protocol in benchmark/redesign_confirmation.py.
-Every piece of the trained method is reused unmodified:
-
-  - the same 68-feature canonical schema (benchmark.redesign_data.CANONICAL)
-  - the same raw-to-canonical column mapping and validator
-    (benchmark.redesign_confirmation.column_mapping) -- CIC-DDoS2019's
-    Kaggle mirror (dhoogla/cicddos2019, the same curator already used for
-    the CIC-ToN-IoT mirror) turned out to use the identical raw
-    CICFlowMeter column-naming convention, so the mapping succeeds with
-    zero new aliases
-  - the same pooled-development-domain training sample
-    (benchmark.redesign_selective.domain_balanced_sample over
-    cicids2017 / cse_cic_ids2018 / cic_unsw_nb15)
-  - the same tuned Decision Tree + XGBoost branches
-    (benchmark.redesign_selective.tuned_pipeline, reading the same
-    group_tuning_*.json hyperparameters already frozen for every other
-    experiment in this project)
-  - the same unlabeled, target-adaptive agreement rule
-    (benchmark.redesign_selective.predict_selective)
-  - the same 10 seeds (benchmark/redesign_config.yaml: study.seeds)
-
-CIC-DDoS2019 labels are used ONLY to score already-frozen predictions.
-They are never used to select, tune, or threshold anything -- the branch
-models and thresholds are refit from the development domains only, exactly
-as for CIC-ToN-IoT, and CIC-DDoS2019 is scored after the fact. This keeps
-the comparison honest: any difference between this dataset's results and
-the CIC-ToN-IoT confirmation results reflects the target domain, not a
-different method.
-
-The dataset (431,371 rows, 17 per-attack-type train/test parquet files
-concatenated into one evaluation set) is small enough to hold in memory
-directly; the checkpointed/streaming machinery in
-redesign_confirmation.py (built for CIC-ToN-IoT's 4,847,499 rows) is not
-needed and is not reused for that reason, not because a different
-protocol was applied.
-"""
-
 from __future__ import annotations
-
 import json
 import time
 from pathlib import Path
-
 import numpy as np
 import pandas as pd
 from sklearn.metrics import matthews_corrcoef, roc_auc_score
-
 from benchmark.common import set_seed, write_json
 from benchmark.metrics import binary_metrics
 from benchmark.redesign_confirmation import column_mapping
@@ -60,17 +16,12 @@ from benchmark.redesign_selective import (
     predict_selective,
     tuned_pipeline,
 )
-
 RAW_DIR = Path("data/raw/cic_ddos2019_staging")
-
-
 def _source_files():
     files = sorted(RAW_DIR.glob("*.parquet"))
     if not files:
         raise RuntimeError(f"No CIC-DDoS2019 parquet files found under {RAW_DIR}")
     return files
-
-
 def build_aligned_cache(force: bool = False) -> Path:
     output = paths()
     cache = output["data"] / "cic_ddos2019_second_confirmation_aligned"
@@ -78,22 +29,18 @@ def build_aligned_cache(force: bool = False) -> Path:
     if metadata_path.exists() and not force:
         return cache
     cache.mkdir(parents=True, exist_ok=True)
-
     files = _source_files()
     combined = pd.concat([pd.read_parquet(f) for f in files], ignore_index=True)
-
-    mapping = column_mapping(list(combined.columns))  # reused, unmodified
+    mapping = column_mapping(list(combined.columns))
     feature_order = list(CANONICAL.values())
     features = combined[list(mapping)].rename(columns=mapping)[feature_order]
     features = features.apply(pd.to_numeric, errors="coerce")
     valid = np.isfinite(features.to_numpy(dtype=np.float64)).all(axis=1)
-
     label_raw = combined.loc[valid, "Label"].astype(str)
     y = (label_raw.str.lower() != "benign").astype(np.int8).to_numpy()
     family_to_code = {name: i for i, name in enumerate(sorted(label_raw.unique()))}
     family = label_raw.map(family_to_code).astype(np.int16).to_numpy()
     X = features.loc[valid].clip(lower=0).to_numpy(dtype=np.float32)
-
     np.save(cache / "X.npy", X)
     np.save(cache / "y.npy", y)
     np.save(cache / "family.npy", family)
@@ -137,8 +84,6 @@ def build_aligned_cache(force: bool = False) -> Path:
         ),
     })
     return cache
-
-
 def _oracle_threshold_mcc(y, probability, grid_points=197):
     y = np.asarray(y, dtype=int)
     best_mcc, best_threshold = -1.0, 0.5
@@ -147,8 +92,6 @@ def _oracle_threshold_mcc(y, probability, grid_points=197):
         if mcc > best_mcc:
             best_mcc, best_threshold = mcc, float(threshold)
     return best_mcc, best_threshold
-
-
 def run(seeds: list[int] | None = None, force: bool = False):
     output = paths()
     cache = build_aligned_cache()
@@ -157,14 +100,12 @@ def run(seeds: list[int] | None = None, force: bool = False):
     y = np.load(cache / "y.npy")
     family = np.load(cache / "family.npy")
     family_names = {code: name for name, code in metadata["family_to_code"].items()}
-
     result_path = output["results"] / "cicddos2019_second_confirmation_ten_seed_runs.csv"
     rows = (
         [] if force or not result_path.exists()
         else pd.read_csv(result_path).to_dict("records")
     )
     completed = {int(r["seed"]) for r in rows}
-
     requested_seeds = seeds or config()["study"]["seeds"]
     for seed in requested_seeds:
         if seed in completed:
@@ -179,14 +120,12 @@ def run(seeds: list[int] | None = None, force: bool = False):
             training_seconds += time.perf_counter() - started
             models[name] = model
         del X_train, y_train
-
         started = time.perf_counter()
         dt = models["decision_tree"].predict_proba(X)[:, 1].astype(np.float32)
         xgb = models["xgboost"].predict_proba(X)[:, 1].astype(np.float32)
         inference_seconds = time.perf_counter() - started
         selective = predict_selective(dt, xgb)
         mean_probability = ((dt.astype(np.float64) + xgb.astype(np.float64)) / 2).astype(np.float32)
-
         variants = (
             ("adaptive_decision_tree", np.ones(len(y), dtype=bool),
              selective["dt_prediction"], dt),
@@ -208,7 +147,6 @@ def run(seeds: list[int] | None = None, force: bool = False):
             })
         pd.DataFrame(rows).to_csv(result_path, index=False)
         print(f"cicddos2019 second-confirmation seed={seed} complete", flush=True)
-
         if seed == 42:
             prediction_dir = output["results"] / "predictions"
             prediction_dir.mkdir(parents=True, exist_ok=True)
@@ -260,7 +198,6 @@ def run(seeds: list[int] | None = None, force: bool = False):
                     "scope as the equivalent CIC-ToN-IoT diagnostic."
                 ),
             })
-
     result = pd.DataFrame(rows)
     summary = result.groupby("variant")[
         ["coverage", "accuracy", "precision", "recall", "f1", "roc_auc",
@@ -286,8 +223,6 @@ def run(seeds: list[int] | None = None, force: bool = False):
         ),
     })
     return result
-
-
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
