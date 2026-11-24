@@ -1,9 +1,5 @@
-                                                                               
-
 from __future__ import annotations
-
 import json
-
 import numpy as np
 import pandas as pd
 from sklearn.calibration import CalibratedClassifierCV
@@ -11,14 +7,11 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.frozen import FrozenEstimator
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler
-
 from benchmark.common import resolve, set_seed
 from benchmark.metrics import binary_metrics
 from benchmark.readiness_anomaly import empirical_probability, make_scaler, train_anomaly
 from benchmark.readiness_final import config, paths
 from benchmark.readiness_supervised import load_data
-
-
 def run() -> pd.DataFrame:
     output = paths()
     checkpoint = output["results"] / "unknown_family_runs.csv"
@@ -107,7 +100,5 @@ def run() -> pd.DataFrame:
         output["tables"] / "unknown_family_mean_std.csv", index=False
     )
     return result
-
-
 if __name__ == "__main__":
     run()

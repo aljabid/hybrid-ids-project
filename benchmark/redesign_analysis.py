@@ -1,11 +1,7 @@
-                                                                                
-
 from __future__ import annotations
-
 import hashlib
 import json
 from pathlib import Path
-
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -16,18 +12,14 @@ import seaborn as sns
 from scipy.spatial.distance import jensenshannon
 from scipy.stats import wilcoxon
 from sklearn.metrics import ConfusionMatrixDisplay
-
 from benchmark.common import write_json
 from benchmark.metrics import expected_calibration_error
 from benchmark.redesign_preprocessing import load_partition, paths
-
-
 plt.rcParams.update({
     "font.family": "serif", "font.size": 8, "axes.labelsize": 8,
     "axes.titlesize": 9, "legend.fontsize": 7, "figure.dpi": 150,
     "savefig.dpi": 600, "savefig.bbox": "tight",
 })
-
 METRICS = [
     "accuracy", "precision", "recall", "f1", "roc_auc", "pr_auc", "mcc",
     "tpr", "fpr", "ece", "brier", "negative_log_likelihood",
@@ -36,8 +28,6 @@ MODEL_ORDER = [
     "decision_tree", "random_forest", "xgboost", "lightgbm", "catboost",
     "family_aware_rf", "tabular_resnet", "redesigned_meta_hybrid",
 ]
-
-
 def _holm(values):
     order = np.argsort(values)
     adjusted = np.empty(len(values))
@@ -47,14 +37,10 @@ def _holm(values):
         previous = max(previous, current)
         adjusted[index] = previous
     return adjusted
-
-
 def _flatten_summary(frame, groups):
     result = frame.groupby(groups)[METRICS].agg(["mean", "std"])
     result.columns = [f"{metric}_{stat}" for metric, stat in result.columns]
     return result.reset_index()
-
-
 def summaries():
     output = paths()
     runs = pd.read_csv(output["results"] / "grouped_ten_seed_runs.csv")
@@ -81,8 +67,6 @@ def summaries():
     )
     efficiency.to_csv(output["tables"] / "efficiency_results.csv", index=False)
     return runs, summary
-
-
 def statistical_tests(runs):
     output = paths()
     rows = []
@@ -118,10 +102,7 @@ def statistical_tests(runs):
         output["tables"] / "statistical_tests_wilcoxon_holm.csv", index=False
     )
     return table
-
-
 def robustness_statistical_tests():
-                                                                                   
     output = paths()
     rows = []
     specifications = [
@@ -179,8 +160,6 @@ def robustness_statistical_tests():
         index=False,
     )
     return table
-
-
 def bootstrap_intervals(runs, repetitions=20_000):
     rng = np.random.default_rng(42)
     rows = []
@@ -198,8 +177,6 @@ def bootstrap_intervals(runs, repetitions=20_000):
     table = pd.DataFrame(rows)
     table.to_csv(paths()["tables"] / "bootstrap_confidence_intervals.csv", index=False)
     return table
-
-
 def dataset_statistics():
     output = paths()
     rows = []
@@ -244,8 +221,6 @@ def dataset_statistics():
     table = pd.DataFrame(rows)
     table.to_csv(output["tables"] / "dataset_statistics.csv", index=False)
     return table
-
-
 def reliability_and_confusion():
     output = paths()
     prediction_dir = output["results"] / "predictions"
@@ -288,8 +263,6 @@ def reliability_and_confusion():
         axis.legend(frameon=False, fontsize=5, ncol=2)
         fig.savefig(output["figures"] / f"reliability_{dataset}.png")
         plt.close(fig)
-
-
 def confirmation_diagnostics():
     output = paths()
     archive = output["results"] / "predictions" / "confirmation_seed42.npz"
@@ -337,8 +310,6 @@ def confirmation_diagnostics():
     fig.savefig(output["figures"] / "reliability_cic_ton_iot_confirmation.png")
     plt.close(fig)
     return table
-
-
 def family_error_analysis():
     output = paths()
     rows = []
@@ -373,8 +344,6 @@ def family_error_analysis():
         output["tables"] / "top_false_negative_families.csv", index=False
     )
     return table
-
-
 def hyperparameter_table():
     output = paths()
     rows = []
@@ -394,8 +363,6 @@ def hyperparameter_table():
     table = pd.DataFrame(rows)
     table.to_csv(output["tables"] / "model_hyperparameters.csv", index=False)
     return table
-
-
 def _jsd(base, target):
     combined = np.concatenate([base, target])
     edges = np.unique(np.quantile(combined, np.linspace(0, 1, 51)))
@@ -404,8 +371,6 @@ def _jsd(base, target):
     p = np.histogram(base, bins=edges)[0] + 1e-9
     q = np.histogram(target, bins=edges)[0] + 1e-9
     return float(jensenshannon(p / p.sum(), q / q.sum()) ** 2)
-
-
 def drift():
     output = paths()
     rng = np.random.default_rng(42)
@@ -441,11 +406,8 @@ def drift():
     fig.savefig(output["figures"] / "feature_drift_heatmap.png")
     plt.close(fig)
     return table
-
-
 def overview_figures(summary):
     output = paths()
-                        
     labels = [
         "Real flows\n+ provenance", "68-feature\nsemantic alignment",
         "Group/family\nseparation", "Training-only\nmodel selection",
@@ -465,7 +427,6 @@ def overview_figures(summary):
                           arrowprops={"arrowstyle": "->", "lw": .8})
     fig.savefig(output["figures"] / "overall_benchmark_workflow.png")
     plt.close(fig)
-                  
     fig, axes = plt.subplots(1, 3, figsize=(7.16, 3.2), sharey=True)
     for axis, dataset in zip(axes, summary["dataset"].unique()):
         part = summary[summary["dataset"] == dataset].set_index("model").reindex(MODEL_ORDER)
@@ -476,7 +437,6 @@ def overview_figures(summary):
         axis.set_xlabel("MCC (mean ± SD)")
     fig.savefig(output["figures"] / "performance_comparison.png")
     plt.close(fig)
-                             
     fig, axes = plt.subplots(1, 3, figsize=(7.16, 3.0), sharey=True)
     for axis, dataset in zip(axes, summary["dataset"].unique()):
         part = summary[summary["dataset"] == dataset].set_index("model").reindex(MODEL_ORDER)
@@ -490,16 +450,12 @@ def overview_figures(summary):
     axes[-1].legend(frameon=False)
     fig.savefig(output["figures"] / "calibration_comparison.png")
     plt.close(fig)
-
-
 def workbook(tables):
     output = paths()
     target = output["tables"] / "manuscript_results.xlsx"
     with pd.ExcelWriter(target, engine="openpyxl") as writer:
         for name, table in tables.items():
             table.to_excel(writer, sheet_name=name[:31], index=False)
-
-
 def claims_audit(runs, statistical):
     output = paths()
     unknown = pd.read_csv(
@@ -530,8 +486,6 @@ def claims_audit(runs, statistical):
     }
     write_json(output["manifests"] / "claims_audit.json", audit)
     return audit
-
-
 def inventory():
     output = paths()
     rows = []
@@ -566,8 +520,6 @@ def inventory():
     table = pd.DataFrame(rows)
     table.to_csv(output["root"] / "ARTIFACT_INVENTORY.csv", index=False)
     return table
-
-
 def main():
     output = paths()
     required = output["manifests"] / "confirmation_execution.json"
@@ -592,7 +544,5 @@ def main():
     })
     inventory()
     print(json.dumps(audit, indent=2))
-
-
 if __name__ == "__main__":
     main()
