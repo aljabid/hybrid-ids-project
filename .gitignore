@@ -45,8 +45,11 @@ data/processed/
 # === Heavy experiment artifacts: processed arrays, trained model binaries, raw prediction archives ===
 # Kept: tables/, figures/, manifests/ under each artifacts/<generation>/ (small, are the actual evidence)
 artifacts/**/data/
+archive/**/data/
 artifacts/**/models/
+archive/**/models/
 artifacts/**/predictions/
+archive/**/predictions/
 
 # === Legacy top-level model weights (small individually, but binary and regenerable via training scripts) ===
 legacy/models/**/saved/
