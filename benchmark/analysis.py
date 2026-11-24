@@ -1,12 +1,8 @@
-                                                                                 
-
 from __future__ import annotations
-
 import argparse
 import json
 import pickle
 from pathlib import Path
-
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -16,13 +12,11 @@ import seaborn as sns
 from scipy.spatial.distance import jensenshannon
 from scipy.stats import spearmanr, wilcoxon
 from sklearn.metrics import confusion_matrix
-
 from benchmark.common import load_config, resolve, write_json
 from benchmark.metrics import expected_calibration_error
 from benchmark.hybrid_experiments import fixed_router
 from benchmark.model_registry import MODEL_NAMES
 from benchmark.supervised import load_partition
-
 MODEL_LABELS = {
     "decision_tree": "Decision Tree",
     "random_forest": "Random Forest",
@@ -39,8 +33,6 @@ PALETTE = {
     "catboost": "#B07AA1",
     "mlp": "#76B7B2",
 }
-
-
 def _style() -> None:
     sns.set_theme(style="whitegrid", context="paper")
     plt.rcParams.update(
@@ -56,16 +48,12 @@ def _style() -> None:
             "ps.fonttype": 42,
         }
     )
-
-
 def _save(fig: plt.Figure, name: str) -> None:
     out = resolve(f"artifacts/figures/{name}")
     out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out.with_suffix(".pdf"), bbox_inches="tight")
     fig.savefig(out.with_suffix(".png"), bbox_inches="tight", dpi=600)
     plt.close(fig)
-
-
 def statistical_tests() -> pd.DataFrame:
     supervised = pd.read_csv(resolve("artifacts/results/supervised_seed_results.csv"))
     hybrid_path = resolve("artifacts/results/hybrid_seed_results.csv")
@@ -86,7 +74,6 @@ def statistical_tests() -> pd.DataFrame:
                     comparisons.append(
                         (dataset, metric, backbone, variant, baseline, proposed)
                     )
-                                                                                
     internal = supervised[supervised.dataset == "cicids2017_internal"]
     best = internal.groupby("model").mcc.mean().idxmax()
     for dataset in supervised.dataset.unique():
@@ -172,8 +159,6 @@ def statistical_tests() -> pd.DataFrame:
         table["significant_0_05"] = table.holm_adjusted_p < 0.05
     table.to_csv(resolve("artifacts/tables/statistical_tests.csv"), index=False)
     return table
-
-
 def calibration_figures() -> pd.DataFrame:
     rows = []
     for dataset in ("cicids2017_internal", "cic_ids2018_external"):
@@ -206,8 +191,6 @@ def calibration_figures() -> pd.DataFrame:
     table = pd.DataFrame(rows)
     table.to_csv(resolve("artifacts/results/calibration_bins.csv"), index=False)
     return table
-
-
 def performance_figure() -> None:
     results = pd.read_csv(resolve("artifacts/results/supervised_seed_results.csv"))
     plot = (
@@ -237,8 +220,6 @@ def performance_figure() -> None:
     fig.legend(handles, labels, loc="upper center", ncol=2, frameon=False)
     fig.tight_layout(rect=(0, 0, 1, 0.90))
     _save(fig, "supervised_performance_comparison")
-
-
 def summary_tables() -> None:
     results = pd.read_csv(resolve("artifacts/results/supervised_seed_results.csv"))
     calibration = (
@@ -268,8 +249,6 @@ def summary_tables() -> None:
         for column in efficiency.columns
     ]
     efficiency.to_csv(resolve("artifacts/tables/efficiency_summary.csv"), index=False)
-
-
 def hybrid_ablation_figure() -> None:
     path = resolve("artifacts/results/hybrid_seed_results.csv")
     if not path.exists():
@@ -304,8 +283,6 @@ def hybrid_ablation_figure() -> None:
     fig.legend(handles, labels, loc="upper center", ncol=2, frameon=False)
     fig.tight_layout(rect=(0, 0, 1, 0.90))
     _save(fig, "hybrid_ablation_comparison")
-
-
 def routing_sensitivity() -> pd.DataFrame:
     rows = []
     for dataset in ("cicids2017_internal", "cic_ids2018_external"):
@@ -323,7 +300,6 @@ def routing_sensitivity() -> pd.DataFrame:
                 0.99,
             )
             from benchmark.metrics import binary_metrics
-
             metrics = binary_metrics(data["y_true"], prediction, score)
             rows.append(
                 {
@@ -359,8 +335,6 @@ def routing_sensitivity() -> pd.DataFrame:
         fig.tight_layout()
         _save(fig, "routing_risk_coverage")
     return table
-
-
 def drift_analysis() -> pd.DataFrame:
     X_train, _, features = load_partition("cicids2017_train")
     X_external, _, _ = load_partition("cic_ids2018_external")
@@ -405,11 +379,8 @@ def drift_analysis() -> pd.DataFrame:
     fig.tight_layout()
     _save(fig, "feature_drift_heatmap")
     return table
-
-
 def shap_analysis(sample_size: int = 2000) -> pd.DataFrame:
     import shap
-
     X_internal, y_internal, features = load_partition("cicids2017_test")
     X_external, y_external, _ = load_partition("cic_ids2018_external")
     rng = np.random.default_rng(42)
@@ -434,7 +405,6 @@ def shap_analysis(sample_size: int = 2000) -> pd.DataFrame:
         ):
             indices = rng.choice(len(X), min(sample_size, len(X)), replace=False)
             if model_name == "mlp":
-                                                                              
                 indices = indices[: min(200, len(indices))]
                 background_indices = rng.choice(len(X_internal), 100, replace=False)
                 background = X_internal[background_indices]
@@ -497,8 +467,6 @@ def shap_analysis(sample_size: int = 2000) -> pd.DataFrame:
     )
     table.to_csv(resolve("artifacts/tables/shap_feature_importance.csv"), index=False)
     return table
-
-
 def error_analysis() -> pd.DataFrame:
     rows = []
     matrix_dir = resolve("artifacts/figures/confusion_matrices")
@@ -543,10 +511,6 @@ def error_analysis() -> pd.DataFrame:
                 )
     table = pd.DataFrame(rows)
     table.to_csv(resolve("artifacts/tables/error_analysis_summary.csv"), index=False)
-
-                                                                           
-                                                                            
-                                              
     features = load_partition("cic_ids2018_external")[2]
     raw = pd.read_csv(
         resolve("data/processed/cic_ids2018/cic2018_aligned_features.csv"),
@@ -592,8 +556,6 @@ def error_analysis() -> pd.DataFrame:
         resolve("artifacts/tables/error_analysis_by_traffic_family.csv"), index=False
     )
     return table
-
-
 def workflow_figure() -> None:
     fig, axis = plt.subplots(figsize=(7.16, 2.2))
     axis.axis("off")
@@ -624,16 +586,12 @@ def workflow_figure() -> None:
             )
     axis.set_title("Leakage-Safe Hybrid IDS Benchmark Workflow", fontweight="bold")
     _save(fig, "overall_benchmark_workflow")
-
-
 def excel_workbook() -> None:
     output = resolve("artifacts/tables/benchmark_tables.xlsx")
     with pd.ExcelWriter(output, engine="openpyxl") as writer:
         for path in sorted(resolve("artifacts/tables").glob("*.csv")):
             sheet = path.stem[:31]
             pd.read_csv(path).to_excel(writer, sheet_name=sheet, index=False)
-
-
 def run_all(include_shap: bool = True) -> None:
     _style()
     summary_tables()
@@ -648,14 +606,10 @@ def run_all(include_shap: bool = True) -> None:
     if include_shap:
         shap_analysis()
     excel_workbook()
-
-
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--skip-shap", action="store_true")
     args = parser.parse_args()
     run_all(include_shap=not args.skip_shap)
-
-
 if __name__ == "__main__":
     main()
