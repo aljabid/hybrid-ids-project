@@ -1,22 +1,12 @@
-   
-                              
-                                                                            
-                                                                              
-   
-
 import os
 import sys
 import numpy as np
 import pandas as pd
-
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 from utils.logger import get_logger
-
 logger = get_logger(__name__)
-
 INPUT_PATH  = "data/processed/cicids2017/cicids_raw_selected.csv"
 OUTPUT_PATH = "data/processed/cicids2017/cicids_aligned_features.csv"
-
 CICIDS2017_RAW_MAP = {
     'Total Length of Fwd Packets': '_byte_count_raw',
     'Total Fwd Packets':           '_packet_count_raw',
@@ -25,37 +15,26 @@ CICIDS2017_RAW_MAP = {
     'SYN Flag Count':              'syn_flag_count',
     'FIN Flag Count':              'fin_flag_count',
 }
-
 MI_SELECTED = [
     'byte_count', 'bytes_per_packet', 'log_byte_count',
     'ack_flag_count', 'flag_sum', 'ack_ratio',
     'fin_ratio', 'syn_ratio', 'packet_rate', 'log_packet_rate'
 ]
-
-
 def align(input_path=INPUT_PATH, output_path=OUTPUT_PATH):
     logger.info(f"Loading {input_path}")
     df = pd.read_csv(input_path, low_memory=False)
     df.columns = df.columns.str.strip()
-
-                                 
     if 'Label' in df.columns:
         df.rename(columns={'Label': 'label'}, inplace=True)
-
     logger.info("Renaming CICIDS2017 raw columns")
     df = df.rename(columns=CICIDS2017_RAW_MAP)
-
-                                                     
     df['_byte_count_raw']   = df['_byte_count_raw'].clip(lower=0)
     df['_packet_count_raw'] = df['_packet_count_raw'].clip(lower=0)
     df['packet_rate']       = df['packet_rate'].clip(lower=0)
     df['ack_flag_count']    = df['ack_flag_count'].clip(lower=0)
     df['syn_flag_count']    = df['syn_flag_count'].clip(lower=0)
     df['fin_flag_count']    = df['fin_flag_count'].clip(lower=0)
-
     eps = 1e-9
-
-                                                                          
     df['byte_count']       = df['_byte_count_raw']
     df['bytes_per_packet'] = (df['_byte_count_raw'] /
                                (df['_packet_count_raw'] + eps)).clip(lower=0)
@@ -70,34 +49,23 @@ def align(input_path=INPUT_PATH, output_path=OUTPUT_PATH):
     df['flag_sum']         = (df['syn_flag_count'] +
                                df['ack_flag_count'] +
                                df['fin_flag_count'])
-
-                                        
     missing = [f for f in MI_SELECTED if f not in df.columns]
     if missing:
         logger.error(f"Missing features after derivation: {missing}")
         raise ValueError(f"Cannot align: {missing}")
-
     df_aligned = df[MI_SELECTED + ['label']].copy()
-
-                    
     df_aligned.replace([np.inf, -np.inf], np.nan, inplace=True)
     df_aligned.dropna(inplace=True)
     df_aligned.reset_index(drop=True, inplace=True)
-
     logger.info(f"Aligned rows: {len(df_aligned)}")
     logger.info(f"Label distribution:\n{df_aligned['label'].value_counts().to_string()}")
-
-                                                                    
     for col in ['byte_count', 'log_byte_count', 'packet_rate', 'log_packet_rate']:
         logger.info(f"  {col}: min={df_aligned[col].min():.4f} "
                     f"max={df_aligned[col].max():.4f} "
                     f"mean={df_aligned[col].mean():.4f}")
-
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     df_aligned.to_csv(output_path, index=False)
     logger.info(f"Saved → {output_path}")
     return df_aligned
-
-
 if __name__ == "__main__":
     align()
