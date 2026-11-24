@@ -1,24 +1,7 @@
-"""Extend the matched random-row-versus-group-aware control (Table II) from
-the five mandatory tree/boosting models to all eight benchmarked
-configurations: family-aware multiclass Random Forest, the redesigned
-meta-fusion hybrid, and the tabular residual network.
-
-This mirrors benchmark.redesign_validation.run_classical/run_deep exactly,
-except every array comes from the random-row partitions built by
-benchmark.final_split_comparison instead of the group-aware partitions on
-disk. Frozen choices (anomaly scaler/model, meta-gate C, meta threshold,
-random-forest hyperparameters) are reused unmodified from
-manifests/architecture_freeze.json and results/group_tuning_random_forest.json
-so the only varied factor remains the split strategy, matching the
-final_split_comparison.py contract.
-"""
-
 from __future__ import annotations
-
 import gc
 import json
 import time
-
 import matplotlib as mpl
 mpl.use("Agg")
 import matplotlib.pyplot as plt
@@ -31,7 +14,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
-
 from benchmark.common import set_seed
 from benchmark.metrics import binary_metrics
 from benchmark.readiness_anomaly import empirical_probability, make_scaler, train_anomaly
@@ -46,7 +28,6 @@ from benchmark.final_split_comparison import (
     random_row_indices,
     target_counts,
 )
-
 EXTENDED_MODELS = ["family_aware_rf", "redesigned_meta_hybrid", "tabular_resnet"]
 ALL_MODELS = MANDATORY_MODELS + EXTENDED_MODELS
 LABELS = {
@@ -56,8 +37,6 @@ LABELS = {
     "redesigned_meta_hybrid": "Meta hybrid",
     "tabular_resnet": "Tabular ResNet",
 }
-
-
 def _meta_features(classifier_probability, anomaly_probability):
     cp, ap = classifier_probability, anomaly_probability
     entropy = -(
@@ -65,14 +44,10 @@ def _meta_features(classifier_probability, anomaly_probability):
         + np.clip(1 - cp, 1e-7, 1) * np.log(np.clip(1 - cp, 1e-7, 1))
     )
     return np.column_stack([cp, ap, entropy, np.abs(cp - ap), cp * ap])
-
-
 def _probability(model, X, batch=100000):
     return np.concatenate([
         model.predict_proba(X[start:start + batch]) for start in range(0, len(X), batch)
     ])
-
-
 def _dev_split(y, seed):
     development, selection = train_test_split(
         np.arange(len(y)), test_size=0.5, stratify=y, random_state=seed
@@ -81,8 +56,6 @@ def _dev_split(y, seed):
         development, test_size=0.5, stratify=y[development], random_state=seed
     )
     return calibration, meta
-
-
 def _record(rows, seed, model, y, family, probability, threshold,
             training_seconds, inference_seconds, prediction_root):
     prediction = probability >= threshold
@@ -98,8 +71,6 @@ def _record(rows, seed, model, y, family, probability, threshold,
             y_true=y.astype(np.int8), prediction=prediction.astype(np.int8),
             probability=probability.astype(np.float32), family=family,
         )
-
-
 def _train_deep_on(X, y, family, Xval, yval, seed):
     set_seed(seed)
     rng = np.random.default_rng(seed)
@@ -147,8 +118,6 @@ def _train_deep_on(X, y, family, Xval, yval, seed):
     model.load_state_dict(best_state)
     model.eval()
     return model, preprocessor
-
-
 def run_extended(force=False):
     output = paths()
     target = output["results"] / "matched_random_row_extended_ten_seed_runs.csv"
@@ -161,7 +130,6 @@ def run_extended(force=False):
     seeds = json.loads((output["manifests"] / "final_method_freeze.json").read_text())["seeds"]
     prediction_root = output["results"] / "predictions"
     prediction_root.mkdir(parents=True, exist_ok=True)
-
     for seed in seeds:
         split = random_row_indices(y, seed, counts)
         train_idx, val_idx, test_idx = split["train"], split["validation"], split["internal_test"]
@@ -170,7 +138,6 @@ def run_extended(force=False):
         Xtest, ytest, family_test = X[test_idx], y[test_idx], family[test_idx]
         val_sample = stratified_sample(yval_pool, config()["selection"]["validation_rows"], seed)
         Xval, yval = Xval_pool[val_sample], yval_pool[val_sample]
-
         need_family = (seed, "family_aware_rf") not in completed
         need_hybrid = (seed, "redesigned_meta_hybrid") not in completed
         if need_family or need_hybrid:
@@ -184,7 +151,6 @@ def run_extended(force=False):
             started = time.perf_counter()
             classifier.fit(Xtr[fit_index], family_tr[fit_index])
             classifier_training = time.perf_counter() - started
-
             benign_class = int(np.unique(family_tr[ytr == 0])[0])
             classes = list(classifier.classes_)
             val_raw = _probability(classifier, Xval)
@@ -193,7 +159,6 @@ def run_extended(force=False):
             calibrator = IsotonicRegression(out_of_bounds="clip").fit(
                 val_attack[calibration], yval[calibration]
             )
-
             rng = np.random.default_rng(seed)
             normal = Xtr[ytr == 0]
             normal_fit = normal[
@@ -212,7 +177,6 @@ def run_extended(force=False):
                 C=architecture["meta_C"], class_weight="balanced", random_state=seed, max_iter=1000,
             ).fit(_meta_features(val_calibrated[meta], val_anomaly[meta]), yval[meta])
             hybrid_training = time.perf_counter() - started
-
             started_inference = time.perf_counter()
             raw = _probability(classifier, Xtest)
             classifier_probability = calibrator.transform(1 - raw[:, classes.index(benign_class)])
@@ -223,7 +187,6 @@ def run_extended(force=False):
                 _meta_features(classifier_probability, anomaly_probability)
             )[:, 1]
             inference = time.perf_counter() - started_inference
-
             if need_family:
                 _record(rows, seed, "family_aware_rf", ytest, family_test,
                         classifier_probability, 0.80, classifier_training, inference, prediction_root)
@@ -235,7 +198,6 @@ def run_extended(force=False):
             print(f"random-row extended seed={seed} family_aware_rf+redesigned_meta_hybrid done", flush=True)
             del classifier, anomaly_detector
             gc.collect()
-
         if (seed, "tabular_resnet") not in completed:
             started = time.perf_counter()
             model, preprocessor = _train_deep_on(Xtr, ytr, family_tr, Xval, yval, seed)
@@ -254,10 +216,7 @@ def run_extended(force=False):
             print(f"random-row extended seed={seed} tabular_resnet done", flush=True)
             del model, preprocessor
             gc.collect()
-
     return pd.DataFrame(rows)
-
-
 def holm_adjust(frame: pd.DataFrame):
     order = np.argsort(frame["p_raw"].to_numpy())
     adjusted = np.empty(len(frame), dtype=float)
@@ -270,26 +229,21 @@ def holm_adjust(frame: pd.DataFrame):
     result["p_holm"] = adjusted
     result["significant_0_05"] = result["p_holm"] < 0.05
     return result
-
-
 def analyze_all():
     output = paths()
     mandatory_random = pd.read_csv(output["results"] / "matched_random_row_ten_seed_runs.csv")
     extended_random = pd.read_csv(output["results"] / "matched_random_row_extended_ten_seed_runs.csv")
     random_runs = pd.concat([mandatory_random, extended_random], ignore_index=True)
-
     group_runs = pd.read_csv(output["results"] / "grouped_ten_seed_runs.csv")
     group_runs = group_runs[
         (group_runs["dataset"] == "cicids2017_group_test") & group_runs["model"].isin(ALL_MODELS)
     ].copy()
     group_runs["split_strategy"] = "group_aware"
-
     combined = pd.concat([
         group_runs[["seed", "model", "split_strategy", *METRICS]],
         random_runs[["seed", "model", "split_strategy", *METRICS]],
     ], ignore_index=True)
     combined.to_csv(output["tables"] / "matched_split_combined_metrics.csv", index=False)
-
     summary_rows, test_rows = [], []
     for model in ALL_MODELS:
         group = combined[(combined["model"] == model) & (combined["split_strategy"] == "group_aware")].sort_values("seed")
@@ -313,13 +267,11 @@ def analyze_all():
                 "wilcoxon_statistic": float(statistic), "p_raw": float(p_value),
             })
         summary_rows.append(summary)
-
     summary_frame = pd.DataFrame(summary_rows)
     tests = holm_adjust(pd.DataFrame(test_rows))
     summary_frame.to_csv(output["tables"] / "matched_split_summary.csv", index=False)
     tests.to_csv(output["tables"] / "matched_split_wilcoxon_holm.csv", index=False)
     make_figure(summary_frame, output["figures"])
-
     manifest = {
         "status": "VALIDATED" if (
             len(random_runs) == len(ALL_MODELS) * 10 and len(group_runs) == len(ALL_MODELS) * 10
@@ -340,8 +292,6 @@ def analyze_all():
     if manifest["status"] != "VALIDATED":
         raise RuntimeError(json.dumps(manifest, indent=2))
     return summary_frame, tests, manifest
-
-
 def make_figure(summary: pd.DataFrame, figure_root):
     mpl.rcParams.update({
         "font.family": "DejaVu Sans", "font.size": 8, "axes.labelsize": 8,
@@ -373,15 +323,11 @@ def make_figure(summary: pd.DataFrame, figure_root):
         fig.savefig(figure_root / f"matched_split_mcc.{suffix}", bbox_inches="tight")
     fig.savefig(figure_root / "matched_split_mcc.png", dpi=600, bbox_inches="tight")
     plt.close(fig)
-
-
 def main():
     run_extended()
     summary, tests, manifest = analyze_all()
     print(summary.to_string(index=False), flush=True)
     print(tests.to_string(index=False), flush=True)
     print(json.dumps(manifest, indent=2), flush=True)
-
-
 if __name__ == "__main__":
     main()

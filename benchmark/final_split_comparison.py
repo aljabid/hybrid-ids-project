@@ -1,11 +1,9 @@
 from __future__ import annotations
-
 import gc
 import hashlib
 import json
 import time
 from pathlib import Path
-
 import matplotlib as mpl
 mpl.use("Agg")
 import matplotlib.pyplot as plt
@@ -15,12 +13,9 @@ from scipy.stats import wilcoxon
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.tree import DecisionTreeClassifier
-
 from benchmark.common import set_seed
 from benchmark.metrics import binary_metrics
 from benchmark.redesign_preprocessing import RobustFlowTransformer, config, load_partition, paths
-
-
 METRICS = ["mcc", "tpr", "fpr", "pr_auc", "ece"]
 MODEL_NAMES = ["decision_tree", "random_forest", "xgboost", "lightgbm", "catboost"]
 MODEL_LABELS = {
@@ -30,8 +25,6 @@ MODEL_LABELS = {
     "lightgbm": "LightGBM",
     "catboost": "CatBoost",
 }
-
-
 def model_and_space(name, seed):
     if name == "decision_tree":
         return DecisionTreeClassifier(class_weight="balanced", random_state=seed)
@@ -59,8 +52,6 @@ def model_and_space(name, seed):
             allow_writing_files=False,
         )
     raise KeyError(name)
-
-
 def selected_transformer(seed=42):
     features = load_partition("train")[4]
     log_indices = tuple(
@@ -71,8 +62,6 @@ def selected_transformer(seed=42):
     return RobustFlowTransformer(
         method="robust", log_indices=log_indices, random_state=seed
     )
-
-
 def family_balanced_indices(family, y, seed, benign_cap=100000, per_family=20000):
     rng = np.random.default_rng(seed)
     selected = []
@@ -83,16 +72,12 @@ def family_balanced_indices(family, y, seed, benign_cap=100000, per_family=20000
     result = np.concatenate(selected)
     rng.shuffle(result)
     return result
-
-
 def file_sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
-
-
 def pooled_cicids2017():
     partitions = [load_partition(name) for name in ("train", "validation", "internal_test")]
     features = partitions[0][4]
@@ -103,16 +88,12 @@ def pooled_cicids2017():
     family = np.concatenate([item[2] for item in partitions])
     source_group = np.concatenate([item[3] for item in partitions])
     return X, y, family, source_group, features
-
-
 def target_counts():
     result = {}
     for name in ("train", "validation", "internal_test"):
         y = load_partition(name)[1]
         result[name] = {label: int(np.sum(y == label)) for label in (0, 1)}
     return result
-
-
 def random_row_indices(y: np.ndarray, seed: int, counts: dict):
     rng = np.random.default_rng(seed)
     split = {name: [] for name in ("train", "validation", "internal_test")}
@@ -130,15 +111,11 @@ def random_row_indices(y: np.ndarray, seed: int, counts: dict):
         split[name] = np.concatenate(split[name])
         rng.shuffle(split[name])
     return split
-
-
 def batch_probability(model, X, batch_size=100000):
     return np.concatenate([
         model.predict_proba(X[start : start + batch_size])[:, 1]
         for start in range(0, len(X), batch_size)
     ])
-
-
 def run_random_row(force=False):
     output = paths()
     target = output["results"] / "matched_random_row_ten_seed_runs.csv"
@@ -222,8 +199,6 @@ def run_random_row(force=False):
     validation = pd.DataFrame(validation_rows).drop_duplicates(["seed", "partition"])
     validation.to_csv(output["tables"] / "matched_split_partition_validation.csv", index=False)
     return pd.DataFrame(rows)
-
-
 def holm_adjust(frame: pd.DataFrame):
     order = np.argsort(frame["p_raw"].to_numpy())
     adjusted = np.empty(len(frame), dtype=float)
@@ -236,8 +211,6 @@ def holm_adjust(frame: pd.DataFrame):
     result["p_holm"] = adjusted
     result["significant_0_05"] = result["p_holm"] < 0.05
     return result
-
-
 def analyze():
     output = paths()
     random_runs = pd.read_csv(output["results"] / "matched_random_row_ten_seed_runs.csv")
@@ -319,8 +292,6 @@ def analyze():
     if manifest["status"] != "VALIDATED":
         raise RuntimeError(json.dumps(manifest, indent=2))
     return summary_frame, tests, manifest
-
-
 def make_figure(summary: pd.DataFrame, figure_root: Path):
     mpl.rcParams.update({
         "font.family": "DejaVu Sans",
@@ -370,15 +341,11 @@ def make_figure(summary: pd.DataFrame, figure_root: Path):
         fig.savefig(figure_root / f"matched_split_mcc.{suffix}", bbox_inches="tight")
     fig.savefig(figure_root / "matched_split_mcc.png", dpi=600, bbox_inches="tight")
     plt.close(fig)
-
-
 def main():
     run_random_row()
     summary, tests, manifest = analyze()
     print(summary.to_string(index=False), flush=True)
     print(tests.to_string(index=False), flush=True)
     print(json.dumps(manifest, indent=2), flush=True)
-
-
 if __name__ == "__main__":
     main()
