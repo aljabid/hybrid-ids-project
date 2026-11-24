@@ -1,14 +1,10 @@
-                                                                              
-
 from __future__ import annotations
-
 import json
 import pickle
 import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Protocol
-
 import numpy as np
 import pandas as pd
 import torch
@@ -21,16 +17,11 @@ from sklearn.preprocessing import (
 from sklearn.svm import OneClassSVM
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
-
 from benchmark.common import resolve, set_seed, write_json
 from benchmark.readiness_supervised import load_data
-
-
 class ClippedMinMaxScaler(MinMaxScaler):
     def transform(self, X):
         return np.clip(super().transform(X), 0.0, 1.0)
-
-
 def make_scaler(name: str, seed: int):
     if name == "minmax":
         return MinMaxScaler()
@@ -48,8 +39,6 @@ def make_scaler(name: str, seed: int):
             random_state=seed,
         )
     raise KeyError(name)
-
-
 class DenseAutoencoder(nn.Module):
     def __init__(self, input_dim: int):
         super().__init__()
@@ -63,11 +52,8 @@ class DenseAutoencoder(nn.Module):
             nn.Linear(16, 32), nn.ReLU(),
             nn.Linear(32, input_dim),
         )
-
     def forward(self, X):
         return self.decoder(self.encoder(X))
-
-
 class VariationalAutoencoder(nn.Module):
     def __init__(self, input_dim: int):
         super().__init__()
@@ -77,7 +63,6 @@ class VariationalAutoencoder(nn.Module):
         self.decoder = nn.Sequential(
             nn.Linear(8, 32), nn.ReLU(), nn.Linear(32, input_dim)
         )
-
     def forward(self, X):
         hidden = self.hidden(X)
         mu, logvar = self.mu(hidden), self.logvar(hidden)
@@ -86,8 +71,6 @@ class VariationalAutoencoder(nn.Module):
         else:
             z = mu
         return self.decoder(z), mu, logvar
-
-
 class SVDDNetwork(nn.Module):
     def __init__(self, input_dim: int):
         super().__init__()
@@ -96,17 +79,13 @@ class SVDDNetwork(nn.Module):
             nn.Linear(32, 16), nn.ReLU(),
             nn.Linear(16, 8),
         )
-
     def forward(self, X):
         return self.network(X)
-
-
 @dataclass
 class NeuralAnomaly:
     name: str
     model: nn.Module
     center: np.ndarray | None = None
-
     def score(self, X: np.ndarray, batch_size: int = 4096) -> np.ndarray:
         values = []
         self.model.eval()
@@ -127,17 +106,12 @@ class NeuralAnomaly:
                     raise KeyError(self.name)
                 values.append(score.cpu().numpy())
         return np.concatenate(values)
-
-
 @dataclass
 class SklearnAnomaly:
     name: str
     model: object
-
     def score(self, X: np.ndarray) -> np.ndarray:
         return -np.asarray(self.model.decision_function(X), dtype=float)
-
-
 def _loader(X: np.ndarray, seed: int, batch_size: int = 256):
     generator = torch.Generator().manual_seed(seed)
     return DataLoader(
@@ -146,8 +120,6 @@ def _loader(X: np.ndarray, seed: int, batch_size: int = 256):
         shuffle=True,
         generator=generator,
     )
-
-
 def train_anomaly(name: str, X_normal: np.ndarray, seed: int, epochs: int = 20):
     set_seed(seed)
     if name == "isolation_forest":
@@ -208,7 +180,6 @@ def train_anomaly(name: str, X_normal: np.ndarray, seed: int, epochs: int = 20):
                 )
                 loss.backward()
                 optimizer.step()
-                                                                       
         return NeuralAnomaly("autoencoder", model)
     if name == "variational_autoencoder":
         model = VariationalAutoencoder(X_normal.shape[1])
@@ -252,13 +223,9 @@ def train_anomaly(name: str, X_normal: np.ndarray, seed: int, epochs: int = 20):
                 optimizer.step()
         return NeuralAnomaly(name, model, center=center)
     raise KeyError(name)
-
-
 def empirical_probability(scores: np.ndarray, normal_reference: np.ndarray) -> np.ndarray:
     ordered = np.sort(np.asarray(normal_reference))
     return np.searchsorted(ordered, scores, side="right") / len(ordered)
-
-
 def select_threshold(
     y: np.ndarray, probability: np.ndarray, quantiles: list[float]
 ) -> tuple[float, float]:
@@ -268,8 +235,6 @@ def select_threshold(
         if mcc > best_mcc:
             best_threshold, best_mcc = threshold, float(mcc)
     return float(best_threshold), float(best_mcc)
-
-
 def pilot_selection(seed: int = 42) -> pd.DataFrame:
     config = yaml_safe_load()
     root = resolve(config["paths"]["root"])
@@ -278,9 +243,6 @@ def pilot_selection(seed: int = 42) -> pd.DataFrame:
     X_train, y_train, _, _ = load_data("train")
     X_validation, y_validation, _, _ = load_data("validation")
     rng = np.random.default_rng(seed)
-                                                                               
-                                                                          
-                                                                           
     validation_cap = int(config["selection"].get("validation_selection_cap", 100000))
     per_class = validation_cap // 2
     validation_indices = np.concatenate(
@@ -355,15 +317,10 @@ def pilot_selection(seed: int = 42) -> pd.DataFrame:
         },
     )
     return table
-
-
 def yaml_safe_load() -> dict:
     import yaml
-
     with resolve("benchmark/readiness_config.yaml").open() as handle:
         return yaml.safe_load(handle)
-
-
 if __name__ == "__main__":
     result = pilot_selection()
     print(result.head(10).to_string(index=False))
