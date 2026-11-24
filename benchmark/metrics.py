@@ -1,7 +1,4 @@
-                                                                                
-
 from __future__ import annotations
-
 import numpy as np
 from sklearn.metrics import (
     accuracy_score,
@@ -16,12 +13,9 @@ from sklearn.metrics import (
     recall_score,
     roc_auc_score,
 )
-
-
 def expected_calibration_error(
     y_true: np.ndarray, probability: np.ndarray, n_bins: int = 10
 ) -> tuple[float, list[dict]]:
-                                                                                
     y_true = np.asarray(y_true, dtype=int)
     probability = np.clip(np.asarray(probability, dtype=float), 0.0, 1.0)
     prediction = (probability >= 0.5).astype(int)
@@ -53,8 +47,6 @@ def expected_calibration_error(
             }
         )
     return float(ece), details
-
-
 def binary_metrics(
     y_true: np.ndarray, y_pred: np.ndarray, probability: np.ndarray
 ) -> dict[str, float | int]:
@@ -85,4 +77,3 @@ def binary_metrics(
         "fn": int(fn),
         "tp": int(tp),
     }
-

@@ -1,14 +1,8 @@
-                                                                 
-
 from __future__ import annotations
-
 from typing import Any
-
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.tree import DecisionTreeClassifier
-
-
 def model_and_space(name: str, seed: int, positive_weight: float) -> tuple[Any, dict]:
     if name == "decision_tree":
         model = DecisionTreeClassifier(
@@ -32,7 +26,6 @@ def model_and_space(name: str, seed: int, positive_weight: float) -> tuple[Any, 
         }
     elif name == "xgboost":
         from xgboost import XGBClassifier
-
         model = XGBClassifier(
             random_state=seed,
             n_jobs=1,
@@ -49,7 +42,6 @@ def model_and_space(name: str, seed: int, positive_weight: float) -> tuple[Any, 
         }
     elif name == "lightgbm":
         from lightgbm import LGBMClassifier
-
         model = LGBMClassifier(
             random_state=seed,
             n_jobs=1,
@@ -65,7 +57,6 @@ def model_and_space(name: str, seed: int, positive_weight: float) -> tuple[Any, 
         }
     elif name == "catboost":
         from catboost import CatBoostClassifier
-
         model = CatBoostClassifier(
             random_seed=seed,
             verbose=False,
@@ -95,8 +86,6 @@ def model_and_space(name: str, seed: int, positive_weight: float) -> tuple[Any, 
     else:
         raise KeyError(f"Unknown model: {name}")
     return model, space
-
-
 MODEL_NAMES = [
     "decision_tree",
     "random_forest",
