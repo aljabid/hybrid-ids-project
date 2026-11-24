@@ -1,16 +1,11 @@
-                                                                                   
-
 from __future__ import annotations
-
 import json
 import pickle
-
 import numpy as np
 import pandas as pd
 from sklearn.isotonic import IsotonicRegression
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
-
 from benchmark.metrics import binary_metrics
 from benchmark.readiness_anomaly import empirical_probability, make_scaler, train_anomaly
 from benchmark.redesign_preprocessing import config, load_partition, paths, stratified_sample
@@ -18,8 +13,6 @@ from benchmark.redesign_supervised import model_and_space, selected_transformer
 from benchmark.redesign_validation import (
     _meta_features, architecture_freeze, split_indices, train_test_indices,
 )
-
-
 def run():
     output = paths()
     checkpoint = output["results"] / "unknown_family_ten_seed_runs.csv"
@@ -125,7 +118,5 @@ def run():
         output["tables"] / "unknown_family_mean_std.csv", index=False
     )
     return result
-
-
 if __name__ == "__main__":
     run()
