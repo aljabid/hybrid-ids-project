@@ -1,17 +1,12 @@
-                                                                    
-
 from __future__ import annotations
-
 import argparse
 import json
 import pickle
 from pathlib import Path
-
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
-
 from benchmark.common import load_config, resolve, set_seed
 from benchmark.hybrid_experiments import (
     anomaly_probability,
@@ -21,7 +16,6 @@ from benchmark.hybrid_experiments import (
 )
 from benchmark.metrics import binary_metrics
 from benchmark.model_registry import model_and_space
-
 RAW_MAP = {
     "Total Length of Fwd Packets": "_byte_count",
     "Total Fwd Packets": "_packet_count",
@@ -35,8 +29,6 @@ FEATURES = [
     "flag_sum", "ack_ratio", "fin_ratio", "syn_ratio", "packet_rate",
     "log_packet_rate",
 ]
-
-
 def build_family_dataset(
     max_normal: int | None = 60000,
     max_per_attack: int | None = 20000,
@@ -112,16 +104,12 @@ def build_family_dataset(
         {"attack_family": data["Label"].value_counts().index, "rows": data["Label"].value_counts().values}
     ).to_csv(resolve("artifacts/tables/attack_family_statistics.csv"), index=False)
     return output
-
-
 def run(config_path: str = "benchmark/config.yaml") -> pd.DataFrame:
     config = load_config(resolve(config_path))
     data = np.load(build_family_dataset(), allow_pickle=False)
     X, family = data["X"], data["family"].astype(str)
     normal_mask = np.char.upper(family) == "BENIGN"
     counts = pd.Series(family[~normal_mask]).value_counts()
-                                                                               
-                                                                             
     suitable = counts[counts >= 500].head(5).index.tolist()
     tuning = [
         json.loads(path.read_text())
@@ -154,9 +142,6 @@ def run(config_path: str = "benchmark/config.yaml") -> pd.DataFrame:
             if len(normal_train) > 30000
             else normal_train
         )
-                                                                                
-                                                                               
-                                                                           
         scaler = MinMaxScaler().fit(X[normal_fit])
         ae_indices = (
             rng.choice(normal_fit, 10000, replace=False)
@@ -190,8 +175,6 @@ def run(config_path: str = "benchmark/config.yaml") -> pd.DataFrame:
             }
             estimator.set_params(**parameters)
             if model_name == "random_forest":
-                                                                             
-                                                                             
                 estimator.set_params(n_estimators=50)
             estimator.fit(scaler.transform(X[train_indices]), y_train)
             attack_indices = np.flatnonzero(held_mask)
@@ -238,8 +221,6 @@ def run(config_path: str = "benchmark/config.yaml") -> pd.DataFrame:
     ]
     summary.to_csv(resolve("artifacts/tables/unknown_attack_summary.csv"), index=False)
     return results
-
-
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default="benchmark/config.yaml")
@@ -248,7 +229,5 @@ def main() -> None:
     build_family_dataset()
     if not args.build_only:
         run(args.config)
-
-
 if __name__ == "__main__":
     main()

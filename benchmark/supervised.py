@@ -1,7 +1,4 @@
-                                                                  
-
 from __future__ import annotations
-
 import argparse
 from functools import partial
 import json
@@ -10,7 +7,6 @@ import pickle
 import threading
 import time
 from pathlib import Path
-
 import numpy as np
 import pandas as pd
 import psutil
@@ -19,42 +15,31 @@ from sklearn.metrics import make_scorer, matthews_corrcoef
 from sklearn.model_selection import RandomizedSearchCV, StratifiedKFold
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler
-
 from benchmark.common import load_config, resolve, set_seed, write_json
 from benchmark.metrics import binary_metrics
 from benchmark.model_registry import MODEL_NAMES, model_and_space
-
-
 def load_partition(name: str) -> tuple[np.ndarray, np.ndarray, list[str]]:
     data = np.load(resolve(f"artifacts/data/{name}.npz"), allow_pickle=False)
     return data["X"], data["y"], data["features"].astype(str).tolist()
-
-
 class PeakMemoryMonitor:
     def __init__(self, interval: float = 0.01):
         self.interval = interval
         self.peak = 0
         self._stop = threading.Event()
         self._thread: threading.Thread | None = None
-
     def __enter__(self):
         process = psutil.Process(os.getpid())
-
         def poll():
             while not self._stop.is_set():
                 self.peak = max(self.peak, process.memory_info().rss)
                 self._stop.wait(self.interval)
-
         self._thread = threading.Thread(target=poll, daemon=True)
         self._thread.start()
         return self
-
     def __exit__(self, *_):
         self._stop.set()
         if self._thread:
             self._thread.join()
-
-
 def _pipeline(
     name: str, seed: int, positive_weight: float, k: int, n_features: int
 ) -> tuple[Pipeline, dict]:
@@ -74,8 +59,6 @@ def _pipeline(
         ]
     )
     return pipe, space
-
-
 def tune_models(config_path: str = "benchmark/config.yaml", force: bool = False) -> pd.DataFrame:
     config = load_config(resolve(config_path))
     X, y, features = load_partition("cicids2017_train")
@@ -95,7 +78,6 @@ def tune_models(config_path: str = "benchmark/config.yaml", force: bool = False)
         X_tune, y_tune = X[selected], y[selected]
     else:
         X_tune, y_tune = X, y
-
     scorer = make_scorer(matthews_corrcoef)
     cv = StratifiedKFold(
         n_splits=int(exp["cv_folds"]), shuffle=True, random_state=seed
@@ -153,15 +135,11 @@ def tune_models(config_path: str = "benchmark/config.yaml", force: bool = False)
     resolve("artifacts/tables").mkdir(parents=True, exist_ok=True)
     table.to_csv(resolve("artifacts/tables/hyperparameter_summary.csv"), index=False)
     return table
-
-
 def _predict_probability(model, X: np.ndarray) -> np.ndarray:
     if hasattr(model, "predict_proba"):
         return np.asarray(model.predict_proba(X))[:, 1]
     score = np.asarray(model.decision_function(X))
     return 1.0 / (1.0 + np.exp(-score))
-
-
 def run_benchmark(config_path: str = "benchmark/config.yaml", force: bool = False) -> pd.DataFrame:
     config = load_config(resolve(config_path))
     seeds = [int(seed) for seed in config["experiments"]["seeds"]]
@@ -242,8 +220,6 @@ def run_benchmark(config_path: str = "benchmark/config.yaml", force: bool = Fals
     ]
     summary.to_csv(resolve("artifacts/tables/supervised_benchmark_summary.csv"), index=False)
     return results
-
-
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default="benchmark/config.yaml")
@@ -254,7 +230,5 @@ def main() -> None:
         tune_models(args.config, args.force)
     if args.mode in {"benchmark", "all"}:
         run_benchmark(args.config, args.force)
-
-
 if __name__ == "__main__":
     main()
