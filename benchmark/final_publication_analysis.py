@@ -1,19 +1,14 @@
 from __future__ import annotations
-
 import json
 from pathlib import Path
-
 import matplotlib as mpl
 mpl.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.stats import spearmanr
-
 from benchmark.metrics import expected_calibration_error
 from benchmark.redesign_preprocessing import paths
-
-
 MODELS = ["decision_tree", "random_forest", "xgboost", "lightgbm", "catboost"]
 LABELS = {
     "decision_tree": "Decision Tree",
@@ -28,24 +23,16 @@ FAMILY = {
     9: "Infiltration", 10: "PortScan", 11: "SSH-Patator",
     12: "Web Attack Brute Force", 13: "Web Attack Sql Injection", 14: "Web Attack XSS",
 }
-
-
 def style():
     mpl.rcParams.update({"font.family": "DejaVu Sans", "font.size": 7, "axes.labelsize": 8, "xtick.labelsize": 6, "ytick.labelsize": 6, "axes.linewidth": 0.7, "pdf.fonttype": 42, "ps.fonttype": 42})
-
-
 def save(fig, root: Path, name: str):
     for suffix in ("pdf", "svg"):
         fig.savefig(root / f"{name}.{suffix}", bbox_inches="tight")
     fig.savefig(root / f"{name}.png", dpi=600, bbox_inches="tight")
     plt.close(fig)
-
-
 def load_prediction(root: Path, name: str):
     data = np.load(root / name, allow_pickle=False)
     return data["y_true"], data["prediction"], data["probability"], data["family"]
-
-
 def error_analysis(output):
     prediction_root = output["results"] / "predictions"
     rows = []
@@ -68,8 +55,6 @@ def error_analysis(output):
     table = pd.DataFrame(rows)
     table.to_csv(output["tables"] / "matched_split_seed42_family_errors.csv", index=False)
     return table
-
-
 def reliability(output):
     prediction_root = output["results"] / "predictions"
     datasets = [("CICIDS2017 group", "{model}_cicids2017_group_test_seed_42.npz"), ("CSE-CIC-IDS2018", "{model}_cse_cic_ids2018_seed_42.npz"), ("CIC-UNSW-NB15", "{model}_cic_unsw_nb15_seed_42.npz")]
@@ -97,8 +82,6 @@ def reliability(output):
     table = pd.DataFrame(rows)
     table.to_csv(output["tables"] / "reliability_mandatory_models_seed42.csv", index=False)
     return table
-
-
 def mcc_ece(output):
     summary = pd.read_csv(output["tables"] / "matched_split_summary.csv")
     rows = []
@@ -123,8 +106,6 @@ def mcc_ece(output):
     axis.grid(color="0.88", linewidth=0.5)
     save(fig, output["figures"], "matched_split_mcc_ece")
     return table
-
-
 def jsd_performance(output):
     drift = pd.read_csv(output["tables"] / "feature_drift_jsd.csv")
     benchmark = pd.read_csv(output["tables"] / "benchmark_mean_std.csv")
@@ -154,8 +135,6 @@ def jsd_performance(output):
     table = pd.DataFrame(rows)
     table.to_csv(output["tables"] / "jsd_performance_exploratory.csv", index=False)
     return table
-
-
 def main():
     output = paths()
     errors = error_analysis(output)
@@ -165,7 +144,5 @@ def main():
     manifest = {"status": "VALIDATED", "tasks": ["focused_seed42_error_analysis", "seed42_reliability_diagrams", "mcc_ece_exploratory", "jsd_performance_descriptive"], "error_rows": len(errors), "reliability_rows": len(reliability_table), "mcc_ece_rows": len(calibration), "jsd_rows": len(drift), "limitations": ["Reliability diagrams use stored seed-42 predictions", "MCC-ECE scatter uses ten matched split/model aggregate points", "JSD-performance table has two comparable development domains and is descriptive only"]}
     (output["manifests"] / "final_publication_analysis.json").write_text(json.dumps(manifest, indent=2))
     print(json.dumps(manifest, indent=2))
-
-
 if __name__ == "__main__":
     main()
