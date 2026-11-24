@@ -1,11 +1,7 @@
-                                                                            
-
 from __future__ import annotations
-
 import json
 import pickle
 from pathlib import Path
-
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -17,18 +13,15 @@ import yaml
 from scipy.spatial.distance import jensenshannon
 from scipy.stats import wilcoxon
 from sklearn.metrics import ConfusionMatrixDisplay
-
 from benchmark.common import resolve, write_json
 from benchmark.metrics import expected_calibration_error
 from benchmark.readiness_final import load_external, paths
 from benchmark.readiness_supervised import load_data
-
 plt.rcParams.update({
     "font.family": "serif", "font.size": 8, "axes.labelsize": 8,
     "axes.titlesize": 9, "legend.fontsize": 7, "figure.dpi": 150,
     "savefig.dpi": 600, "savefig.bbox": "tight",
 })
-
 FAMILY_NAMES = {
     "cicids2017_internal": {
         "BENIGN": "Benign",
@@ -39,8 +32,6 @@ FAMILY_NAMES = {
         5: "Fuzzers", 6: "Generic", 7: "Reconnaissance", 8: "Shellcode", 9: "Worms",
     },
 }
-
-
 def _runs() -> pd.DataFrame:
     root = paths()["results"]
     return pd.concat(
@@ -50,8 +41,6 @@ def _runs() -> pd.DataFrame:
         ],
         ignore_index=True,
     )
-
-
 def summary_tables() -> dict[str, pd.DataFrame]:
     output = paths()
     runs = _runs()
@@ -80,8 +69,6 @@ def summary_tables() -> dict[str, pd.DataFrame]:
     efficiency.reset_index(inplace=True)
     efficiency.to_csv(output["tables"] / "efficiency_results.csv", index=False)
     return {"benchmark": grouped, "calibration": calibration, "efficiency": efficiency}
-
-
 def _holm(pvalues: list[float]) -> list[float]:
     order = np.argsort(pvalues)
     adjusted = np.empty(len(pvalues))
@@ -91,8 +78,6 @@ def _holm(pvalues: list[float]) -> list[float]:
         running = max(running, value)
         adjusted[index] = running
     return adjusted.tolist()
-
-
 def statistical_tests() -> pd.DataFrame:
     output = paths()
     runs = _runs()
@@ -120,8 +105,6 @@ def statistical_tests() -> pd.DataFrame:
     table["significant_0_05"] = table["p_holm"] <= 0.05
     table.to_csv(output["tables"] / "statistical_tests_wilcoxon_holm.csv", index=False)
     return table
-
-
 def family_error_tables() -> pd.DataFrame:
     output = paths()
     rows = []
@@ -144,8 +127,6 @@ def family_error_tables() -> pd.DataFrame:
     table = pd.DataFrame(rows)
     table.to_csv(output["tables"] / "family_error_analysis_seed_42.csv", index=False)
     return table
-
-
 def reliability_and_confusion() -> None:
     output = paths()
     for dataset in FAMILY_NAMES:
@@ -164,7 +145,6 @@ def reliability_and_confusion() -> None:
         fig.supxlabel("Predicted confidence"); fig.supylabel("Empirical accuracy")
         fig.savefig(output["figures"] / f"reliability_{dataset}.png")
         plt.close(fig)
-                                                                          
     for archive in sorted((output["results"] / "predictions").glob("*_seed_42.npz")):
         data = np.load(archive)
         fig, axis = plt.subplots(figsize=(2.6, 2.3))
@@ -175,8 +155,6 @@ def reliability_and_confusion() -> None:
         axis.set_title(archive.stem.replace("_", " "))
         fig.savefig(output["figures"] / f"confusion_{archive.stem}.png")
         plt.close(fig)
-
-
 def drift() -> pd.DataFrame:
     output = paths()
     X_train, _, _, features = load_data("train")
@@ -210,8 +188,6 @@ def drift() -> pd.DataFrame:
     fig.savefig(output["figures"] / "feature_drift_heatmap.png")
     plt.close(fig)
     return table
-
-
 def performance_plot(summary: pd.DataFrame) -> None:
     output = paths()
     order = ["decision_tree", "random_forest", "xgboost", "lightgbm", "catboost", "mlp", "frozen_hybrid"]
@@ -225,8 +201,6 @@ def performance_plot(summary: pd.DataFrame) -> None:
         axis.set_xlabel("MCC (mean ± SD)")
     fig.savefig(output["figures"] / "performance_comparison.png")
     plt.close(fig)
-
-
 def shap_tables() -> pd.DataFrame:
     output = paths()
     X_test, _, _, features = load_data("test")
@@ -246,9 +220,6 @@ def shap_tables() -> pd.DataFrame:
         importance = np.abs(values).mean(axis=0)
         for feature, value in zip(features, importance):
             rows.append({"model": model_name, "feature": feature, "mean_abs_shap": float(value)})
-                                                                             
-                                                                             
-                                                         
     with (output["models"] / "mlp_seed_42.pkl").open("rb") as handle:
         mlp = pickle.load(handle)
     background = X_test[rng.choice(len(X_test), 50, replace=False)]
@@ -261,8 +232,6 @@ def shap_tables() -> pd.DataFrame:
     mlp_values = mlp_explainer(explain_X[:100], max_evals=2 * len(features) + 1)
     for feature, value in zip(features, np.abs(mlp_values.values).mean(axis=0)):
         rows.append({"model": "mlp", "feature": feature, "mean_abs_shap": float(value)})
-                                                                                
-                                                                           
     rf_rows = [row for row in rows if row["model"] == "random_forest"]
     for row in rf_rows:
         rows.append({**row, "model": "frozen_hybrid_backbone"})
@@ -290,8 +259,6 @@ def shap_tables() -> pd.DataFrame:
         "logistic_coefficient": frozen["fusion"]["parameters"]["coefficients"],
     }).to_csv(output["tables"] / "hybrid_fusion_input_importance.csv", index=False)
     return table
-
-
 def cross_domain_shap() -> pd.DataFrame:
     output = paths()
     _, _, _, features = load_data("test")
@@ -320,8 +287,6 @@ def cross_domain_shap() -> pd.DataFrame:
     ).astype(int)
     table.to_csv(output["tables"] / "cross_dataset_shap_comparison.csv", index=False)
     return table
-
-
 def verdict(tests: pd.DataFrame) -> dict:
     output = paths()
     runs = _runs()
@@ -351,8 +316,6 @@ def verdict(tests: pd.DataFrame) -> dict:
     }
     write_json(output["manifests"] / "final_readiness_verdict.json", result)
     return result
-
-
 def excel_export(tables: dict[str, pd.DataFrame], stats: pd.DataFrame,
                  errors: pd.DataFrame, drift_table: pd.DataFrame,
                  shap_table: pd.DataFrame) -> None:
@@ -367,8 +330,6 @@ def excel_export(tables: dict[str, pd.DataFrame], stats: pd.DataFrame,
         pd.read_csv(paths()["tables"] / "supervised_tuning_summary.csv").to_excel(
             writer, sheet_name="hyperparameters", index=False
         )
-
-
 def main() -> None:
     tables = summary_tables()
     stats = statistical_tests()
@@ -380,7 +341,5 @@ def main() -> None:
     cross_domain_shap()
     excel_export(tables, stats, errors, drift_table, shap_table)
     print(json.dumps(verdict(stats), indent=2))
-
-
 if __name__ == "__main__":
     main()
