@@ -1,15 +1,10 @@
-                                                                      
-
 from __future__ import annotations
-
 import argparse
 from datetime import datetime, timezone
 from pathlib import Path
-
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
-
 from benchmark.common import (
     ensure_output_dirs,
     environment_manifest,
@@ -19,8 +14,6 @@ from benchmark.common import (
     sha256_file,
     write_json,
 )
-
-
 def _load_aligned(path: Path, features: list[str], label_col: str) -> pd.DataFrame:
     if not path.exists():
         raise FileNotFoundError(f"Aligned dataset not found: {path}")
@@ -32,8 +25,6 @@ def _load_aligned(path: Path, features: list[str], label_col: str) -> pd.DataFra
         df[feature] = pd.to_numeric(df[feature], errors="coerce")
     df.dropna(inplace=True)
     return df.reset_index(drop=True)
-
-
 def _balanced_cap(
     df: pd.DataFrame, label_col: str, max_rows: int | None, seed: int
 ) -> pd.DataFrame:
@@ -43,8 +34,6 @@ def _balanced_cap(
     for _, group in df.groupby(label_col, sort=True):
         groups.append(group.sample(n=min(len(group), max_rows), random_state=seed))
     return pd.concat(groups).sample(frac=1, random_state=seed).reset_index(drop=True)
-
-
 def _save_partition(path: Path, frame: pd.DataFrame, features: list[str], label: str):
     path.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(
@@ -54,15 +43,11 @@ def _save_partition(path: Path, frame: pd.DataFrame, features: list[str], label:
         row_hash=row_hashes(frame[features].to_numpy()),
         features=np.asarray(features),
     )
-
-
 def _class_counts(frame: pd.DataFrame, label: str) -> dict[str, int]:
     return {
         str(int(key)): int(value)
         for key, value in frame[label].value_counts().sort_index().items()
     }
-
-
 def build(config_path: str | None = None) -> dict:
     config = load_config(config_path or resolve("benchmark/config.yaml"))
     ensure_output_dirs(config)
@@ -72,7 +57,6 @@ def build(config_path: str | None = None) -> dict:
     seed = int(data_cfg["random_seed"])
     output_dir = resolve(data_cfg["output_dir"])
     output_dir.mkdir(parents=True, exist_ok=True)
-
     source_path = resolve(data_cfg["train_domain"])
     source = _load_aligned(source_path, features, label)
     source_rows_before_dedup = len(source)
@@ -87,7 +71,6 @@ def build(config_path: str | None = None) -> dict:
     source = _balanced_cap(
         source, label, data_cfg.get("max_rows_per_class"), seed
     )
-
     train_val, test = train_test_split(
         source,
         test_size=float(data_cfg["test_size"]),
@@ -103,7 +86,6 @@ def build(config_path: str | None = None) -> dict:
         stratify=train_val[label],
         random_state=seed,
     )
-
     partitions = {"train": train, "validation": validation, "test": test}
     hash_sets = {
         name: set(row_hashes(frame[features].to_numpy()))
@@ -116,10 +98,8 @@ def build(config_path: str | None = None) -> dict:
     }
     if any(overlap.values()):
         raise RuntimeError(f"Partition overlap detected: {overlap}")
-
     for name, frame in partitions.items():
         _save_partition(output_dir / f"cicids2017_{name}.npz", frame, features, label)
-
     external_manifest = {}
     train_feature_hashes = set(row_hashes(source[features].to_numpy()))
     for domain, configured_path in data_cfg["external_domains"].items():
@@ -142,7 +122,6 @@ def build(config_path: str | None = None) -> dict:
             "class_counts": _class_counts(external, label),
             "feature_overlap_with_training_domain": overlap_with_source,
         }
-
     manifest = {
         "created_utc": datetime.now(timezone.utc).isoformat(),
         "protocol": "CICIDS2017 train/validation/internal-test; external test only",
@@ -192,8 +171,6 @@ def build(config_path: str | None = None) -> dict:
         ]
     ).to_csv(resolve("artifacts/tables/dataset_statistics.csv"), index=False)
     return manifest
-
-
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default="benchmark/config.yaml")
@@ -201,8 +178,5 @@ def main() -> None:
     manifest = build(args.config)
     print("Phase 1 data protocol complete.")
     print(manifest["partitions"])
-
-
 if __name__ == "__main__":
     main()
-
