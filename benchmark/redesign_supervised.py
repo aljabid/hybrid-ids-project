@@ -1,11 +1,7 @@
-                                                                               
-
 from __future__ import annotations
-
 import json
 import pickle
 import time
-
 import numpy as np
 import pandas as pd
 import torch
@@ -18,17 +14,12 @@ from sklearn.pipeline import Pipeline
 from sklearn.tree import DecisionTreeClassifier
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
-
 from benchmark.common import resolve, set_seed, write_json
 from benchmark.metrics import binary_metrics
 from benchmark.redesign_preprocessing import (
     RobustFlowTransformer, config, load_partition, paths, stratified_sample,
 )
-
-
 MODEL_NAMES = ["decision_tree", "random_forest", "xgboost", "lightgbm", "catboost"]
-
-
 def model_and_space(name, seed):
     if name == "decision_tree":
         return DecisionTreeClassifier(
@@ -80,8 +71,6 @@ def model_and_space(name, seed):
             "model__l2_leaf_reg": [1, 3, 7],
         }
     raise KeyError(name)
-
-
 def selected_transformer(seed=42):
     X, _, _, _, features = load_partition("train")
     log_indices = tuple(
@@ -91,8 +80,6 @@ def selected_transformer(seed=42):
     return RobustFlowTransformer(
         method="robust", log_indices=log_indices, random_state=seed
     )
-
-
 def tune(seed=42, force=False):
     output = paths()
     X, y, _, groups, _ = load_partition("train")
@@ -133,8 +120,6 @@ def tune(seed=42, force=False):
     table = pd.DataFrame(rows)
     table.to_csv(output["tables"] / "group_tuning_summary.csv", index=False)
     return table
-
-
 def family_balanced_indices(family, y, seed, benign_cap=100000, per_family=20000):
     rng = np.random.default_rng(seed)
     selected = []
@@ -145,8 +130,6 @@ def family_balanced_indices(family, y, seed, benign_cap=100000, per_family=20000
     result = np.concatenate(selected)
     rng.shuffle(result)
     return result
-
-
 def compare_objectives(seed=42, force=False):
     output = paths()
     target = output["tables"] / "family_aware_objective_selection.csv"
@@ -192,8 +175,6 @@ def compare_objectives(seed=42, force=False):
         "external_labels_used": False, "winner": table.iloc[0].to_dict(),
     })
     return table
-
-
 class ResidualBlock(nn.Module):
     def __init__(self, width, dropout=0.15):
         super().__init__()
@@ -202,11 +183,8 @@ class ResidualBlock(nn.Module):
             nn.Dropout(dropout), nn.Linear(width, width), nn.BatchNorm1d(width),
         )
         self.activation = nn.ReLU()
-
     def forward(self, X):
         return self.activation(X + self.block(X))
-
-
 class TabularResNet(nn.Module):
     def __init__(self, input_dim, width=128, blocks=3):
         super().__init__()
@@ -215,11 +193,8 @@ class TabularResNet(nn.Module):
             *[ResidualBlock(width) for _ in range(blocks)],
             nn.Linear(width, 1),
         )
-
     def forward(self, X):
         return self.network(X).squeeze(1)
-
-
 def train_deep(seed=42, force=False):
     output = paths()
     target = output["models"] / f"tabular_resnet_seed_{seed}.pt"
@@ -299,8 +274,6 @@ def train_deep(seed=42, force=False):
     table = pd.DataFrame(history)
     table.to_csv(history_target, index=False)
     return table
-
-
 if __name__ == "__main__":
     print(tune().to_string(index=False))
     print(compare_objectives().to_string(index=False))
