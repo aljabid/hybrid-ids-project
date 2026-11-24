@@ -1,11 +1,7 @@
-                                                                           
-
 from __future__ import annotations
-
 import json
 import pickle
 import time
-
 import numpy as np
 import pandas as pd
 import yaml
@@ -14,30 +10,21 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import (
     MinMaxScaler, QuantileTransformer, RobustScaler, StandardScaler,
 )
-
 from benchmark.common import resolve, set_seed, write_json
 from benchmark.metrics import binary_metrics
-
-
 def config():
     with resolve("benchmark/redesign_config.yaml").open() as handle:
         return yaml.safe_load(handle)
-
-
 def paths():
     result = {key: resolve(value) for key, value in config()["paths"].items()}
     for path in result.values():
         path.mkdir(parents=True, exist_ok=True)
     return result
-
-
 def load_partition(name: str):
     data = np.load(
         paths()["data"] / f"cicids2017_expanded_{name}.npz", allow_pickle=False
     )
     return data["X"], data["y"], data["family"], data["group"], data["features"].astype(str).tolist()
-
-
 class RobustFlowTransformer(BaseEstimator, TransformerMixin):
     def __init__(
         self, method: str = "robust", log_indices: tuple[int, ...] = (),
@@ -47,7 +34,6 @@ class RobustFlowTransformer(BaseEstimator, TransformerMixin):
         self.log_indices = log_indices
         self.clip_quantiles = clip_quantiles
         self.random_state = random_state
-
     def _log(self, X):
         transformed = np.asarray(X, dtype=np.float64).copy()
         if self.log_indices:
@@ -55,7 +41,6 @@ class RobustFlowTransformer(BaseEstimator, TransformerMixin):
                 np.clip(transformed[:, self.log_indices], 0, None)
             )
         return transformed
-
     def fit(self, X, y=None):
         transformed = self._log(X)
         self.lower_ = np.quantile(transformed, self.clip_quantiles[0], axis=0)
@@ -76,14 +61,11 @@ class RobustFlowTransformer(BaseEstimator, TransformerMixin):
             raise KeyError(self.method)
         self.scaler_.fit(clipped)
         return self
-
     def transform(self, X):
         transformed = self._log(X)
         return self.scaler_.transform(
             np.clip(transformed, self.lower_, self.upper_)
         ).astype(np.float32)
-
-
 def stratified_sample(y, cap, seed):
     rng = np.random.default_rng(seed)
     per = cap // 2
@@ -93,8 +75,6 @@ def stratified_sample(y, cap, seed):
     ])
     rng.shuffle(selected)
     return selected
-
-
 def benchmark(seed: int = 42, force: bool = False) -> pd.DataFrame:
     output = paths()
     table_path = output["tables"] / "preprocessing_selection.csv"
@@ -150,7 +130,5 @@ def benchmark(seed: int = 42, force: bool = False) -> pd.DataFrame:
         "external_labels_used": False, "winner": winner,
     })
     return table
-
-
 if __name__ == "__main__":
     print(benchmark().to_string(index=False))

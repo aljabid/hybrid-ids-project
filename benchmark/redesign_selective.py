@@ -1,25 +1,16 @@
-                                                                                  
-
 from __future__ import annotations
-
 import json
 import pickle
 import time
-
 import numpy as np
 import pandas as pd
 from sklearn.mixture import GaussianMixture
 from sklearn.pipeline import Pipeline
-
 from benchmark.common import set_seed, write_json
 from benchmark.metrics import binary_metrics
 from benchmark.redesign_preprocessing import config, load_partition, paths
 from benchmark.redesign_supervised import model_and_space, selected_transformer
-
-
 DOMAIN_NAMES = ("cicids2017", "cse_cic_ids2018", "cic_unsw_nb15")
-
-
 def sample_domain(name, seed, per_class=50000):
     rng = np.random.default_rng(seed)
     if name == "cicids2017":
@@ -61,16 +52,12 @@ def sample_domain(name, seed, per_class=50000):
             X, y = data["X"][index], y_all[index]
     order = rng.permutation(len(y))
     return X[order], y[order]
-
-
 def domain_balanced_sample(names, seed, per_class=50000):
     samples = [sample_domain(name, seed, per_class) for name in names]
     X = np.concatenate([sample[0] for sample in samples])
     y = np.concatenate([sample[1] for sample in samples])
     order = np.random.default_rng(seed).permutation(len(y))
     return X[order], y[order]
-
-
 def score_domain(name, models):
     y_parts, family_parts, dt_parts, xgb_parts = [], [], [], []
     if name == "cicids2017":
@@ -94,8 +81,6 @@ def score_domain(name, models):
         np.concatenate(y_parts), np.concatenate(family_parts),
         np.concatenate(dt_parts), np.concatenate(xgb_parts),
     )
-
-
 def adaptive_thresholds(dt_probability, xgb_probability):
     sample_index = np.linspace(
         0, len(dt_probability) - 1, min(30000, len(dt_probability)), dtype=int
@@ -123,8 +108,6 @@ def adaptive_thresholds(dt_probability, xgb_probability):
         )
     )
     return dt_threshold, xgb_threshold
-
-
 def predict_selective(dt_probability, xgb_probability):
     dt_threshold, xgb_threshold = adaptive_thresholds(
         dt_probability, xgb_probability
@@ -137,8 +120,6 @@ def predict_selective(dt_probability, xgb_probability):
         "dt_prediction": dt_prediction, "xgb_prediction": xgb_prediction,
         "covered": covered, "selective_prediction": dt_prediction[covered],
     }
-
-
 def tuned_pipeline(name, seed):
     output = paths()
     tuning = json.loads(
@@ -150,8 +131,6 @@ def tuned_pipeline(name, seed):
     ])
     pipeline.set_params(**tuning["best_parameters"])
     return pipeline
-
-
 def validate():
     output = paths()
     checkpoint = output["results"] / "leave_domain_out_selective_runs.csv"
@@ -210,8 +189,6 @@ def validate():
         output["tables"] / "leave_domain_out_selective_mean_std.csv", index=False
     )
     return result
-
-
 def freeze_final_method():
     output = paths()
     results = pd.read_csv(
@@ -249,8 +226,6 @@ def freeze_final_method():
     }
     write_json(output["manifests"] / "final_method_freeze.json", payload)
     return payload
-
-
 if __name__ == "__main__":
     validate()
     print(json.dumps(freeze_final_method(), indent=2))
