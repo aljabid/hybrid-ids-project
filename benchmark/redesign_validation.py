@@ -1,19 +1,14 @@
-                                                                                        
-
 from __future__ import annotations
-
 import gc
 import json
 import pickle
 import time
-
 import numpy as np
 import pandas as pd
 import torch
 from sklearn.isotonic import IsotonicRegression
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
-
 from benchmark.common import set_seed, write_json
 from benchmark.metrics import binary_metrics
 from benchmark.readiness_anomaly import empirical_probability, make_scaler, train_anomaly
@@ -23,8 +18,6 @@ from benchmark.redesign_supervised import (
     MODEL_NAMES, TabularResNet, family_balanced_indices, model_and_space,
     selected_transformer, train_deep,
 )
-
-
 def _external_diagnostics():
     output = paths()
     result = {}
@@ -34,15 +27,11 @@ def _external_diagnostics():
         )
         result[name] = (data["X"], data["y"], data["family"])
     return result
-
-
 def _probability(model, X, batch=100000):
     return np.concatenate([
         model.predict_proba(X[start : start + batch])
         for start in range(0, len(X), batch)
     ])
-
-
 def architecture_freeze():
     output = paths()
     anomaly = json.loads(
@@ -75,8 +64,6 @@ def architecture_freeze():
     }
     write_json(output["manifests"] / "architecture_freeze.json", frozen)
     return frozen
-
-
 def _meta_features(classifier_probability, anomaly_probability):
     cp, ap = classifier_probability, anomaly_probability
     entropy = -(
@@ -84,8 +71,6 @@ def _meta_features(classifier_probability, anomaly_probability):
         + np.clip(1 - cp, 1e-7, 1) * np.log(np.clip(1 - cp, 1e-7, 1))
     )
     return np.column_stack([cp, ap, entropy, np.abs(cp - ap), cp * ap])
-
-
 def _evaluate(rows, seed, model, dataset, y, family, probability, threshold,
               training_seconds, inference_seconds):
     prediction = probability >= threshold
@@ -103,8 +88,6 @@ def _evaluate(rows, seed, model, dataset, y, family, probability, threshold,
             y_true=y.astype(np.int8), prediction=prediction.astype(np.int8),
             probability=probability.astype(np.float32), family=family,
         )
-
-
 def run_classical(force=False):
     output = paths()
     architecture = architecture_freeze()
@@ -235,24 +218,18 @@ def run_classical(force=False):
             print(f"validated seed={seed} family-aware + hybrid", flush=True)
             gc.collect()
     return pd.DataFrame(rows)
-
-
 def train_test_indices(y, seed):
     from sklearn.model_selection import train_test_split
     development, selection = train_test_split(
         np.arange(len(y)), test_size=0.5, stratify=y, random_state=seed
     )
     return development, selection
-
-
 def split_indices(indices, y, seed):
     from sklearn.model_selection import train_test_split
     calibration, meta = train_test_split(
         indices, test_size=0.5, stratify=y[indices], random_state=seed
     )
     return calibration, meta
-
-
 def run_deep():
     output = paths()
     checkpoint = output["results"] / "grouped_ten_seed_runs.csv"
@@ -298,8 +275,6 @@ def run_deep():
         pd.DataFrame(rows).to_csv(checkpoint, index=False)
         print(f"validated seed={seed} tabular_resnet", flush=True)
     return pd.DataFrame(rows)
-
-
 if __name__ == "__main__":
     run_classical()
     run_deep()
