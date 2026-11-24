@@ -1,23 +1,13 @@
-                                                                     
-
-                                                                           
-                                                                         
-                                                                 
-   
-
 from __future__ import annotations
-
 import hashlib
 import json
 import pickle
 import time
 from pathlib import Path
-
 import numpy as np
 import pandas as pd
 import pyarrow.parquet as pq
 from sklearn.pipeline import Pipeline
-
 from benchmark.common import set_seed, write_json
 from benchmark.redesign_data import CANONICAL
 from benchmark.redesign_preprocessing import config, paths
@@ -28,13 +18,9 @@ from benchmark.redesign_selective import (
     tuned_pipeline,
 )
 from benchmark.redesign_supervised import model_and_space, selected_transformer
-
-
 RAW = Path("data/raw/cic_ton_iot_confirmation/CIC-ToN-IoT-V2.parquet")
 ARCHIVE = Path("data/raw/cic_ton_iot_confirmation/cictoniot_v2.zip")
 ARCHIVE_SHA256 = "c434fca8f461073ebfcf127df5889211ee1b29fba9bf72444091bf0707b4ec2c"
-
-                                                                             
 ALIASES = {
     "Fwd Packets Length Total": "Total Length of Fwd Packets",
     "Bwd Packets Length Total": "Total Length of Bwd Packets",
@@ -44,16 +30,12 @@ ALIASES = {
     "Fwd Act Data Packets": "act_data_pkt_fwd",
     "Fwd Seg Size Min": "min_seg_size_forward",
 }
-
-
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
         for block in iter(lambda: handle.read(8 * 1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
-
-
 def column_mapping(schema_names: list[str]) -> dict[str, str]:
     mapping = {}
     for source in schema_names:
@@ -67,8 +49,6 @@ def column_mapping(schema_names: list[str]) -> dict[str, str]:
             f"{sorted(expected - set(mapping.values()))}"
         )
     return mapping
-
-
 def build_aligned_cache(force: bool = False) -> Path:
     output = paths()
     cache = output["data"] / "cic_ton_iot_confirmation_aligned"
@@ -77,7 +57,6 @@ def build_aligned_cache(force: bool = False) -> Path:
         return cache
     if not RAW.exists() or sha256(ARCHIVE) != ARCHIVE_SHA256:
         raise RuntimeError("Confirmation dataset missing or archive checksum mismatch")
-
     parquet = pq.ParquetFile(RAW)
     mapping = column_mapping(parquet.schema_arrow.names)
     source_columns = list(mapping) + ["Label", "Attack"]
@@ -140,8 +119,6 @@ def build_aligned_cache(force: bool = False) -> Path:
         ),
     })
     return cache
-
-
 def family_error_rows(seed: int, family, family_names, y, mask, prediction):
     rows = []
     for code in np.unique(family):
@@ -157,10 +134,7 @@ def family_error_rows(seed: int, family, family_names, y, mask, prediction):
             "false_negatives": int(((actual == 1) & (predicted == 0)).sum()),
         })
     return rows
-
-
 def batched_probabilities(model, X, destination: Path, batch_size: int = 100_000):
-                                                                                
     probability = np.lib.format.open_memmap(
         destination, mode="w+", dtype=np.float32, shape=(len(X),)
     )
@@ -170,15 +144,7 @@ def batched_probabilities(model, X, destination: Path, batch_size: int = 100_000
     probability.flush()
     del probability
     return np.load(destination, mmap_mode="r")
-
-
 def streaming_binary_metrics(y, prediction, probability, mask=None, bins=16_384):
-                                                                               
-
-                                                                              
-                                                                            
-                                                   
-       
     if mask is None:
         mask = np.ones(len(y), dtype=bool)
     tn = fp = fn = tp = count = 0
@@ -275,17 +241,12 @@ def streaming_binary_metrics(y, prediction, probability, mask=None, bins=16_384)
         "tn": int(tn), "fp": int(fp), "fn": int(fn), "tp": int(tp),
         "auc_method": f"all-row fixed histogram ({bins} bins)",
     }
-
-
 def _confirmation_cache():
     cache = build_aligned_cache()
     metadata = json.loads((cache / "metadata.json").read_text())
     valid_rows = int(metadata["valid_rows"])
     return cache, metadata, valid_rows
-
-
 def prepare_seed(seed: int):
-                                                                    
     output = paths()
     target = output["models"] / f"confirmation_branches_seed_{seed}.pkl"
     if target.exists():
@@ -303,8 +264,6 @@ def prepare_seed(seed: int):
         pickle.dump({"models": models, "training_seconds": training_seconds}, handle)
     print(f"confirmation seed={seed} branches prepared", flush=True)
     return target
-
-
 def cache_seed_domain_sample(seed: int, domain: str):
     output = paths()
     directory = output["data"] / "confirmation_training_samples" / f"seed_{seed}"
@@ -327,8 +286,6 @@ def cache_seed_domain_sample(seed: int, domain: str):
             flush=True,
         )
     return X_target
-
-
 def prepare_seed_transform(seed: int):
     output = paths()
     directory = output["data"] / "confirmation_training_samples" / f"seed_{seed}"
@@ -353,8 +310,6 @@ def prepare_seed_transform(seed: int):
         pickle.dump(transformer, handle)
     print(f"confirmation seed={seed} shared transform prepared", flush=True)
     return X_target
-
-
 def prepare_seed_branch(seed: int, branch: str):
     output = paths()
     model_path = output["models"] / f"confirmation_{branch}_seed_{seed}.pkl"
@@ -384,10 +339,7 @@ def prepare_seed_branch(seed: int, branch: str):
     write_json(timing_path, {"training_seconds": training_seconds})
     print(f"confirmation seed={seed} branch={branch} prepared", flush=True)
     return model_path
-
-
 def score_seed_branch(seed: int, branch: str):
-                                                                               
     output = paths()
     cache, _, valid_rows = _confirmation_cache()
     X = np.load(cache / "X.npy", mmap_mode="r")[:valid_rows]
@@ -437,10 +389,7 @@ def score_seed_branch(seed: int, branch: str):
             flush=True,
         )
     return target
-
-
 def finalize_seed(seed: int):
-                                                                                    
     output = paths()
     result_path = output["results"] / "confirmation_ten_seed_runs.csv"
     existing = (
@@ -462,8 +411,6 @@ def finalize_seed(seed: int):
         mean_store[start:end] = (dt[start:end] + xgb[start:end]) / 2
     mean_store.flush(); del mean_store
     mean_probability = np.load(mean_path, mmap_mode="r")
-
-                                                                           
     y = np.load(cache / "y.npy", mmap_mode="r")[:valid_rows]
     family = np.load(cache / "family.npy", mmap_mode="r")[:valid_rows]
     family_names = {
@@ -533,8 +480,6 @@ def finalize_seed(seed: int):
             pickle.dump(models, handle)
     print(f"confirmation seed={seed} finalized", flush=True)
     return combined
-
-
 def finish_confirmation():
     output = paths()
     result = pd.read_csv(output["results"] / "confirmation_ten_seed_runs.csv")
@@ -557,8 +502,6 @@ def finish_confirmation():
         "status": "ONE_SHOT_CONFIRMATION_COMPLETE",
     })
     return summary
-
-
 def run(force: bool = False, seeds: list[int] | None = None):
     output = paths()
     frozen = json.loads(
@@ -583,7 +526,6 @@ def run(force: bool = False, seeds: list[int] | None = None):
     family_names = {
         int(code): name for name, code in metadata["family_to_code"].items()
     }
-                                                                              
     requested_seeds = seeds or config()["study"]["seeds"]
     for seed in requested_seeds:
         if seed in completed:
@@ -609,8 +551,6 @@ def run(force: bool = False, seeds: list[int] | None = None):
         )
         inference_seconds = time.perf_counter() - started
         selective = predict_selective(dt, xgb)
-
-                                                                                   
         y = np.load(cache / "y.npy", mmap_mode="r")[:valid_rows]
         family = np.load(cache / "family.npy", mmap_mode="r")[:valid_rows]
         mean_probability_store = np.lib.format.open_memmap(
@@ -667,7 +607,6 @@ def run(force: bool = False, seeds: list[int] | None = None):
         pd.DataFrame(rows).to_csv(result_path, index=False)
         pd.DataFrame(errors).to_csv(error_path, index=False)
         print(f"confirmation seed={seed} complete", flush=True)
-
     result = pd.DataFrame(rows)
     summary = result.groupby("variant")[
         ["coverage", "accuracy", "precision", "recall", "f1", "roc_auc",
@@ -690,8 +629,6 @@ def run(force: bool = False, seeds: list[int] | None = None):
             "status": "ONE_SHOT_CONFIRMATION_COMPLETE",
         })
     return result
-
-
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
