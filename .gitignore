@@ -49,8 +49,8 @@ artifacts/**/models/
 artifacts/**/predictions/
 
 # === Legacy top-level model weights (small individually, but binary and regenerable via training scripts) ===
-models/**/saved/
-models/**/logs/
+legacy/models/**/saved/
+legacy/models/**/logs/
 
 # === Build artifacts (regenerate from source folders rather than tracking the zip itself) ===
 *.zip
